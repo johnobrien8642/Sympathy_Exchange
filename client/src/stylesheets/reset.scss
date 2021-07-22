@@ -1,0 +1,95 @@
+html, body, div, p, a, h1, h2, 
+h3, h4, b, ol, ul, li, form, table,
+caption, tbody, thead, tr, th, td,
+figure, figcaption, footer, header, menu,
+nav, text {
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+  // fill: black;
+	vertical-align: baseline;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+div:focus,
+span[contenteditable="true"]:focus {
+  outline: 0;
+}
+
+a:-webkit-any-link {
+	color: black;
+	cursor: default;
+}
+
+body {
+	position: relative;
+}
+
+input,
+label,
+select,
+button,
+textarea
+{
+	margin:0;
+	border:0;
+	padding:0;
+	display:inline-block;
+	vertical-align:middle;
+	white-space:normal;
+	background:none;
+	line-height:1;
+  resize: none;
+}
+
+.ck,
+.ck-content,
+.ck-editor__editable,
+.ck-rounded-corners,
+.ck-editor__editable_inline,
+.ck-blurred,
+.ck-focused {
+	border: none !important;
+	outline: none !important;
+	box-shadow: none !important;
+	
+	 &:focus {
+		 border: none !important;
+		 outline: none !important;
+		 box-shadow: none !important;
+		 box-sizing: none !important;
+	 }
+}
+
+div[contenteditable] {
+	outline: none !important;
+	border: none !important;
+	padding: 0;
+
+	&:focus {
+		outline: none !important;
+		border: none !important;
+	}
+}
+
+input:focus,
+textarea:focus
+{
+	outline:0;
+}
+
+button,
+input[type=reset],
+input[type=button],
+input[type=submit],
+input[type=checkbox],
+input[type=radio],
+select
+{
+	-webkit-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	box-sizing:border-box;
+}

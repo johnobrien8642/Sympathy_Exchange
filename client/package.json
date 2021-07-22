@@ -1,0 +1,59 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@apollo/client": "^3.3.15",
+    "@ckeditor/ckeditor5-react": "^3.0.2",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@tinymce/tinymce-react": "^3.12.2",
+    "axios": "^0.21.1",
+    "ckeditor5-custom-build": "file:ckeditor5",
+    "core-js": "^3.11.0",
+    "dompurify": "^2.2.8",
+    "froala-editor": "^3.2.6-1",
+    "graphql": "^15.5.0",
+    "jquery": "^3.6.0",
+    "js-cookie": "^2.2.1",
+    "music-metadata": "^7.8.3",
+    "music-metadata-browser": "^2.2.6",
+    "randomstring": "^1.1.5",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-h5-audio-player": "^3.7.0",
+    "react-player": "^2.9.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
+    "sass": "^1.32.12",
+    "url-metadata": "^2.5.0",
+    "validator": "^13.5.2",
+    "web-vitals": "^1.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts --max_old_space_size=4096 start",
+    "build": "react-scripts --max_old_space_size=4096 build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "proxy": "https://rumblr.app",
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

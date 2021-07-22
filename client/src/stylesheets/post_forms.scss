@@ -1,0 +1,1320 @@
+.postFormModal.active {
+  display: block;
+}
+
+.postFormModal.hidden {
+  display: none;
+}
+
+.postForm.hidden {
+  display: hidden;
+}
+
+.postForm.active {
+  display: block;
+}
+
+.postForm.none {
+  display: none;
+}
+
+.postFormModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background-color: var(--tumblr-deep-blue-modal);
+  z-index: 100;
+
+  .postFormContainer {
+    position: absolute;
+    top: 10%;
+    width: 540px;
+    min-height: 150px;
+    left: 50%;
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 5px;
+    transform: translateX(-50%) scale(1);
+
+    @media (max-width: 980px) {
+      width: 380px;
+      min-height: 200px;
+
+      @media (max-width: 375px) {
+        width: 350px;
+      }
+
+      @media (max-width: 320px) {
+        top: 10%;
+        width: 385px;
+        transform: translateX(-50%) scale(.8);
+      }
+
+      @media (max-width: 280px) {
+        top: 10%;
+        width: 320px;
+      }
+    }
+
+
+    .profilePic {
+      display: block;
+      position: absolute !important;
+      top: 0px !important;
+      left: -88px !important;
+      z-index: 103 !important;
+
+      @media (max-width: 980px) {
+        display: none;
+      }
+    }
+
+    .postForm {
+      position: relative;
+      box-sizing: border-box;
+      z-index: 102;
+
+      h3 {
+        font-family: var(--font);
+        font-size: 14px;
+        font-weight: 700;
+        margin: 15px 0 15px 16px;
+      }
+
+      .mainPreview, .bodyPreview {
+        
+        .imageContentContainer {
+          position: relative;
+          height: fit-content;
+          width: 100%;
+          z-index: 101;
+
+          &:focus {
+            .removeBtn {
+              transform: scale(1);
+            }
+          }
+
+          &:hover {
+            .removeBtn {
+              transform: scale(1);
+              cursor: pointer;
+            }
+          }
+          
+          .removeBtn {
+            position: relative;
+            top: 8px;
+            left: 530px;
+            left: 98%;
+            height: 20px;
+            width: 20px;
+            font-weight: bold;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            transform: scale(0);
+            transition: transform .2s .5s;
+
+            @media (max-width: 980px) {
+              left: 93%;
+            }
+
+            span {
+              position: relative;
+              display: inline-block;
+              top: -1.5px;
+              left: .5px;
+              font-size: 15px;
+            }
+          }
+
+          .imageContent {
+            width: 100%;
+            object-fit: contain;
+          }
+        }
+      }
+
+      .textContentContainer {
+        position: relative;
+        left: 10px;
+        margin: 10px 0 -8% 0;
+        width: 510px;
+        z-index: 100;
+
+        @media (max-width: 980px) {
+          width: 350px;
+
+          @media (max-width: 375px) {
+            width: 330px;
+          }
+
+          @media (max-width: 320px) {
+            width: 350px;
+          }
+
+          @media (max-width: 280px) {
+            width: 300px;
+          }
+        }
+
+        .ck {
+          width: 100%;
+          height: fit-content;
+        }
+      }
+
+      .bodyImageInputContainer {
+        position: absolute;
+        display: flex;
+        width: 500px;
+        height: 200px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 500;
+        box-sizing: border-box;
+        border: 3px dashed rgb(0, 0, 0, 0.3);
+        background-color: var(--less-light-gray);
+
+        @media (max-width: 980px) {
+          width: 365px;
+
+          @media (max-width: 375px) {
+            width: 330px;
+          }
+
+          @media (max-width: 320px) {
+            width: 370px;
+          }
+  
+          @media (max-width: 280px) {
+            width: 300px;
+          }
+        }
+
+  
+        textarea {
+          position: relative;
+          top: -110px;
+          left: 320px;
+          font-size: 17px;
+          font-weight: 500;
+          font-family: var(--font);
+
+          @media (max-width: 980px) {
+            top: -111px;
+            left: 228px;
+
+            @media (max-width: 375px) {
+              left: 200px;
+            }
+
+            @media (max-width: 320px) {
+              left: 220px;
+            }
+  
+            @media (max-width: 280px) {
+              left: 180px;
+            }
+          }
+        }
+  
+        .backBtn {
+          position: relative;
+          top: -5px;
+          left: -2px;
+          width: 50px;
+          height: 50px;
+        }
+  
+        .bodyImageInputCustomLabel {
+          border-right: 3px dashed rgb(0, 0, 0, 0.3);
+          width: 250px;
+          height: 200px;
+
+          @media (max-width: 980px) {
+            width: 180px;
+
+            @media (max-width: 375px) {
+              width: 162px;
+            }
+
+            @media (max-width: 320px) {
+              width: 180px;
+            }
+  
+            @media (max-width: 280px) {
+              width: 148px;
+            }
+          }
+
+          span {
+            display: inline-block;
+            position: relative;
+            font-weight: 500;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgb(0, 0, 0, 0.5)
+          }
+  
+          &:hover {
+            cursor: pointer;
+          }
+  
+          #bodyFileInput {
+            display: none;
+          }
+        }
+      }
+  
+  
+      .photoInputIcon {
+        display: block;
+        position: relative;
+        top: 0;
+        left: 90%;
+        width: 23px;        
+        height: 23px;
+        filter: grayscale(100%);
+        z-index: 500;
+        
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .descriptionStringContainer {
+        margin-top: -15px;
+
+        .ck {
+          position: relative;
+          width: 500px;
+          
+          @media (max-width: 980px) {
+            width: 80%;
+          }
+  
+          left: 12px;
+          min-height: 110px;
+          z-index: 10;
+          
+          &:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+          }
+        }
+      }
+    }
+  }
+
+      .tagsContainer {
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        width: 100%;
+        height: auto;
+        white-space: normal;
+        margin: 0 0 0 0;
+        padding: 0 0 20px 0;
+        border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+      
+        .tagDiv {
+          display: flex;
+          font-size: 15px;
+          margin: 0 3px 8px 3px;
+          padding: 0 10px 3px 5px;
+          height: fit-content;
+          border-radius: 15px;
+          background-color: var(--tumblr-lighter-blue);
+          color: white;
+          float: left;
+          
+          &:hover {
+            cursor: default;
+          }
+        
+          .removeTag {
+            position: relative;
+            display: block;
+            top: 6px;
+            left: 4px;
+            height: 13px;
+            width: 10px;
+            text-align: center;
+            border-radius: 50%;
+            margin-left: 3px;
+          
+            .removeTag {
+              display: inline-block;
+            }
+          
+            span {
+              display: block;
+              position: relative;
+              top: -5.3px;
+              font-weight: bold;
+              font-size: 13px;
+            }
+          }
+        }
+    
+        .tagInputAndDDContainer {
+          display: inline-block;
+          position: relative;
+          width: fit-content;
+          
+          input {
+            margin: -2px 0 0 15px;
+            font-size: 17px;
+          }
+  
+          .matchingTagsDD.active {
+            display: block;
+          }
+
+          .matchingTagsDD {
+            display: none;
+            position: absolute;
+            top: 30px;
+            left: -40px;
+            min-width: 190px;
+            background-color: white;
+            border-radius: 5px;
+            box-sizing: border-box;
+            border: 1px solid var(--light-gray);
+            z-index: 97;
+            
+            li {
+              padding: 5px 0 5px 10px;
+
+              &:not(:first-child) {
+                &:hover {
+                  background-color: var(--tag-hover-blue);
+                }
+              }
+
+              &:first-child {
+                font-size: 12px;
+                font-weight: 500;
+                padding: 3px 0 5px 5px;
+                color: rgb(0, 0, 0, 0.3);
+                background-color: var(--less-light-gray);
+
+                &:hover {
+                  cursor: default;
+                }
+              }
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+          }          
+        }
+      }
+
+      .closeOrPostContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 65px;
+
+        .closeBtn {
+          position: relative;
+          background-color: rgb(0, 0, 0, 0.4);
+          height: fit-content;
+          width: fit-content;
+          font-size: 14px;
+          font-weight: 700;
+          padding: 6px 10px 8px 10px;
+          margin-left: 17px;
+          border-radius: 3px;
+          color: white;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        .confirmCloseModal {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: var(--tumblr-deep-blue-modal);
+          z-index: 500;
+        }
+
+        .confirmCloseContainer {
+          position: absolute;
+          color: white;
+          top: 40%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 280px;
+          z-index: 501;
+
+          .discardTitle {
+            display: inline-block;
+            margin: 0 0 15px 42px;
+            font-size: 24px;
+
+            &:hover {
+              cursor: default;
+            }
+          }
+
+          div {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+
+            .cancel {
+              position: relative;
+              padding: 10px 25px 10px 25px;
+              border-radius: 2px;
+              font-weight: bold;
+              background-color: var(--best-gray);
+              
+              &:hover {
+                cursor: pointer;
+              }
+            }
+            
+            .discard {
+              position: relative;
+              padding: 10px 38px 10px 38px;
+              font-weight: bold;
+              border-radius: 2px;
+              background-color: var(--tumblr-light-blue);
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+          }
+        }
+
+        .formSubmitBtn {
+          position: relative;
+          display: block;
+          font-size: 15px;
+          font-weight: 700;
+          height: fit-content;
+          width: fit-content;
+          margin-right: 17px;
+          padding: 8px 14px 8px 14px;
+          border-radius: 3px;
+          background-color: var(--tumblr-light-blue);
+          color: white;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        .formSubmitBtn.disabled {
+          color: rgb(255, 255, 255, .5)
+        }
+      }
+      
+      .textPostForm {
+
+        .titleInput {
+          display: block;
+          position: relative;
+          left: 15px;
+          width: 510px;
+          font-size: 34px;
+        }
+        
+        .titleInput.placeholder:empty:before {
+          content: attr(data-placeholder);
+          color: rgb(0, 0, 0, 0.5);
+        }
+        
+        .titleInput.active {
+          font-size: 34px;
+
+          &:focus {
+            outline: none;
+            border: none;
+          }
+      
+          &::placeholder {
+            color: rgb(0, 0, 0, 0.7);
+          }
+       }
+    }
+
+
+    .linkPostForm {
+
+      .linkPreviewContainer {
+        width: 100%;
+
+        .linkNameAndImageContainer {
+
+          a {
+            width: 100%;
+
+            &:hover {
+              cursor: pointer;
+            }
+
+            .siteName {
+              position: relative;
+              top: 35px;
+              color: white;
+              font-weight: 500;
+            }
+          }
+
+          img {
+            object-fit: contain;
+            width: 100%;
+            border-top: 1px solid rgb(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgb(0, 0, 0, 0.3);
+          }
+        }
+
+        .linkTitleAndDescContainer {
+          background-color: var(--light-gray);
+
+          h2 {
+            position: relative;
+            top: -15px;
+            margin-left: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            width: fit-content;
+            color: rgb(0, 0, 0, 0.7)
+          }
+
+          p {
+            display: inline-block;
+            width: 85%;
+            margin: 0 0 20px 20px;
+            font-size: 15px; 
+          }
+        }
+
+        .linkNameAndImageContainer,
+        .linkTitleAndDescContainer {
+
+          &:focus {
+            .removeBtn {
+              transform: scale(1);
+            }
+          }
+
+          &:hover {
+            .removeBtn {
+              transform: scale(1);
+            }
+          }
+          
+          .removeBtn {
+            position: relative;
+            top: 8px;
+            left: 530px;
+            height: 20px;
+            width: 20px;
+            font-weight: bold;
+            border-radius: 50%;
+            background-color: red;
+            color: white;
+            transform: scale(0);
+            transition: transform .2s .5s;
+
+            span {
+              position: relative;
+              display: inline-block;
+              top: -1.5px;
+              left: .5px;
+              font-size: 15px;
+            }
+          }
+        }
+      }
+
+      .urlInputContainer {
+        margin-bottom: 15px;
+        border-top: 2px dashed rgb(0, 0, 0, 0.1);
+        border-bottom: 2px dashed rgb(0, 0, 0, 0.1);
+        background-color: var(--light-gray);
+        height: 85px;
+
+        .urlInput {
+          margin: 35px 0 0 30px;
+  
+        }
+      }
+    }
+
+    .photoPostForm {
+    
+      .addPhotoBtn {
+        position: relative;
+        width: 100%;
+        height: 40px;
+        background-color: var(--light-gray);
+        border-top: 2px dashed rgb(0, 0, 0, 0.1);
+        border-bottom: 2px dashed rgb(0, 0, 0, 0.1);
+
+        div {
+          position: relative;
+          margin-left: 218px;
+
+          img {
+            position: relative;
+            top: 5px;
+            left: -5px;
+
+            @media (max-width: 980px) {
+              left: -90px;
+  
+              @media (max-width: 375px) {
+                left: -100px;
+              }
+  
+              @media (max-width: 320px) {
+                left: -90px;
+              }
+    
+              @media (max-width: 280px) {
+                left: -120px;
+              }
+            }
+
+            filter: grayscale(100%);
+            width: 30px;
+            height: 30px;
+            opacity: .7;
+          }
+  
+          span {
+            position: relative;
+            display: inline-block;
+            top: -3px;
+            left: 3px;
+
+            @media (max-width: 980px) {
+              left: -80px;
+  
+              @media (max-width: 375px) {
+                left: -92px;
+              }
+  
+              @media (max-width: 320px) {
+                left: -85px;
+              }
+    
+              @media (max-width: 280px) {
+                top: -28px;
+                left: -85px;
+              }
+            }
+
+            font-size: 14px;
+            color: rgb(0, 0, 0, 0.3);
+          }
+        }
+      }
+
+      .mainImageFileInputContainer {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: 200px;
+        left: 50%;
+        margin-bottom: 10px;
+        z-index: 500;
+        box-sizing: border-box;
+        border-top: 2px dashed rgb(0, 0, 0, 0.2);
+        border-bottom: 2px dashed rgb(0, 0, 0, 0.2);
+        background-color: var(--less-light-gray);
+        overflow: hidden;
+        transform: translateX(-50%) scale(1);
+
+        .borderMiddle {
+          border-right: 1px solid rgb(0, 0, 0, 0.1);
+          position: absolute;
+          top: 30px;
+          bottom: 30px;
+          left: 272px;
+
+          @media (max-width: 980px) {
+            left: 195px;
+
+            @media (max-width: 420px) {
+              left: 194px;
+            }
+
+            @media (max-width: 375px) {
+              left: 183px;
+            }
+
+            @media (max-width: 320px) {
+              left: 197px;
+            }
+            @media (max-width: 280px) {
+              left: 165px;
+            }
+          }
+
+        }
+
+        .linkContainer {
+          position: relative;
+          transform: scale(1);
+          top: 0 !important;
+          left: 10px;
+
+          @media(max-width: 980px) {
+            transform: scale(.8);
+            top: 0 !important;
+            left: -25px;
+            
+            @media (max-width: 420px) {
+              left: -23px;
+            }
+
+            @media (max-width: 375px) {
+              left: -10px;
+            }
+
+            @media (max-width: 320px) {
+              left: -25px;
+            }
+
+            @media (max-width: 280px) {
+              left: -30px;
+            }
+          }
+          
+          .linkIcon {
+            position: absolute;
+            filter: grayscale(100%);
+            top: 60px !important;
+            left: 120px;
+          }
+    
+          textarea {
+            position: relative;
+            top: 132px;
+            left: 106px;
+            font-size: 17px;
+            font-weight: 500;
+            font-family: var(--font);
+          }
+        }
+
+        .backBtnContainer {
+          position: relative;
+          left: -2%;
+          height: 45px;
+          width: 45px;
+          
+          @media (max-width: 980px) {
+            width: 35px;
+            height: 35px;
+            left: -10%;
+
+            @media (max-width: 420px) {
+              left: -5%;
+            }
+
+            @media (max-width: 375px) {
+              left: -5%;
+            }
+
+            @media (max-width: 320px) {
+              left: -5%;
+            }
+
+            @media (max-width: 280px) {
+              left: -15%;
+            }
+          }
+
+          .backBtn {
+            display: none;
+            position: relative;
+            height: 45px;
+            width: 45px;
+  
+          }
+        }
+
+
+        .backBtn.active {
+          display: block;
+        }
+        
+        .mainImageFileInputCustomLabel {
+          position: relative;
+          width: 250px;
+          height: 200px;
+          transform: scale(1);
+
+          @media (max-width: 980px) {
+            left: 10px;
+            transform: scale(.8);
+
+            @media (max-width: 420px) {
+              left: 11px;
+            }
+
+            @media (max-width: 375px) {
+              left: 20px;
+            }
+
+            @media (max-width: 280px) {
+              left: 20px;
+            }
+          }
+
+
+          div {
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            top: 50%;
+            transform: translateY(-50%);
+            
+            img {
+              position: relative;
+              display: block;
+              margin: auto;
+              width: 70px;
+              filter: grayscale(100%);
+              opacity: .7;
+            }
+    
+            span {
+              position: relative;
+              display: block;
+              margin: auto;
+              width: 130px;
+              top: 5px;
+              font-weight: 500;
+              color: rgb(0, 0, 0, 0.5);
+            }
+          }
+  
+          &:hover {
+            cursor: pointer;
+          }
+  
+          #mainFileInput {
+            display: none;
+          }
+        }
+      }
+    }
+
+
+
+    .quotePostForm {
+      
+      .quoteAndSourceInputContainer {
+        
+        .quoteInputContainer {
+          display: flex;
+          margin: 0 0 0 15px;
+
+          .quoteInput {
+            display: inline-block;
+            font-family: var(--quote-font);
+            font-size: 40px;
+            font-weight: 400;
+          }
+
+          .quoteInput.active {
+            &:before, &:after {
+              content: attr(data-quote);
+            }
+          }
+    
+          .quoteInput.placeholder:empty:before {
+            content: attr(data-placeholder);
+            color: rgb(0, 0, 0, 0.5);
+          }
+
+          .doubleQuote {
+            font-size: 40px;
+          }
+    
+          .doubleQuote.placeholder {
+            font-size: 40px;
+            color: rgb(0, 0, 0, 0.5);
+          }
+        }
+
+        
+        
+        .dashAndSource {
+          display: flex;
+          margin: 15px 0 0 15px;
+          
+          .sourceInput.placeholder:empty:before {
+            content: attr(data-placeholder);
+            color: rgb(0, 0, 0, 0.5);
+          }
+
+          .dash {
+            position: relative;
+            display: block;
+            top: 9px;
+            height: 10px;
+            font-size: 50px;
+            font-weight: lighter;
+            color: rgb(0, 0, 0, 0.7);
+
+            span {
+              position: relative;
+              top: -40px;
+            }
+            
+          }
+  
+          .sourceInput {
+            display: inline-block;
+            margin: 0 0 10px 8px;
+
+          }
+        }
+      }
+    }
+
+
+    .chatPostForm {
+      .chatText {
+        margin: 20px 0 0 15px;
+        width: 95%;
+      }
+
+      .chatText.placeholder {
+        color: rgb(0, 0, 0, 0.6)
+      }
+    }
+
+    .audioPostForm {
+
+      .audioFilePlayer {
+        input {
+          font-size: 17px;
+        }
+      }
+
+      .audioFileInputCustomLabel {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        height: 150px;
+        margin: 0 0 15px 0;
+        background-color: var(--light-gray);
+        border-top: 3px dashed rgb(0, 0, 0, 0.3);
+        border-bottom: 3px dashed rgb(0, 0, 0, 0.3);
+
+        div {
+          position: relative;
+          top: 30px;
+          left: 215px;
+
+          @media (max-width: 980px) {
+            left: 105px;
+            transform: scale(.8);
+
+            @media (max-width: 420px) {
+              left: 105px;
+            }
+
+            @media (max-width: 375px) {
+              left: 93px;
+            }
+
+            @media (max-width: 360px) {
+              left: 94px;
+            }
+
+            @media (max-width: 320px) {
+              left: 105px;
+            }
+
+            @media (max-width: 280px) {
+              left: 80px;
+            }
+          }
+
+          img {
+            position: relative;
+            display: inline-block;
+            left: 28px;
+            filter: grayscale(100%);
+          }
+  
+          span {
+            display: inline-block;
+            position: relative;
+            top: 10px;
+            font-weight: 500;
+            transform: translateX(-50%);
+            color: rgb(0, 0, 0, 0.5)
+          }
+  
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        #audioFileInput {
+          display: none;
+        }
+      }
+
+      .audioFilePlayer {
+        margin: auto;
+        margin-bottom: 20px;
+        width: 90%;
+
+        p {
+          margin-bottom: 10px;
+        }
+
+        input {
+          width: 400px;
+        }
+
+        &:focus {
+          .removeBtn {
+            transform: scale(1);
+          }
+        }
+
+        &:hover {
+          .removeBtn {
+            transform: scale(1);
+          }
+        }
+        
+        .removeBtn {
+          position: relative;
+          top: 8px;
+          left: 470px;
+          height: 20px;
+          width: 20px;
+          font-weight: bold;
+          border-radius: 50%;
+          background-color: red;
+          color: white;
+          transform: scale(0);
+          transition: transform .2s .5s;
+
+          span {
+            position: relative;
+            display: inline-block;
+            top: -1.5px;
+            left: .5px;
+            font-size: 15px;
+          }
+        }
+      }
+    }
+
+    .videoPostForm {
+
+      .videoPlayerContainer {
+        margin-bottom: 20px;
+
+        .removeBtn {
+          position: relative;
+          top: 30px;
+          left: 95%;
+          height: 20px;
+          width: 20px;
+          font-weight: bold;
+          border-radius: 50%;
+          background-color: red;
+          color: white;
+          transition: transform .2s .5s;
+          z-index: 500;
+
+          &:hover {
+            cursor: pointer;
+          }
+
+          span {
+            position: relative;
+            display: inline-block;
+            top: -1.5px;
+            left: .5px;
+            font-size: 15px;
+          }
+        }
+      }
+
+      .videoFileInputContainer {
+        position: relative;
+        display: flex;
+        width: 100%;
+        height: 200px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 10px;
+        z-index: 500;
+        box-sizing: border-box;
+        border-top: 2px dashed rgb(0, 0, 0, 0.2);
+        border-bottom: 2px dashed rgb(0, 0, 0, 0.2);
+        background-color: var(--less-light-gray);
+        overflow: hidden;
+
+        .borderMiddle {
+          border-right: 1px solid rgb(0, 0, 0, 0.1);
+          position: absolute;
+          top: 30px;
+          bottom: 30px;
+          left: 275px;
+
+          @media (max-width: 980px) {
+            left: 195px;
+            transform: scale(.8);
+  
+            @media (max-width: 420px) {
+              left: 196px;
+            }
+  
+            @media (max-width: 375px) {
+              left: 180px;
+            }
+  
+            @media (max-width: 280px) {
+              left: 165px;
+            }
+          }
+        }
+
+        .linkContainer {
+          position: relative;
+          transform: scale(1);
+          left: 45px;
+
+          @media (max-width: 980px) {
+            left: -15px;
+            transform: scale(.8);
+
+            @media (max-width: 420px) {
+              left: -13px;
+            }
+  
+            @media (max-width: 375px) {
+              left: 0px;
+            }
+  
+            @media (max-width: 280px) {
+              left: 8px;
+            }
+          }
+
+          .linkIcon {
+            position: absolute;
+            filter: grayscale(100%);
+            top: 55px !important;
+            left: 80px;
+          }
+    
+          textarea {
+            position: relative;
+            top: 131px;
+            left: 68px;
+            font-size: 17px;
+            font-weight: 500;
+            font-family: var(--font);
+          }
+        }
+
+  
+        .videoFileInputCustomLabel {
+          position: relative;
+          width: 250px;
+          height: 200px;
+          transform: scale(1);
+
+          @media (max-width: 980px) {
+            left: -5px;
+            transform: scale(.8);
+  
+            @media (max-width: 420px) {
+              left: -5px;
+            }
+  
+            @media (max-width: 280px) {
+              left: 5px;
+            }
+          }
+
+          div {
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            top: 95px;
+            left: 5px;
+            transform: translateY(-50%);
+
+            .videoIcon {
+              position: absolute;
+              filter: grayscale(100%);
+              top: -42px !important;
+              left: 82px;
+              width: 85px;
+
+              @media (max-width: 980px) {
+                left: 52px;
+                transform: scale(.8);
+      
+                @media (max-width: 420px) {
+                  left: 56px;
+                }
+      
+                @media (max-width: 375px) {
+                  left: 40px;
+                }
+      
+                @media (max-width: 280px) {
+                  left: 30px;
+                }
+              }
+            }
+        
+            span {
+              position: relative;
+              display: block;
+              margin: auto;
+              width: fit-content;
+              top: 44px;
+              font-size: 15px;
+              font-weight: 500;
+              color: rgb(0, 0, 0, 0.5);
+            }
+          }
+  
+          &:hover {
+            cursor: pointer;
+          }
+  
+          #videoFileInput {
+            display: none;
+          }
+        }
+      }
+    }
+  }

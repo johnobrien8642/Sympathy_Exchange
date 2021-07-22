@@ -1,0 +1,126 @@
+.userBlogFeedContainer {
+  width: 600px;
+  margin: 100px auto;
+
+  @media (max-width: 1024px) {
+    margin: 70px auto;
+
+    @media(min-width: 280px) {
+      width: 280px;
+    }
+
+    @media(min-width: 320px) {
+      width: 320px;
+    }
+
+    @media(min-width: 360px) {
+      width: 360px;
+    }
+
+    @media(min-width: 375px) {
+      width: 375px;
+    }
+
+    @media(min-width: 410px) {
+      width: 411px;
+    }
+
+    @media(min-width: 413px) {
+      width: 414px;
+    }
+
+    @media(min-width: 540px) {
+      width: 540px;
+    }
+
+    @media(min-width: 768px) {
+      width: 500px;
+    }
+  }
+
+  .userShowContainer {
+    background-color: var(--tumblr-translucent-blue);
+    font-family: var(--font);
+    margin: 0 0 20px 0;
+    border-radius: 3px;
+    min-height: 300px;
+    width: 100%;
+    
+
+    @media (max-width: 1024px) {
+
+      @media(min-width: 768px) {
+        width: 500px;
+      }
+    }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 15px auto 0 auto;
+        width: fit-content;
+    
+        .profilePicAndFollowContainer {
+          display: flex;
+          flex-direction: column;
+          width: fit-content;
+
+          .profilePic {
+            width: 120px;
+            height: 130px;
+            margin: 15px 0 15px auto;
+          }
+
+          form {
+            display: block;
+    
+            button {
+              background-color: var(--tumblr-light-blue);
+              font-family: var(--font);
+              font-weight: 500;
+              font-size: 25px;
+              padding: 10px 20px;
+              border-radius: 3px;
+      
+              @media (max-width: 1024px) {
+                font-size: 12px;
+              }
+            }
+          }
+        }
+  
+  
+        h1, h3 {
+          color: white;
+          margin: 0 auto;
+          text-align: center;
+        }
+        
+        h1 {
+          font-size: 50px;
+          font-weight: 500;
+  
+          @media (max-width: 1024px) {
+            font-size: 40px;
+          }
+        }
+  
+        h3 {
+          font-size: 20px;
+          margin-bottom: 10px;
+  
+          @media (max-width: 1024px) {
+            font-size: 18px;
+          }
+        }
+      }
+  
+    }
+  }
+}

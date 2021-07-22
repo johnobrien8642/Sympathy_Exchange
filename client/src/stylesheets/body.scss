@@ -1,0 +1,131 @@
+:root {
+  --off-white: #ECECEC;
+  --tumblr-deep-blue: #011328;
+  --tumblr-deep-blue-modal: rgb(1, 19, 40, .95);
+  --tumblr-lighter-blue: rgb(1, 19, 40, .7);
+  --tumblr-translucent-blue: #0F1E33;
+  --tag-hover-blue: rgb(225, 235, 245, 0.5);
+  --tumblr-light-blue: #14A7FF;
+  --tumblr-green: #1bca29;
+  --best-gray: #9CADA5;
+  --middler-gray: #343434;
+  --mid-gray: #414141;
+  --less-light-gray: #EFEFEF;
+  --light-gray: #E8E9E8;
+  --cancel-gray: #949DA8;
+  --font: 'Noto Sans JP', sans-serif;
+  --quote-font: 'Lora', serif;
+  --chat-font: 'Roboto Mono', monospace;
+}
+
+#root {
+  position: relative;
+  z-index: 1
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--tumblr-deep-blue);
+  margin: 0 auto;
+
+  .mention {
+    text-decoration: underline;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.profilePic {
+  object-fit: contain;
+  background-color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+b {
+  font-weight: normal;
+}
+
+.addInputs {
+  height: 20px;
+}
+
+.addInputs:hover {
+  cursor: pointer;
+}
+
+.chatText {
+  border: 1px solid black;
+  height: 200px;
+  width: 70%;
+  white-space: pre-wrap;
+}
+
+.boldText {
+  font-weight: bold;
+}
+
+.mce-content-body {
+  width: 450px;
+  min-height: 80px;
+  height: auto;
+}
+
+.deletePostBtn:hover {
+  cursor: pointer;
+}
+
+.backBtn:hover {
+  cursor: pointer;
+}
+
+.editPostBtn:hover {
+  cursor: pointer;
+}
+
+.commentBubbleBtn:hover {
+  cursor: pointer;
+}
+
+.likeBtn:hover {
+  cursor: pointer;
+}
+
+.removeTag:hover {
+  cursor: pointer;
+}
+
+.textDnDContent:hover {
+  cursor: text
+}
+
+.textDnDContent {
+  width: fit-content;
+}
+
+.draggable {
+  width: 100%;
+}
+
+[contentEditable=true]:empty:not(:focus):before{
+  content:attr("<strong>Brother Muzone:</strong> Well we can't stand out here all night...<br><br><strong> Omar Little:</strong> I suppose we can't...<br><br><strong> Brother Muzone:</strong> A man has to have a code.<br><br><strong> Omar Little:</strong> Oh indeed...");
+}
+
+#fetchMoreFeed, #fetchMoreActivity, 
+#fetchMoreFollowedUsers, #fetchMoreFollowers {
+  height: 50px;
+  width: 50px;
+  margin-bottom: 5px;
+}
+
+.checkOutTheseBlogs {
+  display: block;
+}
+

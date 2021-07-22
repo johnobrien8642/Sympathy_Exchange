@@ -1,0 +1,13 @@
+.postShow {
+  width: 500px;
+  margin: 100px auto;
+
+  .backBtn {
+    display: inline-block;
+    color: white;
+    font-family: var(--font);
+    font-size: 25px;
+    margin: 0 0 15px 0;
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,446 @@
+.mobileNav {
+  display: none;
+  position: fixed;
+  height: 50px;
+  width: 100vw;
+  background-color: var(--tumblr-deep-blue);
+  z-index: 95;
+}
+
+@media (max-width: 980px) {
+  .browserNav {
+    display: none;
+  }
+
+  .mobileNav {
+    display: flex;
+    position: fixed;
+    top: 0px;
+  
+    .hamburgerOrExit {
+      width: 50px;
+  
+      .exitIcon {
+        width: 30px;
+        height: 30px;
+        filter: contrast(500%);
+        margin: 14px 0 0 7px;
+        
+        
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    
+      .hamburgerIcon {
+        width: 30px;
+        height: 30px;
+        filter: contrast(500%);
+        margin: 10px 0 0 5px;
+        
+        
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  
+    .mobileMenuDD.open {
+      width: 75%;
+    }
+
+    .mobileMenuDDModal.open {
+      display: block;
+    }
+
+    .mobileMenuDDModal {
+      display: none;
+      position: absolute;
+      height: 100vh;
+      width: 140vh;
+      background-color: rgb(0, 0, 0, .5);
+      top: 50px;
+      z-index: 100;
+    }
+
+      .mobileMenuDD {
+        display: block;
+        position: absolute;
+        top: 50px;
+        left: 0px;
+        width: 0%;
+        height: 80vh;
+        transition: width .3s;
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: var(--tumblr-deep-blue);
+        overflow-x: hidden;
+        overflow-y: auto;
+        white-space: nowrap;
+        z-index: 101;
+
+        .logout {
+          color: white;
+          font-weight: 500;
+          font-size: 16px;
+          margin: 30px 0 15px 60px;
+        }
+    
+        .mobileMenuItem {
+          position: relative;
+          display: flex;
+          justify-content: space-between;
+          cursor: pointer;
+    
+          a {
+            display: inline-block;
+            margin: 8px 0 8px 10px;
+            cursor: pointer;
+
+            @media (max-width: 980px) {
+              margin-left: 20px;
+            }
+    
+    
+            img {
+              position: relative;
+              top: 5px;
+              width: 30px;
+            }
+    
+            span {
+              display: inline-block;
+              padding-left: 10px;
+              margin-bottom: 5px;
+              
+            }
+          }
+    
+          .count, .followerCount {
+            position: relative;
+            display: inline-block;
+            margin-right: 5px;
+            top: 18px;
+          }
+
+          .followerCount {
+            top: 10px;
+          }
+
+
+    
+          span, h3, p {
+            color: var(--off-white);
+            font-size: 17px;
+            font-weight: 500;
+            white-space: nowrap;
+          }
+    
+          h3 {
+            margin-top: 20px;
+          }
+        }
+
+        .mobileUserSettings {
+          width: 70%;
+          height: 80vh;
+          background-color: yellow;
+        }
+      }
+    
+      .mobileMenuItem.settings {
+        position: relative;
+        margin-left: 10px;
+        margin-top: 5px;
+    
+        div {
+          img {
+            width: 30px;
+          }
+    
+          span {
+            position: relative;
+            padding-left: 10px;
+            top: -5px;
+    
+          }
+        }
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      
+    
+      .mobileMenuItem.createAPost {
+        position: relative;
+        display: block;
+        margin-top: 8px;
+        margin-left: 20%;
+        margin-bottom: 10px;
+        width: 200px;
+        height: 40px;
+        border-radius: 7px;
+        background-color: var(--tumblr-light-blue);
+
+        @media (max-width: 320px) {
+          width: 150px;
+        }
+        
+        
+        img {
+          display: inline-block;
+          position: relative;
+          width: 18px;
+          padding: 13px 10px 13px 29px;
+          top: -4px;
+          
+            @media (max-width: 320px) {
+              padding: 13px 10px 13px 10px;
+            }
+          }
+      
+          span {
+            position: relative;
+            font-size: 16px;
+            font-weight: 900;
+            padding: 10px 37px 13px 2px;
+            top: -18px;
+            left: -2px;
+            
+            @media (max-width: 320px) {
+              padding: 10px 37px 13px 0;
+            }
+          }
+    
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    
+      .mobileMenuItem.blogDetailHeader {
+        display: inline-block;
+        margin-left: 25px;
+        word-break: break-all;
+
+        @media (max-width: 980px) {
+          margin-left: 35px;
+        }
+
+        p {
+          font-size: 12px;
+        }
+      }
+    
+      .mobileMenuItem.blogDetailData {
+        margin-left: 60px;
+
+        @media (max-width: 980px) {
+          margin-left: 80px;
+        }
+      }
+  
+    .logo {
+      margin: auto;
+  
+      img {
+        width: 40px;
+        height: 40px;
+        transition: opacity .2s;
+  
+        &:hover {
+          opacity: .7;
+          cursor: pointer;
+        }
+      }
+    }
+  
+    .searchOrExitIcon {
+      margin: 12px 10px 0 10px;
+      
+      .searchIcon {
+        width: 30px;
+        height: 30px;
+        opacity: .7;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+  
+      .exitIcon {
+        width: 27px;
+        height: 27px;
+
+        @media (max-width: 320px) {
+          margin-left: -6px;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  
+    .searchBar {
+      display: block;
+      position: relative;
+  
+      img {
+        position: absolute;
+        z-index: 2;
+        top: 12px;
+        left: 2px;
+  
+        &:hover {
+          cursor: pointer;
+        }
+      }
+  
+      .searchBarInput {
+        position: relative;
+        transform: translateY(25%);
+        font-size: 16px;
+        background-color: white;
+        opacity: .3;
+        padding-left: 30px;
+        width: 220px;
+        height: 33px;
+        border-radius: 5px;
+        transition: opacity 1s;
+        
+        @media (max-width: 980px) {
+          width: 60vw;
+        }
+      
+        &:focus {
+          opacity: 1;
+        }
+      }
+  
+      .searchDropDown {
+        display: block;
+        position: fixed;
+        top: 50px;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        color: black;
+        border-radius: 5px;
+        box-shadow: 1px 11px 24px -5px black;
+        overflow: auto;
+        
+        .followedTagsHeader {
+          color: var(--mid-gray);
+          background-color: var(--light-gray);
+          padding-top: 7px;
+          padding-left: 7px;
+          padding-bottom: 5px;
+          height: 25px;
+          font-size: 13px;
+        }
+        
+        .tagResultContainer {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .followedTags {
+          overflow: auto;
+
+          li {
+            display: flex;
+            margin-top: 5px;
+            justify-content: space-between;
+
+            .recentPostsCount {
+              display: none;
+            }
+            
+            a {
+              padding: 5px 15px 3px 8px;
+              display: inline-block;
+              color: black;
+            }
+  
+            form {
+              button {
+                margin-top: 8px;
+                margin-right: 30px;
+                font-size: 14px;
+                font-weight: 700;
+                color: #14A7FF;
+  
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+        
+        .results {
+          overflow: auto;
+
+          .userResult {
+            font-size: 15px;
+            font-family: var(--font);
+
+            .profilePic {
+              position: relative;
+              top: 0;
+              width: 30px;
+              height: 35px;
+            }
+          }
+
+          .tagResult {
+            height: fit-content;
+          }
+          
+          li {
+            display: flex;
+            margin-top: 10px;
+            justify-content: space-between;
+            
+            a {
+              padding: 5px 15px 3px 8px;
+              display: inline-block;
+              color: black;
+  
+              p {
+                font-size: 12px;
+              }
+            }
+  
+            form {
+              button {
+                margin-top: 8px;
+                margin-right: 30px;
+                font-size: 14px;
+                font-weight: 700;
+                color: #14A7FF;
+  
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

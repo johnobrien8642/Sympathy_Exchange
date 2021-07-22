@@ -1,0 +1,175 @@
+.loginForm, .registerForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 325px;
+  margin: auto;
+  margin-top: 150px;
+  margin-bottom: 200px;
+  font-family: 'Noto Sans JP', sans-serif;
+  color: var(--mid-gray);
+
+  .authErrors {
+
+    li {
+      text-align: center;
+      color: white;
+    }
+  }
+
+  .profilePicPreview {
+    
+    .previewImg {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+      margin-bottom: 15px;
+      overflow: hidden;
+
+      .removeProPicBtn {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        top: 16px;
+        left: 269px;
+        background-color: red;
+      }
+
+      img {
+        display: block;
+        margin: auto;
+        object-fit: contain;
+      }
+    }
+
+    .profilePicFileInputCustomLabel {
+      display: block;
+      margin: auto;
+      margin-bottom: 15px;
+      position: relative;
+      border-radius: 5px;
+      background-color: var(--light-gray);
+      height: 200px;
+      width: 200px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      div {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        top: 50%;
+        transform: translateY(-50%);
+        
+        img {
+          display: block;
+          margin: auto;
+          width: 70px;
+          filter: grayscale(100%);
+          opacity: .7;
+        }
+
+        span {
+          display: block;
+          margin: auto;
+        }
+      }
+
+      #profilePicFileInput {
+        display: none;
+      }
+    }
+  }
+
+  .greetingHeader {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-content: center;
+    
+    
+    h1 {
+      font-weight: 900;
+      font-size: 70px;
+      filter: contrast(500%);
+      color: white;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: 700;
+      color: rgb(255, 255, 255, 0.8);
+    }
+
+    a {
+      color: black;
+      background-color: gray;
+      width: fit-content;
+      border-radius: 5px;
+      padding: 3px 8px 5px 8px;
+      margin: 25px 0 15px 0;
+      transform: translate(37%);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    font-size: 16px;
+    border-radius: 5px;
+
+    input {
+      color: black;
+      background-color: white;
+      height: 45px;
+      width: 300px;
+      margin: 10px 0 10px 0;
+      font-size: inherit;
+      padding-left: 7px;
+      border-radius: inherit;
+    }
+
+    textarea {
+      background-color: white;
+      font-size: inherit;
+      padding-top: 11px;
+      padding-left: 5px;
+      height: 60px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: inherit;
+      font-family: inherit;
+    }
+
+    button {
+      background-color: blue;
+      height: 45px;
+      width: 307px;
+      margin-top: 8px;
+      border-radius: inherit;
+      font-weight: bold;
+      font-size: inherit;
+      box-shadow: -1px -1px 35px -6px black;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    a {
+      margin: auto;
+      margin-top: 8px;
+      color: white;
+    }
+  }
+}
