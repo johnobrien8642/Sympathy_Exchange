@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import graphql, { GraphQLList } from 'graphql';
 import UserType from '../../user_type.js';
-import AnyPostType from '../../../unions/any_post_type.js';
+import PleaOrVariantType from '../../../unions/plea_or_variant_type.js';
 import RepostCaptionType from '../util/repost_caption_type.js';
 import { GraphQLJSONObject } from 'graphql-type-json';
 const Repost = mongoose.model('Repost');
@@ -21,7 +21,7 @@ const RepostType = new GraphQLObjectType({
       }
     },
     post: {
-      type: AnyPostType,
+      type: PleaOrVariantType,
       resolve(parentValue) {
         return Repost.findById(parentValue._id)
         .populate('post')

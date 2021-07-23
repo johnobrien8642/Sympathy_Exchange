@@ -10,10 +10,6 @@ import mailer from './routes/api/mailer.js';
 import CronUtil from './cron/cron_util.js'
 import { expressCspHeader, SELF } from 'express-csp-header';
 import cors from 'cors';
-const { cronTagFollowerHeat,
-        cronPostNotesHeat,
-        cronTagPostHeat,
-        cronUserPostingHeat } = CronUtil;
 global.__dirname = path.resolve('./')
 const app = express();
 
@@ -36,12 +32,6 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
   })
 }
-
-cronTagFollowerHeat.start()
-cronTagPostHeat.start()
-cronPostNotesHeat.start()
-cronUserPostingHeat.start()
-
   
 app.use(express.json({ limit: '50mb' }))
 app.use('/api/posts', posts);

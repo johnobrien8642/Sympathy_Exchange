@@ -1,7 +1,7 @@
 import graphql, { GraphQLInt } from 'graphql';
 import mongoose from 'mongoose';
 import PhotoPostType from '../types/photo_post_type.js';
-import AnyPostType from '../../../unions/any_post_type.js'
+import PleaOrVariantType from '../../../unions/plea_or_variant_type.js'
 import UserType from '../../user_type.js';
 const Mention = mongoose.model('Mention');
 const { GraphQLObjectType, GraphQLList,
@@ -28,7 +28,7 @@ const MentionType = new GraphQLObjectType({
       }
     },
     post: {
-      type: AnyPostType,
+      type: PleaOrVariantType,
       resolve(parentValue) {
         return Mention.findById(parentValue._id)
         .populate('post')

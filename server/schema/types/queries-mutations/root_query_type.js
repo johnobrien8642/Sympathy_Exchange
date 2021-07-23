@@ -8,7 +8,7 @@ import ImageType from '../objects/posts/util/image_type.js';
 import TagType from '../objects/posts/util/tag_type.js';
 import UserAndTagType from '../unions/user_and_tag_type.js';
 import UserAndTagInputType from '../inputs/user_and_tag_input_type.js'
-import AnyPostType from '../unions/any_post_type.js'
+import PleaOrVariantType from '../unions/plea_or_variant_type.js'
 import AnyActivityType from '../unions/any_activity_type.js'
 import LikeRepostAndCommentType from '../unions/like_repost_and_comment_type.js'
 import LikeType from '../objects/posts/util/like_type.js'
@@ -230,7 +230,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     fetchUserFeed: {
-      type: new GraphQLList(AnyPostType),
+      type: new GraphQLList(PleaOrVariantType),
       args: { 
         query: { type: GraphQLString },
         cursorId: { type: GraphQLString }
@@ -311,7 +311,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     fetchTagFeed: {
-      type: new GraphQLList(AnyPostType),
+      type: new GraphQLList(PleaOrVariantType),
       args: { 
         query: { type: GraphQLString },
         cursorId: { type: GraphQLString }
@@ -681,7 +681,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     fetchUserBlogFeed: {
-      type: GraphQLList(AnyPostType),
+      type: GraphQLList(PleaOrVariantType),
       args: {
         query: { type: GraphQLString }
       },
@@ -765,7 +765,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     fetchDiscoverFeed: {
-      type: GraphQLList(AnyPostType),
+      type: GraphQLList(PleaOrVariantType),
       args: { query: { type: GraphQLString } },
       resolve(parentValue, { query }) {
         return User
@@ -850,7 +850,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     fetchPostRadar: {
-      type: AnyPostType,
+      type: PleaOrVariantType,
       args: {
         query: { type: GraphQLString }
       },
@@ -1025,7 +1025,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     post: {
-      type: AnyPostType,
+      type: PleaOrVariantType,
       args: {
         query: { type: GraphQLID }
       },

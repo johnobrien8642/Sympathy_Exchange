@@ -9,10 +9,10 @@ import AudioPostType from '../objects/posts/types/audio_post_type.js';
 import VideoPostType from '../objects/posts/types/video_post_type.js';
 const { GraphQLUnionType } = graphql;
 
-const AnyPostType = new GraphQLUnionType({
-  name: 'AnyPostType',
+const PleaOrVariantType = new GraphQLUnionType({
+  name: 'PleaOrVariantType',
   types: () => [ 
-    RepostType, TextPostType, 
+    RepostType, TextPostType,
     PhotoPostType, QuotePostType,
     LinkPostType, ChatPostType,
     AudioPostType, VideoPostType
@@ -38,4 +38,4 @@ const AnyPostType = new GraphQLUnionType({
   }
 })
 
-export default AnyPostType;
+export default PleaOrVariantType;

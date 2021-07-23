@@ -8,17 +8,22 @@ const Mutations = {
       loginUser(email: $email, password: $password) {
         token
         loggedIn
-        blogName
+        username
       }
     }
   `,
   REGISTER_USER: gql`
-    mutation RegisterUser($instanceData: JSONObject) {
-      registerUser(instanceData: $instanceData) {
+    mutation RegisterUser($registerUserInputData: RegisterUserInputType) {
+      registerUser(registerUserInputData: $registerUserInputData) {
         token
         loggedIn
-        blogName
+        username
       }
+    }
+  `,
+  GENERATE_USERNAME: gql`
+    mutation GenerateUsername {
+      generateUsername
     }
   `,
   VERIFY_USER: gql`
@@ -33,7 +38,7 @@ const Mutations = {
       logoutUser(token: $token) {
         token
         loggedIn
-        blogName
+        username
       }
     }
   `,
@@ -97,7 +102,7 @@ const Mutations = {
         kind
         user {
           _id
-          blogName
+          username
           profilePic {
             _id
             src
@@ -108,7 +113,7 @@ const Mutations = {
           caption
           user {
             _id
-            blogName
+            username
           }
           repost {
             _id
@@ -116,7 +121,7 @@ const Mutations = {
         }
         repostedFrom {
           _id
-          blogName
+          username
           kind
         }
         post {
@@ -153,7 +158,7 @@ const Mutations = {
         content
         user {
           _id
-          blogName
+          username
         }
       }
     }
@@ -181,7 +186,7 @@ const Mutations = {
       updateUserEmail(email: $email, password: $password, user: $user) {
         _id
         email
-        blogName
+        username
       }
     }
   `,
@@ -190,7 +195,7 @@ const Mutations = {
       updateUserBlogDescription(blogDescription: $blogDescription, password: $password, user: $user) {
         _id
         email
-        blogName
+        username
         blogDescription
       }
     }
@@ -200,7 +205,7 @@ const Mutations = {
       updateUserPassword(currentPW: $currentPW, newPassword: $newPassword, user: $user) {
         _id
         email
-        blogName
+        username
       }
     }
   `,

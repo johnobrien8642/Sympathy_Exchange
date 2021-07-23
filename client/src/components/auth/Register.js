@@ -1,30 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useHistory, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
-import PhotoPostOrRegisterPhotoInput from '../posts/util/components/forms/inputTypes/Photo_Post_Or_Register_Photo_Input';
+import randomWords from 'random-words';
 
 import Queries from '../../graphql/queries';
 import Mutations from '../../graphql/mutations';
-import PostFormUtil from '../posts/util/functions/post_form_util.js';
-const { REGISTER_USER } = Mutations;
+const { REGISTER_USER, GENERATE_USERNAME } = Mutations;
 const { IS_LOGGED_IN } = Queries;
-const { mainPost, 
-        handleFormData } = PostFormUtil;
-
 
 const Register = () => {
-  let previewProfilePicRef = useRef({});
-  let [profileImageFile, setProfileImageFile] = useState([]);
   let [email, setEmail] = useState('');
-  let [blogName, setBlogName] = useState('');
+  let [username, setUsername] = useState(randomWords(3).join('_'));
   let [blogDescription, setBlogDescription] = useState('');
   let [password, setPassword] = useState('');
   let [errorMessages, addErrorMessage] = useState([]);
   let history = useHistory();
 
   const [ registerUser ] = useMutation(REGISTER_USER, {
+    update(client, { data }) {
+      client.writeQuery({
+        query: IS_LOGGED_IN,
+        data: {
+          isLoggedIn: data.registerUser.loggedIn,
+        }
+      })
+    },
     onError(error) {
       if(error.message === 'Account already exists with that email') {
         history.push({
@@ -41,52 +42,39 @@ const Register = () => {
       }
     },
     onCompleted({ registerUser }) {
-      const { token, blogName } = registerUser;
+      const { token, username } = registerUser;
       Cookies.set('auth-token', token)
-      Cookies.set('currentUser', blogName)
+      Cookies.set('currentUser', username)
       resetInputs();
-      window.location.reload();
-    },
-    update(client, { data }) {
-      client.writeQuery({
-        query: IS_LOGGED_IN,
-        data: {
-          isLoggedIn: data.registerUser.loggedIn,
-        }
-      })
+    }
+  })
+
+  const [ generateUsername ] = useMutation(GENERATE_USERNAME, {
+    onCompleted({ generateUsername }) {
+      setUsername(generateUsername)
     }
   })
 
   const resetInputs = () => {
     setEmail(email = '');
-    setBlogName(blogName = '');
+    setUsername(username = '');
     setPassword(password = '');
     addErrorMessage(errorMessages = []);
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    var mainImageFormData = handleFormData(profileImageFile)
-
-    Promise.all([
-      mainPost(mainImageFormData)
-    ])
-    .then(([mainUpload]) => {
       
-      var instanceData = {
-        profilePicId: mainUpload[0] ? mainUpload[0]._id : null,
-        email: email, 
-        blogName: blogName,
-        password: password,
-        blogDescription: blogDescription
+    var instanceData = {
+      email: email,
+      username: username,
+      password: password,
+      blogDescription: blogDescription
+    }
+    registerUser({
+      variables: {
+        instanceData: instanceData
       }
-
-      registerUser({ 
-        variables: {
-          instanceData: instanceData
-        }
-      })
     })
   }
 
@@ -97,7 +85,13 @@ const Register = () => {
       <div
         className='greetingHeader'
       >
-        <h1>Rumblr</h1>
+        <h1>Sympathy Exchange</h1>
+        <p>
+          Welcome to Sympathy Exchange, thank you for deciding to become
+          a contributor. Here at Sympathy Exchange we're trying to figure
+          out just how much sympathy you're supposed to be getting for 
+          whatever it is that you're going through.
+        </p>
       </div>
 
         <form
@@ -106,11 +100,51 @@ const Register = () => {
           }}
         >
 
-        <PhotoPostOrRegisterPhotoInput 
-          register={true}
-          previewProfilePicRef={previewProfilePicRef}
-          profileImageFile={profileImageFile}
-          setProfileImageFile={setProfileImageFile}
+        <p
+          className='formParagraph'
+        >
+          At Sympathy Exchange all usernames are random and anonymous. 
+          We pick them for you. You can always try to choose a different
+          username later on if for some reason this random one stops
+          doing it for you.
+        </p>
+
+        <input
+          type='text'
+          disabled
+          value={username}
+        />
+
+        <button
+          onClick={e => {
+            e.preventDefault();
+            generateUsername();
+          }}       
+        >
+          Generate another username
+        </button>
+
+        <p
+          className='formParagraph'
+        >
+          We send you an authorization email after sign up. <strong>You must
+          go to your email and authorize your account before you're
+          allowed to make any new Pleas or Variants.</strong> Also if you ever 
+          forget your password we can send you a reset link.
+        </p>
+
+        <input
+          type='text'
+          value={email}
+          placeholder={'Email'}
+          onChange={e => setEmail(email = e.target.value)}
+        />
+
+        <input
+          type='password'
+          value={password}
+          placeholder={'Password'}
+          onChange={e => setPassword(password = e.target.value)}
         />
 
         <ul
@@ -121,38 +155,7 @@ const Register = () => {
           })}
         </ul>
 
-        <input
-          type='text'
-          value={email}
-          placeholder={'Email'}
-          onChange={e => setEmail(email = e.target.value)}
-        />
-        <input
-          type='text'
-          value={blogName}
-          placeholder={'Blog Name'}
-          onChange={e => setBlogName(blogName = e.target.value)}
-        />
-        <textarea
-          value={blogDescription}
-          placeholder={'Blog description'}
-          onChange={e => {
-            if (blogDescription.length < 150) {
-              setBlogDescription(blogDescription = e.target.value)
-            } 
-          }}
-        ></textarea>
-        <span>{150 - blogDescription.length} characters left</span>
-        
-
-        <input
-          type='password'
-          value={password}
-          placeholder={'Password'}
-          onChange={e => setPassword(password = e.target.value)}
-        />
-
-        <button 
+        <button
           type='submit'
         >
           Sign up

@@ -7,11 +7,13 @@ import aws from 'aws-sdk';
 import keys from '../../../config/keys.js'
 import UserType from '../objects/user_type.js';
 import AuthService from '../../../services/auth_util.js';
+
 import RepostType from '../objects/posts/util/repost_type.js';
 import LikeType from '../objects/posts/util/like_type.js';
 import FollowType from '../objects/posts/util/follow_type.js';
+import RegisterUserInputType from '../inputs/register_user_input_type.js';
 import CommentType from '../objects/posts/util/comment_type.js';
-import AnyPostType from '../unions/any_post_type.js';
+import PleaOrVariantType from '../unions/plea_or_variant_type.js';
 import UserAndTagType from '../unions/user_and_tag_type.js';
 import RepostCaptionType from '../objects/posts/util/repost_caption_type.js'
 import RepostOrRepostCaptionType from '../unions/repost_or_repost_caption_type.js';
@@ -47,13 +49,19 @@ const mutation = new GraphQLObjectType({
     registerUser: {
       type: UserType,
       args: {
-        instanceData: { type: GraphQLJSONObject }
+        registerUserInputData: { type: RegisterUserInputType }
       },
-      resolve(_, { instanceData }, ctx) {
+      resolve(_, { registerUserInputData }, ctx) {
         return AuthService.register(instanceData, ctx).then(res => {
           ctx.headers.authorization = JSON.stringify(res.token)
           return res
         })
+      }
+    },
+    generateUsername: {
+      type: GraphQLString,
+      resolve() {
+        return AuthService.generateRandomUsername()
       }
     },
     logoutUser: {
@@ -85,7 +93,7 @@ const mutation = new GraphQLObjectType({
       }
     },
     createOrUpdatePost: {
-      type: AnyPostType,
+      type: PleaOrVariantType,
       args: {
         instanceData: { type: GraphQLJSONObject },
       },

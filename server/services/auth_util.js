@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import keys from '../../config/keys.js';
 import Cookies from 'js-cookie';
+import randomWords from 'random-words';
 import validateRegisterInput from '../validations/register.js';
 import validateLoginInput from '../validations/login.js';
 import bcrypt from 'bcryptjs';
@@ -15,19 +16,7 @@ const register = async (data, ctx) => {
   if (!isValid) {
     throw new Error(message)
   }
-  const { profilePicId, blogName, blogDescription, email, password } = data;
-
-  const notUniqBlogName = await User.findOne({ blogName })
-  
-  const existingUser = await User.findOne({ email })
-
-  if (notUniqBlogName) {
-    throw new Error('Blog Name already taken')
-  }
-
-  if (existingUser) {
-    throw new Error('Account already exists with that email')
-  }
+  const { username, email, password } = data;
   
   const hashedPW = await bcrypt.hash(password, 10)
 
@@ -39,13 +28,11 @@ const register = async (data, ctx) => {
 
   const user = new User(
     {
-    profilePic: profilePicId ? profilePicId : null,
-    blogName: blogName,
-    blogDescription: blogDescription,
-    email: email,
-    password: hashedPW,
-    oldPasswords: [hashedPW],
-    emailAuthToken: emailAuthToken //Uncomment for email auth
+      username: username,
+      email: email,
+      password: hashedPW,
+      oldPasswords: [hashedPW],
+      emailAuthToken: emailAuthToken //Uncomment for email auth
     },
     err => {
       if (err) throw err;
@@ -56,7 +43,7 @@ const register = async (data, ctx) => {
   
   //Comment this for email auth
   // return user.save().then(user => {
-  //   return { token, loggedIn: true, ...user._doc, ...user.blogName}
+  //   return { token, loggedIn: true, ...user._doc, ...user.username}
   // })
 
   ////Uncomment for email auth, scroll to top, uncomment sendAuthEmail import
@@ -70,6 +57,22 @@ const register = async (data, ctx) => {
   } catch (err) {
     throw err;
   }
+}
+
+const generateRandomUsername = async () => {
+  let unique = false
+  var randomUsername, username
+
+  while (!unique) {
+    randomUsername = randomWords(3).join('_')
+    username = await User.findOne({ username: randomUsername })
+    
+    if (!username) {
+      unique = true
+    };
+  };
+  
+  return randomUsername
 }
 
 const logout = async data => {
@@ -102,10 +105,10 @@ const login = async data => {
     }
 
     if (bcrypt.compareSync(password, user.password)) {
-      Cookies.set('currentUser', user.blogName)
+      Cookies.set('currentUser', user.username)
       const token = jwt.sign({ _id: user._id }, keys.secretOrKey)
       Cookies.set('auth-token', token)
-      return { token, loggedIn: true, ...user._doc, ...user.blogName}
+      return { token, loggedIn: true, ...user._doc, ...user.username}
     } else {
       throw new Error('Password is incorrect')
     }
@@ -135,4 +138,4 @@ const verify = async data => {
   }
 }
 
-export default { register, logout, login, verify };
+export default { register, generateRandomUsername, logout, login, verify };

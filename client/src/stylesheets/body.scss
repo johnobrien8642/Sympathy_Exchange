@@ -1,6 +1,9 @@
 :root {
-  --off-white: #ECECEC;
-  --tumblr-deep-blue: #011328;
+  --off-white: #FCFCFC;
+  --off-black-font-color: #313131;
+  --faint-gold: #E7CA96;
+  --burnt-gold: #D5BF43;
+  --candy-red: #F12828;
   --tumblr-deep-blue-modal: rgb(1, 19, 40, .95);
   --tumblr-lighter-blue: rgb(1, 19, 40, .7);
   --tumblr-translucent-blue: #0F1E33;
@@ -28,7 +31,7 @@ html {
 }
 
 body {
-  background-color: var(--tumblr-deep-blue);
+  background-color: var(--off-white);
   margin: 0 auto;
 
   .mention {

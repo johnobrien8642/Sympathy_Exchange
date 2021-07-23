@@ -1,10 +1,10 @@
 .browserNav {
   position: fixed;
   display: block;
-  background-color: var(--tumblr-deep-blue);
+  background-color: var(--faint-gold);
   width: 100%;
   height: 60px;
-  border-bottom: 0.5px solid #1A283E;
+  border-bottom: 0.5px solid #E7CA96;
   font-family: 'Noto Sans JP', sans-serif;
   top: 0px;
   z-index: 97;
@@ -198,9 +198,9 @@
 
     .login {
       color: black;
-      background-color: #1bca2a;
+      background-color: var(--burnt-gold);
       padding: 5px 18px 8px 18px;
-      box-shadow: 0px 1px 9px 2px black;
+      border: 1px solid var(--burnt-gold);
       font-weight: bold;
       border-radius: 5px;
       white-space: nowrap;
@@ -212,12 +212,12 @@
 
     .register {
       color: black;
-      background-color: #14a9ff;
+      background-color: var(--candy-red);
       padding: 5px 18px 8px 18px;
       margin-left: 15px;
       margin-right: 20px;
       font-weight: bold;
-      box-shadow: 0px 1px 9px 2px black;
+      border: 1px solid var(--candy-red);
       border-radius: 5px;
       white-space: nowrap;
     

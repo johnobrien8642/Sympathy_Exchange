@@ -210,29 +210,6 @@ if (token) {
     })
 }
 
-setInterval(() => {
-
-  if (Cookies.get('auth-token')) {
-    client
-      .mutate({ mutation: LOGOUT_USER, variables: { token: token } })
-      .then(({ data }) => {
-
-        client.writeQuery({
-          query: IS_LOGGED_IN,
-          data: {
-            isLoggedIN: data.logoutUser.loggedIn
-          }
-        })
-
-        Cookies.set('auth-token', '')
-        Cookies.set('currentUser', '')
-
-        alert("This clone logs you out automatically after two hours. If you'd like to continue checking out Rumblr simply log back in.")
-      })
-  }
-
-}, 1000*60*60*2)
-
 const Root = () => {
   return (
     <ApolloProvider client={client}>

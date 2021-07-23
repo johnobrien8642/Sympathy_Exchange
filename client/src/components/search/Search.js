@@ -74,7 +74,7 @@ const Search = ({
           className='searchBarInput'
           type='text'
           value={input}
-          placeholder={'Search Rumblr'}
+          placeholder={'How are you suffering?'}
           onClick={() => {
             var el = document.querySelector('.searchIcon')
             el.style.opacity = '1'
@@ -123,7 +123,7 @@ const Search = ({
           className='searchBarInput'
           type='text'
           value={input}
-          placeholder={'Search Rumblr'}
+          placeholder={'How are you suffering?'}
           onClick={() => {
             var el = document.querySelector('.searchIcon')
             el.style.opacity = '1'

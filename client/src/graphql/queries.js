@@ -12,18 +12,14 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           repostTrail {
             _id
             caption
             user {
               _id
-              blogName
+              username
             }
             repost {
               _id
@@ -31,7 +27,7 @@ const Queries = {
           }
           repostedFrom {
             _id
-            blogName
+            username
             kind
           }
           post {
@@ -58,7 +54,7 @@ const Queries = {
         kind
         user {
           _id
-          blogName
+          username
         }
         post {
           __typename
@@ -83,8 +79,7 @@ const Queries = {
           __typename
           ... on UserType {
             _id
-            blogName
-            blogDescription
+            username
             kind
           }
         }
@@ -97,8 +92,7 @@ const Queries = {
         _id
         user {
           _id
-          blogName
-          blogDescription
+          username
         }
       }
     }
@@ -123,18 +117,14 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           repostTrail {
             _id
             caption
             user {
               _id
-              blogName
+              username
             }
             repost {
               _id
@@ -142,7 +132,7 @@ const Queries = {
           }
           repostedFrom {
             _id
-            blogName
+            username
             kind
           }
           post {
@@ -158,19 +148,8 @@ const Queries = {
     query FetchUserDetailsCounts($query: String) {
       user(query: $query) {
         _id
-        blogName
-        blogDescription
+        username
         email
-        filteredTags
-        filteredPostContent
-        userFollowCount
-        totalLikeCount
-        followersCount
-        userPostsCount
-        profilePic {
-          _id
-          src
-        }
       }
     }
   `,
@@ -178,18 +157,7 @@ const Queries = {
     query fetchUserDetails($query: String) {
       user(query: $query) {
         _id
-        blogname
-        userFollows {
-          _id
-          blogName
-        }
-        postLikes {
-          _id
-          post {
-            __typename
-            ${ALL_POSTS}
-          }
-        }
+        username
       }
     }
   `,
@@ -210,8 +178,7 @@ const Queries = {
         __typename
         ... on UserType {
           _id
-          blogName
-          blogDescription
+          username
           email
           kind
         }
@@ -240,18 +207,18 @@ const Queries = {
           kind
           user {
             _id
-            blogName
+            username
           }
           repostedFrom {
             _id
-            blogName
+            username
           }
           repostTrail {
             _id
             caption
             user {
               _id
-              blogName
+              username
             }
             repost {
               _id
@@ -286,11 +253,7 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
         }
         ... on RepostType {
@@ -298,15 +261,11 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           repostedFrom {
             _id
-            blogName
+            username
           }
           repostTrail {
             _id
@@ -325,11 +284,7 @@ const Queries = {
           content
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
         }
       }
@@ -344,11 +299,7 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           post {
             __typename
@@ -389,15 +340,11 @@ const Queries = {
           }
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           repostedFrom {
             _id
-            blogName
+            username
           }
           post {
             __typename
@@ -411,11 +358,7 @@ const Queries = {
           content
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           post {
             __typename
@@ -424,7 +367,7 @@ const Queries = {
               kind
               user {
                 _id
-                blogName
+                username
               }
               post {
                 __typename
@@ -441,11 +384,7 @@ const Queries = {
           content
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           post {
             __typename
@@ -466,11 +405,7 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           follows {
             __typename
@@ -479,7 +414,7 @@ const Queries = {
             }
             ... on UserType {
               _id
-              blogName
+              username
             }
           }
           createdAt
@@ -489,11 +424,7 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           post {
             __typename
@@ -521,8 +452,7 @@ const Queries = {
     query FetchUsersForMentions($filter: String) {
       fetchUsersForMentions(filter: $filter) {
         _id
-        blogName
-        blogDescription
+        username
       }
     }
   `,
@@ -544,18 +474,14 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           repostTrail {
             _id
             caption
             user {
               _id
-              blogName
+              username
             }
             repost {
               _id
@@ -563,7 +489,7 @@ const Queries = {
           }
           repostedFrom {
             _id
-            blogName
+            username
             kind
           }
           post {
@@ -605,30 +531,12 @@ const Queries = {
     query fetchUser($query: String) {
       user(query: $query) {
         _id
-        blogName
-        blogDescription
-        filteredTags
-        filteredPostContent
+        username
         email
-        totalLikeCount
-        userFollowCount
-        userPostsCount
-        followersCount
-        profilePic {
-          _id
-          src
-          key
-          kind
-        }
         tagFollows {
           _id
           title
           postHeatLastWeek
-        }
-        userFollows {
-          _id
-          blogName
-          blogDescription
         }
         kind
       }
@@ -643,18 +551,14 @@ const Queries = {
           kind
           user {
             _id
-            blogName
-            profilePic {
-              _id
-              src
-            }
+            username
           }
           repostTrail {
             _id
             caption
             user {
               _id
-              blogName
+              username
             }
             repost {
               _id
@@ -662,7 +566,7 @@ const Queries = {
           }
           repostedFrom {
             _id
-            blogName
+            username
             kind
           }
           post {
@@ -671,19 +575,6 @@ const Queries = {
           }
         }
         ${ALL_POSTS}
-      }
-    }
-  `,
-  FETCH_CHECK_OUT_THESE_BLOGS: gql`
-    query FetchCheckOutTheseBlogs($query: String) {
-      fetchCheckOutTheseBlogs(query: $query) {
-        _id
-        blogName
-        blogDescription
-        profilePic {
-          _id
-          src
-        }
       }
     }
   `,

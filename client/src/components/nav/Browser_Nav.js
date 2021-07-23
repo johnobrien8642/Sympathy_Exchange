@@ -33,10 +33,7 @@ const BrowserNav = ({
             <Link
               to='/dashboard'
             >
-              <img 
-                src="https://img.icons8.com/fluent-systems-filled/64/ffffff/r.png"
-                alt=''  
-              />
+              SE
             </Link>
           </div>
             <Search
@@ -201,10 +198,7 @@ const BrowserNav = ({
           <div
             className='logo'
           >
-            <img
-              src="https://img.icons8.com/fluent-systems-filled/48/ffffff/r.png"
-              alt=''  
-            />
+            SE
           </div>
           <Search />
         </div>

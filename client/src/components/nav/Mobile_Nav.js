@@ -109,8 +109,8 @@ const MobileNav = ({
             className='logo'
           >
             <img
-              src="https://img.icons8.com/fluent-systems-filled/48/ffffff/r.png"
-              alt=''  
+              alt='sympathy man icon'
+              src='../'
             />
           </div>
           <Search />

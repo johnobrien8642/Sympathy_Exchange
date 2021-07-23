@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import graphql from 'graphql';
-import AnyPostType from '../../../unions/any_post_type.js';
+import AnyPostType from '../../../unions/plea_or_variant_type.js';
 import UserType from '../../user_type.js';
 const Like = mongoose.model('Like');
 const { GraphQLID, GraphQLObjectType, 
