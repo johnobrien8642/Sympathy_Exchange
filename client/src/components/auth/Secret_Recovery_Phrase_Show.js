@@ -68,7 +68,7 @@ const SecretRecoveryPhraseShow = () => {
       <div
         className='phraseContainer'
       >
-        <div 
+        <div
           tabIndex={-1}
           className={showPhrase ? 'phraseHider hidden' : 'phraseHider'}
           onClick={() => {

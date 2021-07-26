@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation, useApolloClient } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useHistory, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import randomWords from 'random-words';
@@ -7,7 +7,7 @@ import randomWords from 'random-words';
 import Queries from '../../graphql/queries';
 import Mutations from '../../graphql/mutations';
 const { REGISTER_USER, GENERATE_USERNAME } = Mutations;
-const { IS_LOGGED_IN, FETCH_USER, CURRENT_USER } = Queries;
+const { IS_LOGGED_IN } = Queries;
 
 const Register = ({
   setCurrentUser

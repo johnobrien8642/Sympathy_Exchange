@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useEffect, useState, useRef } from 'react';
 
 import SearchDropDown from './resultTypes/SearchDropDown';
-
-import Queries from '../../graphql/queries';
-const { IS_LOGGED_IN } = Queries;
 
 const Search = ({
   searchClose,
   closeSearch,
-  activityOpen,
   setActivityOpen,
-  detailsOpen,
   setDetailsOpen,
-  searchOpen,
   openSearch,
   mobile,
   user
@@ -21,30 +14,30 @@ const Search = ({
   let [input, setInput] = useState('');
   let [followedActive, setFollowedActive] = useState(mobile ? true : false)
   let [active, setActive] = useState(false);
+  let searchIconImgRef = useRef(null);
   
   useEffect(() => {
     if (searchClose) {
       //eslint-disable-next-line
-      setFollowedActive(active = false)
+      setFollowedActive(false)
       //eslint-disable-next-line
-      closeSearch(searchClose = false)
+      closeSearch(false)
     }
-  }, [searchClose, mobile, searchOpen])
+  }, [searchClose, setFollowedActive, closeSearch])
 
   const onBlur = (e) => {
     if (!e.relatedTarget) {
       if (mobile) {
-        openSearch(searchOpen = false)
+        openSearch(false)
       } else {
-        setActive(active = false)
-        setFollowedActive(followedActive = false)
+        setActive(false)
+        setFollowedActive(false)
       }
     }
   }
 
-  const { data } = useQuery(IS_LOGGED_IN);
 
-  if (data.isLoggedIn) {
+  if (user) {
     return (
       <div
         className='searchBar'
@@ -55,20 +48,21 @@ const Search = ({
             !e.relatedTarget || 
             e.relatedTarget.localName === 'a'
           ) {
-            setFollowedActive(followedActive = true)
+            setFollowedActive(true)
 
             if (!mobile) {
-              setActivityOpen(activityOpen = false)
-              setDetailsOpen(detailsOpen = false)
+              setActivityOpen(false)
+              setDetailsOpen(false)
             }
           }
         }}
       >
         <img
           className='searchIcon'
-          src="https://img.icons8.com/material-rounded/24/000000/search.png"
-          alt=''
+          alt='sympathy man icon'
+          src='./assets/search_icon.png'
           style={{opacity: .3}}
+          ref={searchIconImgRef}
         />
         <input
           className='searchBarInput'
@@ -76,25 +70,28 @@ const Search = ({
           value={input}
           placeholder={'How are you suffering?'}
           onClick={() => {
-            var el = document.querySelector('.searchIcon')
-            el.style.opacity = '1'
+            // var el = document.querySelector('.searchIcon')
+            // el.style.opacity = '1'
+            searchIconImgRef.current.style.opacity = '1'
+            
             if (!mobile) {
-              setDetailsOpen(detailsOpen = false)
-              setActivityOpen(activityOpen = false)
+              setDetailsOpen(false)
+              setActivityOpen(false)
             }
           }}
           onBlur={() => {
-            var el = document.querySelector('.searchIcon')
-            el.style.opacity = '.3'
+            // var el = document.querySelector('.searchIcon')
+            // el.style.opacity = '.3'
+            searchIconImgRef.current.style.opacity = '.3'
           }}
           onChange={e => {
               if (e.target.value === "") {
-                setInput(input = e.target.value)
-                setFollowedActive(followedActive = true)
+                setInput(e.target.value)
+                setFollowedActive(true)
               } else {
-                setInput(input = e.target.value)
-                setFollowedActive(followedActive = false)
-                setActive(active = true)
+                setInput(e.target.value)
+                setFollowedActive(false)
+                setActive(true)
               }
           }}
         />
@@ -115,9 +112,10 @@ const Search = ({
       >
         <img
           className='searchIcon'
-          src="https://img.icons8.com/material-rounded/24/000000/search.png"
-          alt=''
+          alt='sympathy man icon'
+          src='./assets/search_icon.png'
           style={{opacity: .3}}
+          ref={searchIconImgRef}
         />
         <input
           className='searchBarInput'
@@ -125,14 +123,16 @@ const Search = ({
           value={input}
           placeholder={'How are you suffering?'}
           onClick={() => {
-            var el = document.querySelector('.searchIcon')
-            el.style.opacity = '1'
+            // var el = document.querySelector('.searchIcon')
+            // el.style.opacity = '1'
+            searchIconImgRef.current.style.opacity = '1'
           }}
           onBlur={() => {
-            var el = document.querySelector('.searchIcon')
-            el.style.opacity = '.3'
+            // var el = document.querySelector('.searchIcon')
+            // el.style.opacity = '.3'
+            searchIconImgRef.current.style.opacity = '.3'
           }}
-          onChange={e => setInput(input = e.target.value)}
+          onChange={e => setInput(e.target.value)}
         />
       </div>
     )

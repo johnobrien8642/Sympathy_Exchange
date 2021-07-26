@@ -4,8 +4,8 @@ const { ALL_POSTS } = AllPostQueryFragments;
 
 const Mutations = {
   LOGIN_USER: gql`
-    mutation LoginUser($email: String!, $password: String!) {
-      loginUser(email: $email, password: $password) {
+    mutation LoginUser($username: String!, $password: String!) {
+      loginUser(username: $username, password: $password) {
         _id
         token
         loggedIn
@@ -194,11 +194,10 @@ const Mutations = {
       }
     }
   `,
-  UPDATE_USER_EMAIL: gql`
-    mutation UpdateUserEmail($email: String, $password: String, $user: String) {
-      updateUserEmail(email: $email, password: $password, user: $user) {
+  UPDATE_USERNAME: gql`
+    mutation UpdateUsername($username: String, $password: String, $user: String) {
+      updateUsername(username: $username, password: $password, user: $user) {
         _id
-        email
         username
       }
     }
@@ -207,9 +206,7 @@ const Mutations = {
     mutation UpdateUserBlogDescription($blogDescription: String, $password: String, $user: String) {
       updateUserBlogDescription(blogDescription: $blogDescription, password: $password, user: $user) {
         _id
-        email
         username
-        blogDescription
       }
     }
   `,

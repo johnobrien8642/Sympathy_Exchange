@@ -6,10 +6,10 @@ import Cookies from 'js-cookie';
 import Mutations from '../../graphql/mutations'
 import Queries from '../../graphql/queries'
 const { LOGIN_USER } = Mutations;
-const { IS_LOGGED_IN, FETCH_USER } = Queries;
+const { IS_LOGGED_IN } = Queries;
 
 const Login = ({
-  refetchUser
+  setCurrentUser
 }) => {
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
@@ -44,7 +44,8 @@ const Login = ({
       Cookies.set('auth-token', token)
       Cookies.set('currentUser', username)
       resetInputs();
-      refetchUser();
+      setCurrentUser(username)
+
       history.push('/');
     },
   })

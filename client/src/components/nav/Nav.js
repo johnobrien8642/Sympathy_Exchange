@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
-import Cookies from 'js-cookie';
 
 import BrowserNav from './Browser_Nav';
 import MobileNav from './Mobile_Nav';
@@ -10,12 +9,11 @@ const { IS_LOGGED_IN,
         FETCH_USER_DETAILS_COUNTS,
         FETCH_USER } = Queries;
 
-
 const Nav = ({
   currentUser
 }) => {
   let cursorId = useRef(new Date().getTime())
-  console.log(currentUser)
+  
   var { loading: loading1, 
         error: error1,
         data: userDetailsCounts, 
@@ -32,7 +30,7 @@ const Nav = ({
           variables: {
             query: currentUser
           },
-        fetchPolicy: 'cache-and-network'
+        // fetchPolicy: 'cache-and-network'
       })
 
     useEffect(() => {

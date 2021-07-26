@@ -10,8 +10,8 @@ const { FETCH_USER } = Queries;
 
 const SearchDropDown = ({
   user,
-  followedActive,
   input,
+  followedActive,
   active,
   setActive
 }) => {

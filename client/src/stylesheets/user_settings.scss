@@ -3,6 +3,7 @@
   width: 700px;
   margin: 120px auto;
   border-radius: 3px;
+  border: 1px solid var(--off-black-font-color);
 
   @media (max-width: 980px) {
     width: 100vw;

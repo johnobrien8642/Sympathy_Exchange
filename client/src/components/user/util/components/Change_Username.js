@@ -7,19 +7,20 @@ import UserSettingsUtil from '../functions/user_settings_util.js'
 import Queries from '../../../../graphql/queries.js';
 import Mutations from '../../../../graphql/mutations.js';
 const { FETCH_USER } = Queries;
-const { UPDATE_USER_EMAIL } = Mutations;
+const { UPDATE_USERNAME } = Mutations;
 const { updateCacheUpdateEmail } = UserSettingsUtil;
 
-const Email = ({
-  userEmail
+const ChangeUsername = ({
+  usernameProp
 }) => {
-  let emailRef = useRef(userEmail)
+  let emailRef = useRef(usernameProp)
   let [active, setActive] = useState(false);
-  let [email, setEmail] = useState('');
+  let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
   let [errorMessage, setError] = useState(null);
+  console.log(usernameProp)
 
-  let [updateUserEmail] = useMutation(UPDATE_USER_EMAIL, {
+  let [updateUserEmail] = useMutation(UPDATE_USERNAME, {
     update(client, { data }) {
       const { updateUserEmail } = data;
       var currentUser = Cookies.get('currentUser')
@@ -28,19 +29,19 @@ const Email = ({
       updateCacheUpdateEmail(client, updateUserEmail, currentUser, query)
     },
     onCompleted(data) {
-      emailRef.current = data.updateUserEmail.email
+      emailRef.current = data.updateUsername.username
       resetInputs()
-      setActive(active = false)
+      setActive(false)
     },
     onError(error) {
-      setError(errorMessage = error.message)
+      setError(error.message)
     }
   })
 
   const resetInputs = () => {
-    setEmail(email = '')
-    setPassword(password = '')
-    setError(errorMessage = '')
+    setUsername('')
+    setPassword('')
+    setError('')
   }
 
   if (active) {
@@ -48,36 +49,42 @@ const Email = ({
       <form
         className='upload'
         onSubmit={e => {
-          e.preventDefault()
+          e.preventDefault();
+
           updateUserEmail({
             variables: {
-              email: email,
+              username: username,
               password: password,
               user: Cookies.get('currentUser')
             }
-          })
+          });
         }}
       >
         <div
           className='inputAndBtnContainer'
         >
           <input
-            value={userEmail}
+            value={usernameProp}
             onChange={e => {
-              setEmail(email = e.target.value)
+              setUsername(e.target.value)
             }}
           />
+
           <p
             className='errMessage'
-          >{errorMessage ? `${errorMessage}` : ''}</p>
+          >
+            {errorMessage ? `${errorMessage}` : ''}
+          </p>
+
           <input
             type='password'
             placeholder='Confirm password'
             value={password}
             onChange={e => {
-              setPassword(password = e.target.value)
+              setPassword(e.target.value)
             }}
           />
+
           <div>
             <button
               className='cancel'
@@ -89,6 +96,7 @@ const Email = ({
             >
               Cancel
             </button>
+
             <button
               className='save'
               type='submit'
@@ -110,7 +118,7 @@ const Email = ({
           src="https://img.icons8.com/windows/64/000000/edit--v1.png"
           alt=''
           onClick={() => {
-            setActive(active = true)
+            setActive(true)
           }}
         />
       </div>
@@ -118,4 +126,4 @@ const Email = ({
   }
 }
 
-export default Email;
+export default ChangeUsername;

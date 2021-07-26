@@ -3,11 +3,9 @@ import { useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import EditProfilePic from './util/components/Edit_Profile_Pic';
-import Email from './util/components/Email';
-import BlogDescription from './util/components/Blog_Description';
-import Password from './util/components/Password';
-import Filtering from './util/components/Filtering';
+import ChangeUsername from './util/components/Change_Username';
+import ChangePassword from './util/components/Change_Password';
+import RevealSecretRecoveryPhrase from './util/components/Reveal_Secret_Recovery_Phrase';
 import DeleteMyAccount from './util/components/Delete_My_Account';
 
 import Queries from '../../graphql/queries.js';
@@ -40,37 +38,22 @@ const UserSettings = () => {
             history.push('/dashboard')
           }}
         >
-          <img
-            src="https://img.icons8.com/windows/64/000000/long-arrow-left.png"
-            alt=''
-          />
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+          </svg>
         </div>
+
         <h1>Account</h1>
-        <div
-          className='editProfilePic'
-        >
-          <h3
-            className='userSettingHeader'
-          >Profile Picture</h3>
-          <EditProfilePic user={user} />
-        </div>
 
         <div
           className='editEmail'
         >
           <h3
             className='userSettingHeader'
-          >Email</h3>
-          <Email userEmail={user.email} />
-        </div>
-
-        <div
-          className='editBlogDescription'
-        >
-          <h3
-            className='userSettingHeader'
-          >Blog Description</h3>
-          <BlogDescription userBlogDescription={user.blogDescription} />
+          >
+            Change username
+          </h3>
+          <ChangeUsername username={user.username} />
         </div>
 
         <div
@@ -78,17 +61,21 @@ const UserSettings = () => {
         >
           <h3
             className='userSettingHeader'
-          >Password</h3>
-          <Password user={user} />
+          >
+            Change password
+          </h3>
+          <ChangePassword user={user} />
         </div>
 
         <div
-          className='filtering'
+          className='revealSecretRecoveryPhrase'
         >
           <h3
             className='userSettingHeader'
-          >Filtering</h3>
-          <Filtering user={user} />
+          >
+            Reveal Secret Recovery Phrase
+          </h3>
+          <RevealSecretRecoveryPhrase />
         </div>
 
         <div

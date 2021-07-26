@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from '@apollo/client';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
@@ -17,13 +16,11 @@ import AccountRecovery from './auth/Account_Recovery';
 import UserSettings from './user/User_Settings';
 import Discover from './nav/Discover';
 import AuthRoute from '../util/route_util';
-import Queries from '../graphql/queries.js';
 // uncomment below for email auth welcome page
 // import WelcomePage from './auth/Welcome_Page';
 
 import 'react-h5-audio-player/lib/styles.css';
 import './../stylesheets/application.scss';
-const { FETCH_USER } = Queries;
 
 const App = () => {
   let [currentUser, setCurrentUser] = useState(Cookies.get('currentUser'));

@@ -53,6 +53,7 @@
           z-index: 2;
           top: 12px;
           left: 2px;
+          width: 1.5rem;
   
           &:hover {
             cursor: pointer;
@@ -73,7 +74,6 @@
           &:focus {
             opacity: 1;
           }
-
         }
 
         .searchDropDown {

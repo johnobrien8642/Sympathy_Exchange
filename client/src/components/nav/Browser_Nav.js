@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 
 import Search from '../search/Search';
 import UserDetails from './User_Details';
-import Activity from './Activity';
 import ActivityCountIcon from '../nav/Activity_Count_Icon';
 
 const BrowserNav = ({
@@ -33,16 +32,17 @@ const BrowserNav = ({
             <Link
               to='/dashboard'
             >
-              SE
+              <img
+                alt='sympathy man icon'
+                src='./assets/sympathy_man.png'
+              />
             </Link>
           </div>
             <Search
               user={user}
               searchClose={searchClose}
               closeSearch={closeSearch}
-              detailsOpen={detailsOpen}
               setDetailsOpen={setDetailsOpen}
-              activityOpen={activityOpen}
               setActivityOpen={setActivityOpen}
             />
         </div>
@@ -68,9 +68,9 @@ const BrowserNav = ({
                   document.querySelector('.userDetails').blur()
                 }
 
-                closeSearch(searchClose = true)
-                setActivityOpen(activityOpen = false)
-                setDetailsOpen(detailsOpen = false)
+                closeSearch(true)
+                setActivityOpen(false)
+                setDetailsOpen(false)
               }}
             >
               <img
@@ -86,9 +86,9 @@ const BrowserNav = ({
             <Link
               to='/discover'
               onClick={() => {
-                closeSearch(searchClose = true)
-                setActivityOpen(activityOpen = false)
-                setDetailsOpen(detailsOpen = false)
+                closeSearch(true)
+                setActivityOpen(false)
+                setDetailsOpen(false)
               }}
             >
               <img 
@@ -104,19 +104,19 @@ const BrowserNav = ({
             onClick={() => {
           
               if (activityOpen) {
-                setActivityOpen(activityOpen = false)
+                setActivityOpen(false)
               } else {
                 totalActivityCountRef.current = 0
                 cursorId.current = new Date().getTime()
-                setActivityOpen(activityOpen = true)
+                setActivityOpen(true)
               }
 
               if (detailsOpen) {
-                setDetailsOpen(detailsOpen = false)
+                setDetailsOpen(false)
               }
 
               if (!searchClose) {
-                closeSearch(searchClose = true)
+                closeSearch(true)
               }
             }}
           >
@@ -130,7 +130,7 @@ const BrowserNav = ({
             />
           </div>
           
-          <Activity
+          {/* <Activity
             activityClose={activityClose}
             closeActivity={closeActivity}
             detailsClose={detailsClose}
@@ -139,7 +139,7 @@ const BrowserNav = ({
             setDetailsOpen={setDetailsOpen}
             activityOpen={activityOpen}
             setActivityOpen={setActivityOpen}
-          />
+          /> */}
 
           <div
             className='userIcon'
