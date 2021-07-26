@@ -192,37 +192,6 @@ const BrowserNav = ({
       <div
         className='browserNav loggedOut'
       >
-        <div
-          className='searchAndLogo'
-        >
-          <div
-            className='logo'
-          >
-            SE
-          </div>
-          <Search />
-        </div>
-
-        <div
-          className='auth'
-        >
-          <Link
-            className='login'
-            to='/login'
-          >
-            Log in
-          </Link>
-              
-          <Link
-            className='register'
-            to='/register'
-            onClick={e => {
-              e.stopPropagation()
-            }}
-          >
-            Sign up
-          </Link>
-        </div>
       </div>
     )
   }

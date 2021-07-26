@@ -6,6 +6,7 @@ const Mutations = {
   LOGIN_USER: gql`
     mutation LoginUser($email: String!, $password: String!) {
       loginUser(email: $email, password: $password) {
+        _id
         token
         loggedIn
         username
@@ -15,9 +16,11 @@ const Mutations = {
   REGISTER_USER: gql`
     mutation RegisterUser($registerUserInputData: RegisterUserInputType) {
       registerUser(registerUserInputData: $registerUserInputData) {
+        _id
         token
         loggedIn
         username
+        timedSecretRecoveryPhraseAccessToken
       }
     }
   `,
@@ -36,6 +39,16 @@ const Mutations = {
   LOGOUT_USER: gql`
     mutation LogoutUser($token: String!) {
       logoutUser(token: $token) {
+        token
+        loggedIn
+        username
+      }
+    }
+  `,
+  RECOVER_ACCOUNT: gql`
+    mutation RecoverAccount($secretRecoveryPhrase: String) {
+      recoverAccount(secretRecoveryPhrase: $secretRecoveryPhrase) {
+        _id
         token
         loggedIn
         username

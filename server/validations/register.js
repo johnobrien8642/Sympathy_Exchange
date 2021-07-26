@@ -3,13 +3,10 @@ import validText from './valid_text.js'
 
 
 function validateRegisterInput(data) {
-  
-  data.blogName = validText(data.blogName) ? data.blogName : '';
-  data.blogDescription = validText(data.blogDescription) ? data.blogDescription : '';
-  data.email = validText(data.email) ? data.email : '';
+  data.username = validText(data.username) ? data.username : '';
   data.password = validText(data.password) ? data.password : '';
   
-  if (Validator.isEmpty(data.blogName)) {
+  if (Validator.isEmpty(data.username)) {
     return { message: 'Username cannot be empty', isValid: false }
   }
 
@@ -19,10 +16,6 @@ function validateRegisterInput(data) {
 
   if (!Validator.isLength(data.password, { min: 7, max: 33 })) {
     return { message: 'Password must be a minimum of 8 and no longer than 32 characters', isValid: false }
-  }
-
-  if (!Validator.isEmail(data.email)) {
-    return { message: 'Email is invalid', isValid: false }
   }
 
   return {

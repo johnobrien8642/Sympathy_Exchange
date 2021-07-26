@@ -42,6 +42,9 @@ app.use(expressCspHeader({
   }
 }))
 app.use(cors({ credentials: true, origin: true }));
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 app.use(
   '/graphql',
   graphqlHTTP({

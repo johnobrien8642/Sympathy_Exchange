@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useApolloClient } from '@apollo/client';
 import { useHistory, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import randomWords from 'random-words';
@@ -7,16 +7,17 @@ import randomWords from 'random-words';
 import Queries from '../../graphql/queries';
 import Mutations from '../../graphql/mutations';
 const { REGISTER_USER, GENERATE_USERNAME } = Mutations;
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, FETCH_USER, CURRENT_USER } = Queries;
 
-const Register = () => {
-  let [email, setEmail] = useState('');
+const Register = ({
+  setCurrentUser
+}) => {
   let [username, setUsername] = useState(randomWords(3).join('_'));
-  let [blogDescription, setBlogDescription] = useState('');
   let [password, setPassword] = useState('');
+  let [confirmPassword, setConfirmPassword] = useState('');
   let [errorMessages, addErrorMessage] = useState([]);
-  let history = useHistory();
-
+  const history = useHistory();
+  
   const [ registerUser ] = useMutation(REGISTER_USER, {
     update(client, { data }) {
       client.writeQuery({
@@ -26,37 +27,33 @@ const Register = () => {
         }
       })
     },
-    onError(error) {
-      if(error.message === 'Account already exists with that email') {
-        history.push({
-          pathname: '/login',
-          state: {
-            errMessage: error.message
-          }
-        })
-      } else {
-        addErrorMessage(errorMessages = [])
-        error.graphQLErrors.forEach((error, i) => {
-          addErrorMessage(errorMessages.concat(error.message))
-        })
-      }
+    onError(error) {  
+      addErrorMessage(errorMessages = [])
+      error.graphQLErrors.forEach((error, i) => {
+        addErrorMessage(errorMessages.concat(error.message))
+      })
     },
     onCompleted({ registerUser }) {
-      const { token, username } = registerUser;
-      Cookies.set('auth-token', token)
-      Cookies.set('currentUser', username)
+      const { token, username, timedSecretRecoveryPhraseAccessToken } = registerUser;
+      Cookies.set('auth-token', token);
+      Cookies.set('currentUser', username);
       resetInputs();
+      setCurrentUser(username)
+
+      history.push({ 
+        pathname: '/reveal_secret_recovery_phrase', 
+        state: { timedToken: timedSecretRecoveryPhraseAccessToken } 
+      })
     }
   })
 
   const [ generateUsername ] = useMutation(GENERATE_USERNAME, {
     onCompleted({ generateUsername }) {
-      setUsername(generateUsername)
+      setUsername(generateUsername);
     }
-  })
+  });
 
   const resetInputs = () => {
-    setEmail(email = '');
     setUsername(username = '');
     setPassword(password = '');
     addErrorMessage(errorMessages = []);
@@ -64,24 +61,38 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-      
-    var instanceData = {
-      email: email,
-      username: username,
-      password: password,
-      blogDescription: blogDescription
+
+    if (
+      (password.length === 0 && confirmPassword.length === 0) || 
+      (password !== confirmPassword)
+    ) {
+      addErrorMessage(["Your passwords don't match, try again"])
+    } else {
+      registerUser({
+        variables: {
+          registerUserInputData: {
+            username: username,
+            password: password,
+            secretRecoveryPhrase: randomWords(10).join(' ')
+          }
+        }
+      })
     }
-    registerUser({
-      variables: {
-        instanceData: instanceData
-      }
-    })
   }
 
   return (
     <div
       className='registerForm'
     >
+      <Link
+        className='backToSympathyExchangeLink'
+        to='/'
+      >
+       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back to Sympathy Exchange
+      </Link>
       <div
         className='greetingHeader'
       >
@@ -104,9 +115,9 @@ const Register = () => {
           className='formParagraph'
         >
           At Sympathy Exchange all usernames are random and anonymous. 
-          We pick them for you. You can always try to choose a different
-          username later on if for some reason this random one stops
-          doing it for you.
+          We pick them for you. You can always try to generate a new and 
+          different username later on if for some reason this random one 
+          stops doing it for you.
         </p>
 
         <input
@@ -123,28 +134,19 @@ const Register = () => {
         >
           Generate another username
         </button>
-
-        <p
-          className='formParagraph'
-        >
-          We send you an authorization email after sign up. <strong>You must
-          go to your email and authorize your account before you're
-          allowed to make any new Pleas or Variants.</strong> Also if you ever 
-          forget your password we can send you a reset link.
-        </p>
-
-        <input
-          type='text'
-          value={email}
-          placeholder={'Email'}
-          onChange={e => setEmail(email = e.target.value)}
-        />
-
+        
         <input
           type='password'
           value={password}
           placeholder={'Password'}
-          onChange={e => setPassword(password = e.target.value)}
+          onChange={e => setPassword(e.target.value)}
+        />
+
+        <input
+          type='password'
+          value={confirmPassword}
+          placeholder={'Confirm password'}
+          onChange={e => setConfirmPassword(e.target.value)}
         />
 
         <ul
@@ -162,9 +164,10 @@ const Register = () => {
         </button>
 
         <Link
+          className='loginLink'
           to='/login'
         >
-          Already have an account? Log in!
+          Already have an account? Come right this way.
         </Link>
       </form>
     </div>

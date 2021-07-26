@@ -1,0 +1,141 @@
+.accountRecoveryContainer {
+  position: relative;
+  width: 60%;
+  height: 100%;
+  min-width: 580px;
+  margin: 0 auto;
+  
+  @media (max-width: 980px) {
+    width: 90%;
+    min-width: 280px;
+  }
+
+  .mobileNavigationLinks {
+    flex-direction: row;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: none;
+    background-color: var(--faint-gold);
+
+    @media (max-width: 980px) {
+      display: flex;
+    }
+
+    img {
+      position: relative;
+      width: 50px;
+      margin: 5px;
+    
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .loginOrRegisterLinksContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+  
+      a {
+        margin: 15px 10px;
+      }
+
+      .login, .register {
+        color: white;
+        padding: 5px 18px 8px 18px;
+        white-space: nowrap;
+        font-weight: bold;
+        border-radius: 5px;
+      }
+  
+      .login {
+        border: 1px solid var(--burnt-gold);
+        background-color: var(--burnt-gold);
+  
+        &:hover {
+          cursor: pointer;
+        }
+      }
+  
+      .register {
+        background-color: var(--candy-red);
+        border: 1px solid var(--candy-red);
+      
+        &:hover {
+          cursor: pointer;
+        }
+      } 
+    }
+  }
+
+  .inputAndHeaderContainer {
+    margin: 200px auto;
+
+    h1, h3 {
+      color: var(--off-black-font-color);
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    .recoveryErrors {
+      margin: 15px 0;
+      
+      .error {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--candy-red);
+      }
+    }
+
+  
+    .inputAndBtnContainer {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 90%;
+      height: 100%;
+      margin-top: 15px;
+  
+      input {
+        height: 75px;
+        width: 100%;
+        margin: 0 0 25px 0;
+        font-size: 1.8rem;
+        background-color: var(--off-white);
+  
+        @media (max-width: 980px) {
+          font-size: 1.2rem;
+        }
+      }
+  
+      button {
+        width: fit-content;
+        padding: 15px 35px;
+        font-weight: 500;
+        font-size: 1.5rem;
+        color: white;
+        background-color: var(--burnt-gold);
+        border-radius: 5px;
+  
+        @media (max-width: 980px) {
+          padding: 10px 25px;
+        }
+      }
+    }
+  }
+}

@@ -5,53 +5,39 @@ import randomWords from 'random-words';
 import validateRegisterInput from '../validations/register.js';
 import validateLoginInput from '../validations/login.js';
 import bcrypt from 'bcryptjs';
-////Uncomment for email auth
-import sendAuthEmail from './send_auth_email.js';
+import CryptoJS from 'crypto-js';
 import User from '../models/User.js';
 
 const register = async (data, ctx) => {
   try {
-  const { message, isValid } = validateRegisterInput(data)
+  const { message, isValid } = validateRegisterInput(data);
 
   if (!isValid) {
     throw new Error(message)
-  }
-  const { username, email, password } = data;
-  
-  const hashedPW = await bcrypt.hash(password, 10)
+  };
 
-  //// Uncomment for email auth
-  //// Go to server/models/User, uncomment emailAuthToken and authenticated
-  const current_date = (new Date()).valueOf().toString();
-  const random = Math.random().toString();
-  const emailAuthToken = await bcrypt.hash(`${current_date + random}`, 10)
+  const { username, password, secretRecoveryPhrase } = data;
+
+  const hashedPW = await bcrypt.hash(password, 10);
 
   const user = new User(
     {
       username: username,
-      email: email,
       password: hashedPW,
       oldPasswords: [hashedPW],
-      emailAuthToken: emailAuthToken //Uncomment for email auth
+      secretRecoveryPhraseHash: CryptoJS.SHA1(secretRecoveryPhrase).toString(),
+      secretRecoveryPhrase: CryptoJS.AES.encrypt(secretRecoveryPhrase, keys.secretKeyForRecoveryPhrase)
     },
     err => {
       if (err) throw err;
     }
   )
-
-  const token = await jwt.sign({ _id: user._id }, keys.secretOrKey)
   
-  //Comment this for email auth
-  // return user.save().then(user => {
-  //   return { token, loggedIn: true, ...user._doc, ...user.username}
-  // })
-
-  ////Uncomment for email auth, scroll to top, uncomment sendAuthEmail import
+  const token = await jwt.sign({ _id: user._id }, keys.secretOrKey)
+  const timedSecretRecoveryPhraseAccessToken = await jwt.sign({ secretRecoveryPhrase: user.secretRecoveryPhrase }, keys.secretOrKey, { expiresIn: "1h"})
+  
   return user.save().then(user => {
-    sendAuthEmail(user)
-    return user
-  }).then(user => {
-    return { token, loggedIn: true, ...user._doc, password: '' }
+    return { token, timedSecretRecoveryPhraseAccessToken, loggedIn: true, ...user._doc, ...user.username}
   })
 
   } catch (err) {
@@ -80,7 +66,7 @@ const logout = async data => {
     const decoded = jwt.verify(data, keys.secretOrKey);
     const { _id } = decoded;
 
-    const user = await User.findById(_id)
+    const user = await User.findById(_id);
     
     return { loggedIn: false, ...user._doc }
   } catch (err) {
@@ -96,18 +82,16 @@ const login = async data => {
       throw new Error(message)
     }
 
-    const { email, password } = data;
+    const { username, password } = data;
 
-    const user = await User.findOne({ email })
+    const user = await User.findOne({ username })
 
     if (!user) {
-      throw new Error('User with that email does not exist')
+      throw new Error('User with that username does not exist')
     }
 
     if (bcrypt.compareSync(password, user.password)) {
-      Cookies.set('currentUser', user.username)
       const token = jwt.sign({ _id: user._id }, keys.secretOrKey)
-      Cookies.set('auth-token', token)
       return { token, loggedIn: true, ...user._doc, ...user.username}
     } else {
       throw new Error('Password is incorrect')

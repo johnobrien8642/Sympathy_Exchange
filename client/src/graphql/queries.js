@@ -47,6 +47,11 @@ const Queries = {
       }
     }
   `,
+  FETCH_SECRET_RECOVERY_PHRASE_AFTER_REGISTER: gql`
+    query FetchSecretRecoveryPhraseAfterRegister($timedToken: String) {
+      fetchSecretRecoveryPhraseAfterRegister(timedToken: $timedToken)
+    }
+  `,
   FETCH_USER_LIKES: gql`
     query FetchUserLikes($query: String) {
       fetchUserLikes(query: $query) {
@@ -527,16 +532,19 @@ const Queries = {
        isLoggedIn @client
      } 
     `,
+  CURRENT_USER: gql`
+     query currentUser {
+       currentUser @client
+     }
+  `,
   FETCH_USER: gql`
     query fetchUser($query: String) {
       user(query: $query) {
         _id
         username
-        email
         tagFollows {
           _id
           title
-          postHeatLastWeek
         }
         kind
       }

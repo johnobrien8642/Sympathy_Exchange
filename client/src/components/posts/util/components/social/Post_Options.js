@@ -8,7 +8,7 @@ import LikeButton from './Like_Button'
 import Queries from '../../../../../graphql/queries';
 import PostFormUtil from '../../functions/post_form_util.js';
 const { DOES_USER_LIKE_POST } = Queries;
-const { handlePostId, preventScroll } = PostFormUtil;
+const { handlePostId } = PostFormUtil;
 
 const PostOptions = ({ 
   post, 

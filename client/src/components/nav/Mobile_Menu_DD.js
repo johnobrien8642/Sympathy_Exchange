@@ -20,6 +20,14 @@ const MobileMenuDD = ({
 }) => {
   let cursorId = useRef(new Date().getTime())
 
+  let { data, refetch } = useQuery(FETCH_ACTIVITY_COUNTS, {
+    variables: {
+      query: Cookies.get('currentUser'),
+      cursorId: cursorId.current.toString()
+    },
+    pollInterval: 10000
+  })
+
   useEffect(() => {
     if (!menuOpen || menuOpen) {
       window.scrollTo(0, scrollYRef2.current)
@@ -29,15 +37,7 @@ const MobileMenuDD = ({
     return () => {
       refetch()
     }
-  }, [menuOpen, settingsOpen, scrollYRef2])
-
-  let { data, refetch } = useQuery(FETCH_ACTIVITY_COUNTS, {
-    variables: {
-      query: Cookies.get('currentUser'),
-      cursorId: cursorId.current.toString()
-    },
-    pollInterval: 10000
-  })
+  }, [menuOpen, settingsOpen, scrollYRef2, refetch])
 
   const { user } = userDetailsCounts;
 

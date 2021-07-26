@@ -9,9 +9,9 @@ const RenderSearchOrExitIcon = ({
     return (
       <React.Fragment>
         <img
-          className='exitIcon'
           src="https://img.icons8.com/ios-filled/64/ffffff/x.png"
           alt=''
+          className='exitIcon'
           onClick={() => {
             openSearch(searchOpen = false)
           }}

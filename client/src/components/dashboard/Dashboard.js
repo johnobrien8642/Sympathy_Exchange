@@ -5,8 +5,8 @@ import Cookies from 'js-cookie';
 
 import PostsNav from '../nav/Posts_Nav';
 import Feed from '../feeds/Feed.js';
-import PostRadar from '../dashboard/util/Post_Radar';
-import CheckOutTheseBlogs from '../dashboard/util/Check_Out_These_Blogs';
+// import PostRadar from '../dashboard/util/Post_Radar';
+// import CheckOutTheseBlogs from '../dashboard/util/Check_Out_These_Blogs';
 import RepostForm from '../posts/util/components/social/Repost_Form';
 
 import Queries from '../../graphql/queries.js';
@@ -20,7 +20,7 @@ const Dashboard = props => {
     variables: {
       query: Cookies.get('currentUser')
     }
-  })
+  });
 
   if (loading) return 'Loading...';
   if (error) return `Error: ${error}`;
@@ -71,8 +71,8 @@ const Dashboard = props => {
       <div
         className='column2'
       >
-        <CheckOutTheseBlogs />
-        <PostRadar />
+        {/* <CheckOutTheseBlogs />
+        <PostRadar /> */}
       </div>
     {/* </React.Fragment> */}
     </div>

@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import Mutations from '../../graphql/mutations'
 import Queries from '../../graphql/queries'
 const { LOGIN_USER } = Mutations;
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, FETCH_USER } = Queries;
 
-const Login = () => {
-  let [email, setEmail] = useState('guest@email.com');
-  let [password, setPassword] = useState('password');
+const Login = ({
+  refetchUser
+}) => {
+  let [username, setUsername] = useState('');
+  let [password, setPassword] = useState('');
   let [errorMessages, addErrorMessage] = useState([]);
   const location = useLocation();
+  const history = useHistory();
   
   useEffect(() => {
     if (location.state) {
@@ -22,19 +25,6 @@ const Login = () => {
   }, [])
   
   const [ loginUser ] = useMutation(LOGIN_USER, {
-    onError(error) {
-      addErrorMessage(errorMessages = [])
-      error.graphQLErrors.forEach((error, i) => {
-        addErrorMessage(errorMessages.concat(error.message))
-      })
-    },
-    onCompleted({ loginUser }) {
-      const { token, blogName } = loginUser;
-      Cookies.set('auth-token', token)
-      Cookies.set('currentUser', blogName)
-      resetInputs();
-      window.location.reload();
-    },
     update(client, { data }) {
       client.writeQuery({
         query: IS_LOGGED_IN,
@@ -42,11 +32,25 @@ const Login = () => {
           isLoggedIn: data.loginUser.loggedIn,
         }
       })
-    }
+    },
+    onError(error) {
+      addErrorMessage(errorMessages = [])
+      error.graphQLErrors.forEach((error, i) => {
+        addErrorMessage(errorMessages.concat(error.message))
+      })
+    },
+    onCompleted({ loginUser }) {
+      const { token, username } = loginUser;
+      Cookies.set('auth-token', token)
+      Cookies.set('currentUser', username)
+      resetInputs();
+      refetchUser();
+      history.push('/');
+    },
   })
   
   const resetInputs = () => {
-    setEmail(email = '');
+    setUsername(username = '');
     setPassword(password = '');
     addErrorMessage(errorMessages = []);
   }
@@ -55,19 +59,22 @@ const Login = () => {
     <div
       className='loginForm'
     >
+      <Link
+        className='backToSympathyExchangeLink'
+        to='/'
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+          <path fillRule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back to Sympathy Exchange
+      </Link>
       <div
         className='greetingHeader'
       >
-        <h1>Rumblr</h1>
+        <h1>Sympathy Exchange</h1>
         <p>
-          Welcome to Rumblr, a clone of Tumblr using
-          MongoDB, Express, React, Node, Apollo and GraphQL!
+          Determing how much sympathy you should receive for your given situation.
         </p>
-          <a 
-            href={"https://github.com/johnobrien8642/RUMBLR_PROD"}
-          >
-            Go to Github repository
-          </a>
       </div>
 
 
@@ -76,12 +83,26 @@ const Login = () => {
           e.preventDefault();
           loginUser({
             variables: {
-              email, 
+              username, 
               password 
             }
           })
         }}
       >
+
+        <input
+          type='text'
+          value={username}
+          placeholder={'Username'}
+          onChange={e => setUsername(e.target.value)}
+        />
+
+        <input
+          type='password'
+          value={password}
+          placeholder={'Password'}
+          onChange={e => setPassword(e.target.value)}
+        />
 
         <ul
           className='authErrors'
@@ -91,27 +112,24 @@ const Login = () => {
           })}
         </ul>
 
-        <input
-          type='text'
-          value={email}
-          placeholder={'Email'}
-          onChange={e => setEmail(email = e.target.value)}
-        />
-        <input
-          type='password'
-          value={password}
-          placeholder={'Password'}
-          onChange={e => setPassword(password = e.target.value)}
-        />
         <button 
           type='submit'
         >
           Login
         </button>
+
         <Link
+          className='loginLink'
           to='/register'
         >
-          Don't have an account? Sign up!
+          Don't have an anonymous account? Sign up, it's easy.
+        </Link>
+
+        <Link
+          className='loginLink'
+          to='/account_recovery'
+        >
+          Forgot your username or password?
         </Link>
       </form>
     </div>

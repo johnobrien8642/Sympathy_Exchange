@@ -11,34 +11,38 @@ const { IS_LOGGED_IN,
         FETCH_USER } = Queries;
 
 
-const Nav = () => {
+const Nav = ({
+  currentUser
+}) => {
   let cursorId = useRef(new Date().getTime())
-  
-  useEffect(() => {
-
-    return () => {
-      refetch()
-    }
-    //eslint-disable-next-line
-  }, [])
-
+  console.log(currentUser)
   var { loading: loading1, 
         error: error1,
         data: userDetailsCounts, 
-        refetch } = useQuery(FETCH_USER_DETAILS_COUNTS, {
+        refetch: refetchCounts } = useQuery(FETCH_USER_DETAILS_COUNTS, {
           variables: {
-            query: Cookies.get('currentUser')
+            query: currentUser
           },
           fetchPolicy: 'network-only'
       })
-
+  
   var { loading: loading2, 
         error: error2, 
-        data: fetchedUser } = useQuery(FETCH_USER, {
+        data: fetchedUser, refetch: refetchUser } = useQuery(FETCH_USER, {
           variables: {
-            query: Cookies.get('currentUser')
+            query: currentUser
           },
+        fetchPolicy: 'cache-and-network'
       })
+
+    useEffect(() => {
+
+      return () => {
+        refetchCounts()
+        refetchUser()
+      };
+      //eslint-disable-next-line
+    }, [])
       
       var { data: loggedInBool } = useQuery(IS_LOGGED_IN)
 
@@ -49,7 +53,7 @@ const Nav = () => {
       } else if (error2) {
         return `Error: ${error2}`
       }
-
+    
   return (
     <React.Fragment>
       <BrowserNav

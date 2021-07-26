@@ -16,12 +16,16 @@ const SearchDropDown = ({
   setActive
 }) => {
 
-  let { data } = useQuery(FETCH_USER, {
+  let { loading, error, data } = useQuery(FETCH_USER, {
     variables: {
       query: Cookies.get('currentUser')
     }
   })
 
+  if (loading) return 'Loading...';
+  if (error) return `Error: ${error.message}`;
+
+  
   if (data) {
     if (active || followedActive) {
      return (

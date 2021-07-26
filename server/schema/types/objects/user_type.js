@@ -6,6 +6,8 @@ import LikeType from '../objects/posts/util/like_type.js'
 import RepostType from '../objects/posts/util/repost_type.js'
 import FollowType from '../objects/posts/util/follow_type.js'
 import ImageType from './posts/util/image_type.js';
+import PleaType from './posts/types/plea_type.js';
+import VariantType from './posts/types/variant_type.js';
 const User = mongoose.model('User');
 const { GraphQLObjectType, GraphQLString,
         GraphQLList, GraphQLInt,
@@ -20,20 +22,19 @@ const UserType = new GraphQLObjectType({
     password: { type: GraphQLString },
     token: { type: GraphQLString },
     loggedIn: { type: GraphQLBoolean },
-    ////Uncomment for email auth
-    authenticated: { type: GraphQLBoolean },
-    emailAuthToken: { type: GraphQLString },
+    secretRecoveryPhrase: { type: GraphQLString },
+    timedSecretRecoveryPhraseAccessToken: { type: GraphQLString },
     createdAt: { type: GraphQLInt },
     lastUpdated: { type: GraphQLInt },
     kind: { type: GraphQLString },
-    savedPleasAndVariants: {
-      type: GraphQLList(PleaOrVariantType),
-      resolve(parentValue) {
-        return User.findById(parentValue._id)
-          .populate('savedPleasAndVariants')
-          .then(user => user.savedPleasAndVariants)
-      }
-    },
+    // savedPleas: {
+    //   type: GraphQLList(PleaType),
+    //   resolve(parentValue) {
+    //     return User.findById(parentValue._id)
+    //       .populate('savedPleasAndVariants')
+    //       .then(user => user.savedPleasAndVariants)
+    //   }
+    // },
     tagFollows: {
       type: GraphQLList(TagType),
       resolve(parentValue) {

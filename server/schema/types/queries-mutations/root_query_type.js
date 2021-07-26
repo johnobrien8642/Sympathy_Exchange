@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import graphql from 'graphql';
 import jwt from 'jsonwebtoken';
+import CryptoJS from 'crypto-js';
 import keys from '../../../../config/keys.js'
 import UserType from '../objects/user_type.js';
 import FollowType from '../objects/posts/util/follow_type.js';
@@ -69,6 +70,22 @@ const RootQueryType = new GraphQLObjectType({
         } else {
           return []
         }
+      }
+    },
+    fetchSecretRecoveryPhraseAfterRegister: {
+      type: GraphQLString,
+      args: { timedToken: { type: GraphQLString } },
+      async resolve(_, { timedToken }) {
+        const decoded = jwt.verify(timedToken, keys.secretOrKey);
+        const { secretRecoveryPhrase } = decoded;
+
+        return User.findOne({ secretRecoveryPhrase: secretRecoveryPhrase })
+          .then(user => {
+            if (user) {
+              const bytes = CryptoJS.AES.decrypt(user.secretRecoveryPhrase, keys.secretKeyForRecoveryPhrase);
+              return bytes.toString(CryptoJS.enc.Utf8);
+            }
+          });
       }
     },
     fetchMatchingTags: {
@@ -1015,7 +1032,7 @@ const RootQueryType = new GraphQLObjectType({
       type: UserType,
       args: { query: { type: GraphQLString } },
       resolve(parentValue, { query }) {
-        return User.findOne({ blogName: query })
+        return User.findOne({ username: query })
       }
     },
     users: {

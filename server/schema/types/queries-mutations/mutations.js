@@ -3,6 +3,8 @@ import graphql from 'graphql';
 import bcrypt from 'bcryptjs';
 import Validator from 'validator';
 import aws from 'aws-sdk';
+import CryptoJS from 'crypto-js';
+import jwt from 'jsonwebtoken';
 
 import keys from '../../../config/keys.js'
 import UserType from '../objects/user_type.js';
@@ -35,7 +37,7 @@ const Follow = mongoose.model('Follow');
 const Image = mongoose.model('Image');
 const RepostCaption = mongoose.model('RepostCaption');
 const { GraphQLObjectType, GraphQLID,
-        GraphQLString, GraphQLList, GraphQLInt } = graphql;
+        GraphQLString, GraphQLList, GraphQLBoolean, GraphQLInt } = graphql;
 
 var s3Client = new aws.S3({
   secretAccessKey: keys.secretAccessKey,
@@ -52,7 +54,7 @@ const mutation = new GraphQLObjectType({
         registerUserInputData: { type: RegisterUserInputType }
       },
       resolve(_, { registerUserInputData }, ctx) {
-        return AuthService.register(instanceData, ctx).then(res => {
+        return AuthService.register(registerUserInputData, ctx).then(res => {
           ctx.headers.authorization = JSON.stringify(res.token)
           return res
         })
@@ -76,7 +78,7 @@ const mutation = new GraphQLObjectType({
     loginUser: {
       type: UserType,
       args: {
-        email: { type: GraphQLString },
+        username: { type: GraphQLString },
         password: { type: GraphQLString }
       },
       resolve(_, args) {
@@ -90,6 +92,30 @@ const mutation = new GraphQLObjectType({
       },
       resolve(_, args) {
         return AuthService.verify(args)
+      }
+    },
+    recoverAccount: {
+      type: UserType,
+      args: {
+        secretRecoveryPhrase: { type: GraphQLString }
+      },
+      resolve(_, { secretRecoveryPhrase }) {
+        const hash = CryptoJS.SHA1(secretRecoveryPhrase).toString();
+
+        return User.findOne({ secretRecoveryPhraseHash: hash })
+          .then(user => {
+
+            if (user) {
+              const userDecoded = CryptoJS.AES.decrypt(user.secretRecoveryPhrase, keys.secretKeyForRecoveryPhrase).toString(CryptoJS.enc.Utf8);
+              
+              if (secretRecoveryPhrase === userDecoded) {
+                const token = jwt.sign({ _id: user._id }, keys.secretOrKey)
+                return { token, loggedIn: true, ...user._doc, ...user.username}
+              }
+            } else {
+              throw new Error('That Secret Recovery Phrase is invalid.')
+            }
+          });
       }
     },
     createOrUpdatePost: {

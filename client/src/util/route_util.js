@@ -9,9 +9,12 @@ const AuthRoute = ({
   path,
   exact,
   routeType,
+  setCurrentUser,
   ...rest
 }) => {
   const { data } = useQuery(IS_LOGGED_IN);
+  
+
   if (routeType === 'auth') {
     return (
       <Route
@@ -19,7 +22,7 @@ const AuthRoute = ({
         exact={exact}
         {...rest}
         render={props =>
-          !data.isLoggedIn ? <Component {...props} /> : <Redirect to='/' />
+          !data.isLoggedIn ? <Component {...props} setCurrentUser={setCurrentUser} /> : <Redirect to='/' />
         }
       />
     )

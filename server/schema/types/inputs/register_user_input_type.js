@@ -7,8 +7,8 @@ const RegisterUserInputType = new GraphQLInputObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     username: { type: GraphQLString },
-    email: { type: GraphQLString },
-    password: { type: GraphQLString }
+    password: { type: GraphQLString },
+    secretRecoveryPhrase: { type: GraphQLString }
   })
 })
 

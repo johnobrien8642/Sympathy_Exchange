@@ -1,6 +1,9 @@
 @use 'reset';
 @use 'body';
+@use 'custom';
 @use 'auth_forms';
+@use 'secret_recovery_phrase_after_register';
+@use 'account_recovery';
 @use 'browser_nav';
 @use 'mobile_nav';
 @use 'mobile_post_nav_wheel';

@@ -14,10 +14,33 @@
     text-align: justify;
   }
 
+  .backToSympathyExchangeLink {
+    position: fixed;
+    left: 0;
+    top: 0;
+    text-decoration: underline;
+    font-size: 1.2rem;
+    font-weight: 500;
+    background-color: var(--faint-gold);
+    width: 100%;
+    padding: 10px 10px 15px 10px;
+
+    .bi-arrow-left {
+      position: relative;
+      top: 8px;
+      margin: 0 8px 0 0;
+    }
+  }
+
   .authErrors {
+    width: fit-content;
+
     li {
       text-align: center;
       color: white;
+      background-color: var(--candy-red);
+      padding: 3px 4px;
+      border-radius: 3px;
     }
   }
 
@@ -33,7 +56,7 @@
       font-size: 70px;
       width: fit-content;
       color: #313131;
-      text-align: center;
+      text-align: left;
     }
 
     p {
@@ -124,10 +147,15 @@
       }
     }
 
-    a {
-      margin: auto;
-      margin-top: 8px;
-      color: white;
+    .loginLink {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--off-black-font-color);
+
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

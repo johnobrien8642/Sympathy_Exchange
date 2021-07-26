@@ -110,7 +110,7 @@ const MobileNav = ({
           >
             <img
               alt='sympathy man icon'
-              src='../'
+              src='./assets/sympathy_man.png'
             />
           </div>
           <Search />

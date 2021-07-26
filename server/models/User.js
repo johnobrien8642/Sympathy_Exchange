@@ -7,21 +7,17 @@ const UserSchema = new Schema({
     required: true,
     index: true
   },
-  email: {
-    type: String,
-    required: true
-  },
-  oldPasswords: [
-    {
-      type: String
-    }
-  ],
   password: {
     type: String,
     required: true,
     min: 8,
     max: 32
   },
+  oldPasswords: [
+    {
+      type: String
+    }
+  ],
   token: {
     type: String,
     required: false
@@ -30,27 +26,26 @@ const UserSchema = new Schema({
     type: Boolean,
     required: false
   },
-  savedPleasAndVariants: [
+  savedPleas: [
     {
       type: Schema.Types.ObjectId,
-      refPath: 'onModel'
+      ref: 'Plea'
     }
   ],
   tagFollows: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Tag',
-      index: true
+      ref: 'Tag'
     }
   ],
-  // Uncomment both below for email auth
-  // Go to server/services/auth_util/register and uncomment
-  authenticated: {
-    type: Boolean,
-    default: false
+  secretRecoveryPhraseHash: {
+    type: String,
+    required: true,
+    index: true
   },
-  emailAuthToken: {
-    type: String
+  secretRecoveryPhrase: {
+    type: String,
+    required: true
   },
   createdAt: {
     type: Date,
@@ -59,11 +54,6 @@ const UserSchema = new Schema({
   updatedAt: {
     type: Date,
     default: Date.now
-  },
-  onModel: {
-    type: String,
-    required: true,
-    enum: [ 'Plea', 'Variant' ]
   },
   kind: {
     type: String,

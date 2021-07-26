@@ -24,13 +24,7 @@ const UserDetails = ({
   }, [detailsClose, detailsOpen, active])
   
   if (detailsOpen) {
-    const { 
-      totalLikeCount,
-      userFollowCount, 
-      userPostsCount,
-      followersCount,
-      blogName,
-      blogDescription } = user;
+    const { username } = user;
 
     return (
       <div
@@ -57,34 +51,6 @@ const UserDetails = ({
         <ul>
 
           <li>
-            <Link
-              to='/likes'
-            >
-              <img
-                className='detailIcon'
-                src="https://img.icons8.com/material-rounded/24/000000/like--v1.png" 
-                alt='' 
-              />
-              Likes
-            </Link>
-            <span>{totalLikeCount}</span>
-          </li>
-
-          <li>
-            <Link 
-              to='/following'
-            >
-              <img 
-                className='detailIcon'
-                src="https://img.icons8.com/metro/26/000000/add-user-male.png"
-                alt=''
-              />
-              Following
-            </Link>
-            <span>{userFollowCount}</span>
-          </li>
-
-          <li>
             <Link 
               to='/settings/account'
             >
@@ -106,48 +72,17 @@ const UserDetails = ({
             className='blogDescription'
           > 
             <Link 
-              to={`/view/blog/${blogName}`}
+              to={`/view/blog/${username}`}
             >
               <ProfilePic 
                 user={user}
                 standaloneLink={false}
               />
               <div>
-                <h3>{blogName}</h3>
-                <p>{blogDescription}</p>
+                <h3>{username}</h3>
               </div>
             </Link>
-          </li>
-
-          <li>
-            <Link
-              className='blogDetailData'
-              to={`/view/blog/${blogName}`}
-            >
-              <p>Posts</p>
-            </Link>
-              <span className='detailCount'>{userPostsCount}</span>
-          </li>
-
-          <li>
-            <Link
-              className='blogDetailData'
-              to='/followers'
-            >
-              <p>Followers</p>
-            </Link>
-              <span className='detailCount'>{followersCount}</span>
-          </li>
-
-          <li>
-            <Link
-              className='blogDetailData'
-              to='/activity'
-            >
-              <p>Activity</p>
-            </Link>
-          </li>
-          
+          </li>          
         </ul>
       </div>
     )
