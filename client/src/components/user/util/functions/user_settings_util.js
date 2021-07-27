@@ -21,9 +21,9 @@ const updateCacheUpdateProfilePic = (
   })
 }
 
-const updateCacheUpdateEmail = (
+const updateCacheUpdateUsername = (
   client, 
-  updateUserEmail,
+  updateUsername,
   currentUser, 
   query
 ) => {
@@ -35,7 +35,7 @@ const updateCacheUpdateEmail = (
     },
     data: {
       user: {
-        email: updateUserEmail.email
+        username: updateUsername.username
       }
     }
   })
@@ -64,7 +64,7 @@ const blogDescriptionCache = (
 
 const UserSettingsUtil = {
   updateCacheUpdateProfilePic,
-  updateCacheUpdateEmail,
+  updateCacheUpdateUsername,
   blogDescriptionCache
 }
 

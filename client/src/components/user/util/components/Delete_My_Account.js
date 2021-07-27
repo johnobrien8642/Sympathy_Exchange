@@ -8,73 +8,93 @@ const { DELETE_MY_ACCOUNT } = Mutations;
 const DeleteMyAccount = () => {
   let [active, setActive] = useState(false);
   let [password, setPassword] = useState('');
-  let [askToConfirm, confirmDelete] = useState(false)
+  let [confirmDelete, setConfirmDelete] = useState(false)
   let [errorMessage, setError] = useState(null)
 
   let [deleteMyAccount] = useMutation(DELETE_MY_ACCOUNT, {
     onCompleted(data) {
       resetInputs();
       setActive(active = false);
-      window.location.reload();
     },
     onError(error) {
-      console.log(error)
-      setError(errorMessage = error.message)
+      setError(error.message)
     }
   })
 
   const resetInputs = () => {
     setPassword(password = '')
-    confirmDelete(askToConfirm = false)
+    confirmDelete(confirmDelete = false)
     setError(errorMessage = '')
   }
 
   if (active) {
     return (
       <div
-        className='deleteMyAcct'
+        className='deleteMyAcct upload'
       >
-        <input
-          type='password'
-          placeholder='Confirm password...'
-          value={password}
-          onChange={e => {
-            setPassword(password = e.target.value)
-          }}
-        />
-  
-        <p>{errorMessage ? `${errorMessage}` : ''}</p>
-  
         <div
-          className='deleteOrCancelContainer'
+          className='inputAndBtnContainer'
         >
-          <button
-            className='save'
-            type='button'
-            onClick={() => {
-              if (password) {
-                setActive(active = false)
-                confirmDelete(askToConfirm = true)
-              } else {
-                setError(errorMessage = 'You must enter your password')
-              }
-            }}
+          <div
+            className='confirmContainer'
           >
-            Delete My Account
-          </button>
-          <button
-            className='cancel'
-            type='button'
-            onClick={() => {
-              setActive(active = false)
-            }}          
-          >
-            Cancel
-          </button>
+            <p
+            >
+              This cannot be undone. Once you delete your account
+              all of your unchained Pleas will be deleted. All of 
+              your other Pleas that have been chained will not
+              be deleted, but your username will be removed from
+              the Plea. All of your Symps will also be deleted.
+            </p>
+            <input
+              type='password'
+              placeholder='Confirm password...'
+              value={password}
+              onChange={e => {
+                setPassword(e.target.value)
+              }}
+            />
+            <div
+              className='innerConfirmContainer'
+            >
+              <p
+                className='errMessage'
+              >{errorMessage ? `${errorMessage}` : ''}</p>
+              <div
+                className='saveOrCancelContainer'
+              >
+                <button
+                  className='cancel'
+                  type='button'
+                  onClick={() => {
+                    setActive(false)
+                    setConfirmDelete(false)
+                  }}          
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className='save'
+                  type='button'
+                  onClick={() => {
+                    if (password) {
+                      setActive(false)
+                      setConfirmDelete(true)
+                    } else {
+                      setError('You must enter your password')
+                    }
+                  }}
+                >
+                  Delete My Account
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
-  } else if (askToConfirm) {
+  } else if (confirmDelete) {
     return (
       <div
         className='deleteMyAcct confirm'
@@ -98,9 +118,9 @@ const DeleteMyAccount = () => {
           className='cancel'
           type='button'
           onClick={() => {
-            setPassword(password = '')
-            confirmDelete(askToConfirm = false)
-            setActive(active = false)
+            setPassword('');
+            setConfirmDelete(false);
+            setActive(false);
           }}
         >
           Cancel
@@ -109,19 +129,21 @@ const DeleteMyAccount = () => {
     )
   } else {
     return (
-      <React.Fragment>
+      <div
+        className='inputAndBtnContainer'
+      >
         <button
           className='deleteMyAcctBtn'
           onClick={() => {
-            setActive(active = true)
-            confirmDelete(askToConfirm = true)
+            setActive(true);
+            setConfirmDelete(true);
           }}
         >
           Delete My Account
         </button>
-      </React.Fragment>
+      </div>
     )
-  }
-}
+  };
+};
 
 export default DeleteMyAccount;

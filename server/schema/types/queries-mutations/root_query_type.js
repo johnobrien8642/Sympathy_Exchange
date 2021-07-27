@@ -76,7 +76,7 @@ const RootQueryType = new GraphQLObjectType({
       type: GraphQLString,
       args: { timedToken: { type: GraphQLString } },
       async resolve(_, { timedToken }) {
-        const decoded = jwt.verify(timedToken, keys.secretOrKey);
+        const decoded = await jwt.verify(timedToken, keys.secretOrKey);
         const { secretRecoveryPhrase } = decoded;
 
         return User.findOne({ secretRecoveryPhrase: secretRecoveryPhrase })
@@ -86,6 +86,19 @@ const RootQueryType = new GraphQLObjectType({
               return bytes.toString(CryptoJS.enc.Utf8);
             }
           });
+      }
+    },
+    fetchSecretRecoveryPhrase: {
+      type: GraphQLString,
+      args: { token: { type: GraphQLString } },
+      async resolve(_, { token }) {
+        const decoded = await jwt.verify(token, keys.secretOrKey);
+        const { _id } = decoded;
+
+        return User.findById(_id)
+          .then(user => {
+            return CryptoJS.AES.decrypt(user.secretRecoveryPhrase, keys.secretKeyForRecoveryPhrase).toString(CryptoJS.enc.Utf8);
+          })
       }
     },
     fetchMatchingTags: {

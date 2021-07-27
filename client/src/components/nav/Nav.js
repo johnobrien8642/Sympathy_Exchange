@@ -30,7 +30,7 @@ const Nav = ({
           variables: {
             query: currentUser
           },
-        // fetchPolicy: 'cache-and-network'
+        fetchPolicy: 'cache-and-network'
       })
 
     useEffect(() => {

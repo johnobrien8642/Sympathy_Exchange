@@ -15,27 +15,95 @@
     font-family: var(--font);
     color: var(--middler-gray);
 
-    .inputAndBtnContainer {
+    .panel {
+      background-color: rgb(0, 0, 0, 0.1);
+      padding: 5px 20px;
+      margin: 20px 0;
+    }
+
+    .inputAndBtnContainer, .phraseAndHideBtnContainer {
       display: flex;
       flex-direction: column;
       width: 100%;
+      
+      .passwordAlert {
+        display: block;
+        background-color: var(--burnt-gold);
+        width: fit-content;
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: 500;
+        border-radius: 5px;
+        color: white;
+      }
+      
+      .passwordAlert.none {
+        display: none;
+      }
 
       .errMessage {
         margin: 10px 0;
-        word-break: break-all;
-        width: 60%;
+        width: 100%;
       }
 
-      .blogDescriptionTextarea {
-        width: 60%;
-        height: 60px;
-        font-size: 17px;
-        font-family: var(--font);
-        padding: 8px 0;
+      .username {
+        font-size: 20px;
+        color: var(--off-black-font-color);
       }
 
-      .characterCount {
-        font-size: 12px;
+      .newUsername {
+        display: block;
+        font-size: 20px;
+        font-weight: 500;
+        width: fit-content;
+        padding: 3px 5px;
+        margin: 15px 0;
+        border-radius: 3px;
+        border: 1px solid black;
+        color: var(--off-black-font-color);
+        background-color: white;
+      }
+
+      .newUsername.none {
+        display: none;
+      }
+
+      .generateUsernameBtn {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        background-color: var(--burnt-gold);
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .secretPhrase {
+        font-size: 1.5rem;
+        font-weight: 500;
+        padding: 3px 5px;
+        text-align: left;
+        border: 1px solid var(--off-black-font-color);
+        background-color: white;
+      }
+
+      .updateBtn, 
+      .changePasswordBtn, 
+      .revealBtn, 
+      .hideBtn,
+      .deleteMyAcctBtn {
+        display: block;
+        font-size: 1.2rem;
+        padding: 10px 20px;
+        background-color: var(--off-black-font-color);
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .updateBtn.none {
+        display: none;
       }
       
       input {
@@ -52,38 +120,80 @@
         border-radius: 3px;
         margin: 15px 0;
       }
-      
-      .cancel {
-        background-color: rgb(0, 0, 0, 0.4);
-        padding: 8px 10px;
 
-        &:hover {
-          cursor: pointer;
+      .confirmContainer {
+        padding: 5px 15px;
+        width: 50%;
+        background-color: rgb(0, 0, 0, 0.2);
+
+        input {
+          width: 90%;
+          margin: 10px 0;
+          padding: 3px 5px;
+          font-size: 1.2rem;
+          border: 1px solid var(--off-black-font-color);
+          background-color: white;
         }
-      }
 
-      .save {
-        background-color: var(--tumblr-light-blue);
-        padding: 8px 15px;
-        margin-left: 15px;
-
-        &:hover {
-          cursor: pointer;
+        p {
+          font-weight: 500;
+          width: 80%;
+          cursor: default;
         }
-      }
-    }
 
-    .deleteMyAcctBtn {
-      background-color: rgb(0, 0, 0, 0.4);
-      color: white;
-      font-weight: 700;
-      padding: 8px 15px;
-      margin: 10px 0;
-      border-radius: 3px;
+        .innerConfirmContainer {
+          width: fit-content;
+          margin: 8px 0;
 
-      &:hover {
-        cursor: pointer;
-      }
+          #confirmChangeUsername {
+            width: fit-content;
+            cursor: pointer;
+          }
+
+          label {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: -4px 0 0 10px;
+          }
+        }
+
+        .confirmAlert {
+          display: block;
+          font-size: 1rem;
+          font-weight: 500;
+          border-radius: 3px;
+          padding: 3px 8px;
+          margin: 10px 0 5px 0;
+          color: white;
+          background-color: var(--candy-red);
+          cursor: default;
+        }
+
+        .confirmAlert.none {
+          display: none;
+        }
+
+        .saveOrCancelContainer {
+          .cancel {
+            background-color: rgb(0, 0, 0, 0.4);
+            padding: 8px 10px;
+    
+            &:hover {
+              cursor: pointer;
+            }
+          }
+    
+          .save {
+            background-color: var(--tumblr-light-blue);
+            padding: 8px 15px;
+            margin-left: 15px;
+    
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+      }   
     }
 
     .deleteMyAcct {
@@ -229,7 +339,8 @@
 
     .userSettingHeader {
       font-size: 22px;
-      margin: 10px 0 0 0;
+      margin: 15px 0;
+      text-decoration: underline;
     }
     
     .editPostBtn {
@@ -248,15 +359,19 @@
     
     h1 {
       font-size: 29px;
-      border-bottom: 2px solid rgb(0, 0, 0, 0.1);
+      // border-bottom: 2px solid rgb(0, 0, 0, 0.1);
       padding-bottom: 22px;
+    }
+
+    h3 {
+      font-size: 2rem;
+      font-weight: 500;
     }
 
     .settingContainer {
       position: relative;
       display: flex;
       width: 100%;
-      border-top: 1px solid rgb(0, 0, 0, 0.1);
 
       p {
         font-size: 15px;
@@ -281,96 +396,12 @@
           height: 20%;
           padding: 0 0 10px 0;
           margin: 10px 0 0 0;
-
-        }
-      }
-
-      .upload {
-
-        .previewImg {
-          
-          img {
-            width: 100%;
-            padding: 10px 0 0 0
-          }
         }
       }
     }
-
+    
     .upload {
-
-      .profilePicPreview {
-      
-        .previewImg {
-          position: relative;
-          width: 50%;
-          height: auto;
-          margin-bottom: 15px;
-    
-          .removeProPicBtn {
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            color: white;
-            font-weight: bold;
-            left: 120%;
-            background-color: red;
-
-            &:hover {
-              cursor: pointer;
-            }
-          }
-    
-          img {
-            display: block;
-            margin: auto;
-            object-fit: contain;
-          }
-        }
-    
-        .profilePicFileInputCustomLabel {
-          display: block;
-          margin: auto;
-          margin-bottom: 15px;
-          position: relative;
-          border-radius: 5px;
-          background-color: var(--light-gray);
-          height: 200px;
-          width: 200px;
-    
-          &:hover {
-            cursor: pointer;
-          }
-    
-          div {
-            display: flex;
-            position: relative;
-            flex-direction: column;
-            top: 50%;
-            transform: translateY(-50%);
-            
-            
-    
-            img {
-              display: block;
-              margin: auto;
-              width: 70px;
-              filter: grayscale(100%);
-              opacity: .7;
-            }
-    
-            span {
-              display: block;
-              margin: auto;
-            }
-          }
-        
-          #profilePicFileInput {
-            display: none;
-          }
-        }
-      }
+      margin: 10px 0;
     }
 
 

@@ -14,7 +14,7 @@ const { FETCH_USER } = Queries;
 const UserSettings = () => {
   let history = useHistory();
   
-  let { loading, error, data } = useQuery(FETCH_USER, {
+  let { loading, error, data, refetch } = useQuery(FETCH_USER, {
     variables: {
       query: Cookies.get('currentUser')
     }
@@ -46,45 +46,53 @@ const UserSettings = () => {
         <h1>Account</h1>
 
         <div
-          className='editEmail'
+          className='editUsername panel'
         >
           <h3
             className='userSettingHeader'
           >
-            Change username
+            Username
           </h3>
-          <ChangeUsername username={user.username} />
+          <h3>{user.username}</h3>
+          <ChangeUsername
+            refetchUser={refetch}
+            usernameProp={user.username} 
+          />
         </div>
 
         <div
-          className='editPassword'
+          className='editPassword panel'
         >
           <h3
             className='userSettingHeader'
           >
-            Change password
+            Password
           </h3>
           <ChangePassword user={user} />
         </div>
 
         <div
-          className='revealSecretRecoveryPhrase'
+          className='revealSecretRecoveryPhrase panel'
         >
           <h3
             className='userSettingHeader'
           >
-            Reveal Secret Recovery Phrase
+            Secret Recovery Phrase
           </h3>
           <RevealSecretRecoveryPhrase />
         </div>
 
         <div
-          className='deleteMyAcctContainer'
+          className='deleteMyAcctContainer panel'
         >
           <h3
             className='userSettingHeader'
-          >Delete My Account</h3>
-          <DeleteMyAccount />
+          >
+            Delete My Account
+          </h3>
+
+          <div>THIS NEEDS TO BE FINISHED AFTER CREATING PLEA AND SYMPATHY TYPEs</div>
+          {/* <DeleteMyAccount /> */}
         </div>
       </div>
     </div>

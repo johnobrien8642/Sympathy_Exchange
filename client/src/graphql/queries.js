@@ -52,6 +52,11 @@ const Queries = {
       fetchSecretRecoveryPhraseAfterRegister(timedToken: $timedToken)
     }
   `,
+  FETCH_SECRET_RECOVERY_PHRASE: gql`
+    query FetchSecretRecoveryPhrase($token: String) {
+      fetchSecretRecoveryPhrase(token: $token)
+    }
+  `,
   FETCH_USER_LIKES: gql`
     query FetchUserLikes($query: String) {
       fetchUserLikes(query: $query) {

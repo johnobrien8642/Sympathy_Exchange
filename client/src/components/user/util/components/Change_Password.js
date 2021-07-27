@@ -18,42 +18,28 @@ const Password = ({
   let [updateUserPassword] = useMutation(UPDATE_USER_PASSWORD, {
     onCompleted(data) {
       resetInputs()
-      setAlert(alert = 'Password updated')
+      setAlert('Password updated')
       setTimeout(() => {
-        setAlert(alert = '')
+        setAlert('')
       }, 5000)
-      setActive(active = false)
+      setActive(false)
     },
     onError(error) {
-      setError(errorMessage = error.message)
+      setError(error.message)
     }
-  })
+  });
 
   const resetInputs = () => {
-    setCurrentPW(currentPW = '')
-    setNewPassword(newPassword = '')
-    setConfNewPassword(confNewPassword = '')
-    setError(errorMessage = '')
-  }
-
-  const renderConfirmPW = () => {
-    if (newPassword) {
-      return (
-        <input
-          type='password'
-          placeholder='Confirm new password'
-          value={confNewPassword}
-          onChange={e => {
-            setConfNewPassword(confNewPassword = e.target.value)
-          }}
-        />
-      )
-    }
-  }
-
+    setCurrentPW('');
+    setNewPassword('');
+    setConfNewPassword('');
+    setError('');
+  };
+  
   if (active) {
     return (
       <form
+        className='upload'
         onSubmit={e => {
           e.preventDefault()
           if (newPassword === confNewPassword) {
@@ -72,41 +58,58 @@ const Password = ({
         <div
           className='inputAndBtnContainer'
         >
-          <input
-            type='password'
-            placeholder='Current password'
-            value={currentPW}
-            onChange={e => {
-              setCurrentPW(currentPW = e.target.value)
-            }}
-          />
-          <input
-            type='password'
-            placeholder='New password'
-            value={newPassword}
-            onChange={e => {
-              setNewPassword(newPassword = e.target.value)
-            }}
-          />
-          {renderConfirmPW()}
-          <p
-            className='errMessage'
-          >{errorMessage ? `${errorMessage}` : ''}</p>
-          <div>
-            <button
-              className='cancel'
-              type='button'
-              onClick={() => {
-                resetInputs()
-                setActive(active = false)
+          <div
+            className='confirmContainer'
+          >
+            <input
+              type='password'
+              placeholder='Current password'
+              value={currentPW}
+              onChange={e => {
+                setCurrentPW(e.target.value)
               }}
-            >Cancel</button>
-            <button
-              className='save'
-              type='submit'
+            />
+            <input
+              type='password'
+              placeholder='New password'
+              value={newPassword}
+              onChange={e => {
+                setNewPassword(e.target.value)
+              }}
+            />
+            <input
+              type='password'
+              placeholder='Confirm new password'
+              value={confNewPassword}
+              onChange={e => {
+                setConfNewPassword(e.target.value)
+              }}
+            />
+            <div
+              className='innerConfirmContainer'
             >
-              Save
-            </button>
+              <p
+                className='errMessage'
+              >{errorMessage ? `${errorMessage}` : ''}</p>
+              <div
+                className='saveOrCancelContainer'
+              >
+                <button
+                  className='cancel'
+                  type='button'
+                  onClick={() => {
+                    resetInputs()
+                    setActive(false)
+                  }}
+                >Cancel</button>
+                <button
+                  className='save'
+                  type='submit'
+                >
+                  Update
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </form>
@@ -114,22 +117,21 @@ const Password = ({
   } else {
     return (
       <div
-        className='settingContainer'
+        className='inputAndBtnContainer'
       >
-        <p>{alert ? `${alert}` : ''}</p>
-        <input
-            type='password'
-            disabled
-            value={'password'}
-          />
-        <img
-          className='editPostBtn'
-          src="https://img.icons8.com/windows/64/000000/edit--v1.png"
-          alt=''
+        <span
+          className={alert ? 'passwordAlert' : 'passwordAlert none'}
+        >
+          {alert}
+        </span>
+        <button
+          className='changePasswordBtn'
           onClick={() => {
-            setActive(active = true)
+            setActive(true)
           }}
-        />
+        >
+          Change password
+        </button>
       </div>
     )
   }

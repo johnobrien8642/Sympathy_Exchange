@@ -459,59 +459,24 @@ const mutation = new GraphQLObjectType({
           })
       }
     },
-    updateUserEmail: {
+    updateUsername: {
       type: UserType,
       args: {
-        email: { type: GraphQLString },
+        username: { type: GraphQLString },
         password: { type: GraphQLString },
         user: { type: GraphQLString }
       },
       resolve(parentValue, {
-        email, password, user
+        username, password, user
       }) {
-        return User.findOne({ blogName: user })
+        return User.findOne({ username: user })
           .then(user => {
             if (bcrypt.compareSync(password, user.password)) {
-              if (Validator.isURL(email)) {
-                return User.findOne({ email: email })
-                  .then(userExists => {
-                    if (!userExists) {
-                      user.email = email
-                      return user.save()
-                        .then(user => user)
-                    } else {
-                      return new Error('This email already exists')
-                    }
-                  })
-              }
+              user.username = username
+              return user.save()
+                .then(user => user)
             }
           })
-      }
-    },
-    updateUserBlogDescription: {
-      type: UserType,
-      args: {
-        blogDescription: { type: GraphQLString },
-        password: { type: GraphQLString },
-        user: { type: GraphQLString }
-      },
-      resolve(parentValue, {
-        blogDescription, password, user
-      }) {
-        if (blogDescription.length < 150) {
-          return User.findOne({ blogName: user })
-            .then(user => {
-              if (bcrypt.compareSync(password, user.password)) {
-                user.blogDescription = blogDescription
-                return user.save()
-                  .then(user => user)
-              } else {
-                return new Error('Incorrect password')
-              }
-            })
-        } else {
-          return new Error('Blog Description must be 150 characters or less')
-        }
       }
     },
     updateUserPassword: {
@@ -527,8 +492,8 @@ const mutation = new GraphQLObjectType({
         if (!Validator.isLength(newPassword, { min: 7, max: 33})) {
           return new Error("Password length must be between 8 and 32 characters")
         }
-
-        return User.findOne({ blogName: user })
+        
+        return User.findOne({ username: user })
           .then(user => {
             if (bcrypt.compareSync(currentPW, user.password)) {
               var alreadyUsed = false
@@ -544,10 +509,15 @@ const mutation = new GraphQLObjectType({
                   .then(newHash => {
                     user.oldPasswords.push(user.password)
                     user.password = newHash
+
+                    user.markModified('oldPasswords')
+                    return user.save().then(user => user)
                   })
               } else {
                 throw new Error("Choose a password you haven't used before")
               }
+            } else {
+              throw new Error("Current password is incorrect")
             }
           })
       }
