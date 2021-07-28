@@ -5,16 +5,17 @@ import BrowserNav from './Browser_Nav';
 import MobileNav from './Mobile_Nav';
 
 import Queries from '../../graphql/queries';
+import Cookies from 'js-cookie';
 const { IS_LOGGED_IN,
         FETCH_USER_DETAILS_COUNTS,
         FETCH_USER } = Queries;
 
 const Nav = ({
-  currentUser
+  currentUser,
 }) => {
   let cursorId = useRef(new Date().getTime())
   
-  var { loading: loading1, 
+  var { loading: loading1,
         error: error1,
         data: userDetailsCounts, 
         refetch: refetchCounts } = useQuery(FETCH_USER_DETAILS_COUNTS, {
@@ -35,12 +36,14 @@ const Nav = ({
 
     useEffect(() => {
 
+      console.log(Cookies.get('currentUser'))
+    
       return () => {
         refetchCounts()
         refetchUser()
       };
       //eslint-disable-next-line
-    }, [])
+    }, [Cookies.get('currentUser')])
       
       var { data: loggedInBool } = useQuery(IS_LOGGED_IN)
 

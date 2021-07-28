@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import Mutations from '../../graphql/mutations'
 import Queries from '../../graphql/queries'
 const { LOGIN_USER } = Mutations;
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, FETCH_USER } = Queries;
 
 const Login = ({
   setCurrentUser
@@ -14,24 +14,32 @@ const Login = ({
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
   let [errorMessages, addErrorMessage] = useState([]);
+  let [temp, setTemp] = useState('');
   const location = useLocation();
   const history = useHistory();
-  
+
   useEffect(() => {
     if (location.state) {
       addErrorMessage(errorMessages.concat(location.state.errMessage))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [temp])
   
   const [ loginUser ] = useMutation(LOGIN_USER, {
     update(client, { data }) {
+      const { loggedIn, username, token } = data.loginUser
+      
       client.writeQuery({
         query: IS_LOGGED_IN,
         data: {
-          isLoggedIn: data.loginUser.loggedIn,
+          isLoggedIn: loggedIn,
         }
       })
+
+      setCurrentUser(username)
+      Cookies.set('auth-token', token)
+      Cookies.set('currentUser', username)
+      resetInputs()
     },
     onError(error) {
       addErrorMessage(errorMessages = [])
@@ -39,13 +47,7 @@ const Login = ({
         addErrorMessage(errorMessages.concat(error.message))
       })
     },
-    onCompleted({ loginUser }) {
-      const { token, username } = loginUser;
-      Cookies.set('auth-token', token)
-      Cookies.set('currentUser', username)
-      resetInputs();
-      setCurrentUser(username)
-
+    onCompleted() {
       history.push('/');
     },
   })

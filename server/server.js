@@ -5,10 +5,6 @@ import path from 'path';
 import models from './models/index.js';
 import keys from './config/keys.js'
 import schema from './schema/schema.js';
-import posts from './routes/api/posts.js';
-import mailer from './routes/api/mailer.js';
-import CronUtil from './cron/cron_util.js'
-import { expressCspHeader, SELF } from 'express-csp-header';
 import cors from 'cors';
 global.__dirname = path.resolve('./')
 const app = express();
@@ -34,13 +30,6 @@ if (process.env.NODE_ENV === 'production') {
 }
   
 app.use(express.json({ limit: '50mb' }))
-app.use('/api/posts', posts);
-app.use('/api/mailer', mailer);
-app.use(expressCspHeader({
-  directives: {
-    'frame-ancestors': [SELF, 'https://open.spotify.com/', 'soundcloud.com']
-  }
-}))
 app.use(cors({ credentials: true, origin: true }));
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))

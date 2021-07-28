@@ -1,13 +1,9 @@
 import graphql from 'graphql';
 import mongoose from 'mongoose';
-import PleaOrVariantType from '../unions/plea_or_variant_type.js'
-import TagType from '../objects/posts/util/tag_type.js'
-import LikeType from '../objects/posts/util/like_type.js'
-import RepostType from '../objects/posts/util/repost_type.js'
-import FollowType from '../objects/posts/util/follow_type.js'
-import ImageType from './posts/util/image_type.js';
-import PleaType from './posts/types/plea_type.js';
-import VariantType from './posts/types/variant_type.js';
+import PleaType from '../objects/plea_type.js'
+import TagType from '../objects/tag_type.js'
+import SympathyType from '../objects/sympathy_type.js'
+import FollowType from './follow_type.js'
 const User = mongoose.model('User');
 const { GraphQLObjectType, GraphQLString,
         GraphQLList, GraphQLInt,

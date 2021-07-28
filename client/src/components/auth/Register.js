@@ -20,12 +20,19 @@ const Register = ({
   
   const [ registerUser ] = useMutation(REGISTER_USER, {
     update(client, { data }) {
+      const { loggedIn, username, token } = data.registerUser
+
       client.writeQuery({
         query: IS_LOGGED_IN,
         data: {
-          isLoggedIn: data.registerUser.loggedIn,
+          isLoggedIn: loggedIn
         }
       })
+
+      setCurrentUser(username)
+      Cookies.set('auth-token', token);
+      Cookies.set('currentUser', username);
+      resetInputs();
     },
     onError(error) {  
       addErrorMessage(errorMessages = [])
@@ -34,11 +41,8 @@ const Register = ({
       })
     },
     onCompleted({ registerUser }) {
-      const { token, username, timedSecretRecoveryPhraseAccessToken } = registerUser;
-      Cookies.set('auth-token', token);
-      Cookies.set('currentUser', username);
-      resetInputs();
-      setCurrentUser(username)
+      const { timedSecretRecoveryPhraseAccessToken } = registerUser;
+      
 
       history.push({ 
         pathname: '/reveal_secret_recovery_phrase', 

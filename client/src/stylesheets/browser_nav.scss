@@ -234,13 +234,21 @@
     position: relative;
     margin-top: 10px;
 
-    .homeIcon {
-      margin-right: 25px;
+    .homeLink,
+    .usernameLink {
+      span {
+        color: black;
+      }
+    }
+
+    .homeLink{
+      margin: -6px 15px 0 0;
+      font-size: 1.1rem;
+      font-weight: 500;
+      height: fit-content;
 
       img {
-        filter: contrast(500%);
-        width: 45px;
-        height: 45px;
+        width: 50px;
 
         &:hover {
           cursor: pointer;
@@ -248,106 +256,19 @@
       }
     }
 
-    .discoverIcon {
-      margin-right: 20px;
+    .usernameLink {
+      position: relative;
+      margin: 8px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      height: fit-content;
 
-      
-      img {
-        filter: contrast(500%);
-        width: 45px;
-        height: 45px;
+      span {
 
         &:hover {
           cursor: pointer;
         }
       }
-    }
-
-    .activityIcon {
-      margin-right: 18px;
-      
-      &:hover {
-        cursor: pointer;
-      }
-
-      img {
-        filter: contrast(500%);
-        width: 45px;
-        height: 45px;
-      }
-    }
-
-    .userIcon {
-      margin-right: 10px;
-
-      &:hover {
-        cursor: pointer;
-      }
-      
-      img {
-        filter: contrast(500%);
-        width: 45px;
-        height: 45px;
-      }
-    }
-
-    .activityIcon {
-      position: relative;
-
-      .countAlertWrapperDiv {
-        position: absolute;
-        background-color: #011328;
-        height: 29px;
-        width: 29px;
-        top: -1px;
-        left: 25px;
-        border-radius: 5px;
-
-        div {
-          display: inline-block;
-          position: relative;
-          height: 23.5px;
-          top: -0.1px;
-          left: 3.2px;
-          width: 23.5px;
-          font-size: 13px;
-          background-color: #14A7FF;
-          border-radius: 2.5px;
-          
-          
-          .oneThroughTen {
-            position: relative;
-            margin: auto;
-            color: #011328;
-            font-weight: 700;
-            font-size: 14px;
-            top: 0px;
-            left: 8px;
-          }
-
-          .elevenThroughNinetyNine {
-            position: relative;
-            margin: auto;
-            color: #011328;
-            font-weight: 700;
-            top: 2px;
-            left: 4px;
-          }
-        
-          .greaterThanNinetyNine {
-            position: relative;
-            margin: auto;
-            color: #011328;
-            font-weight: 700;
-            top: 2px;
-            left: 0.8px;
-          }
-        }
-      }
-    }
-
-    .userIcon {
-      position: relative;
     }
 
     .activity {

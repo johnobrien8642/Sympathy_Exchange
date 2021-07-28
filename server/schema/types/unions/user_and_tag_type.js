@@ -1,6 +1,6 @@
 import graphql from'graphql';
 import UserType from '../objects/user_type.js';
-import TagType from '../objects/posts/util/tag_type.js';
+import TagType from '../objects/tag_type.js';
 const { GraphQLUnionType } = graphql;
 
 const UserAndTagType = new GraphQLUnionType({

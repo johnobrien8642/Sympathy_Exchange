@@ -69,7 +69,7 @@ const MobileNav = ({
           />
         </div>
 
-        <MobileMenuDD
+        {/* <MobileMenuDD
           activityCounts={activityCounts}
           userDetailsCounts={userDetailsCounts}
           loggedInBool={loggedInBool}
@@ -80,7 +80,7 @@ const MobileNav = ({
           cursorId={cursorId}
           scrollYRef={scrollYRef}
           scrollYRef2={scrollYRef2}
-        />
+        /> */}
 
         <MobileSearchOrLogo 
           searchOpen={searchOpen}
