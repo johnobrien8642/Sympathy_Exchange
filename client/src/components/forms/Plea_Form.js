@@ -40,7 +40,7 @@ const PleaForm = ({
   }, [showTagAlert, perspectiveAlert]);
 
   useEffect(() => {
-    var noFirstPerson = new RegExp(/(?<=\s|^)(?:I|I'd|I'd've|I'll|I'm|Imma|Im|Ill|Id|I've|Ive|Iv)(?=\s)/, 'gmi');
+    var noFirstPerson = new RegExp(/(?<=\s|^)(?:I|I'd|I'd've|I'll|I'm|Imma|Im|Ill|Id|I've|Ive|Iv){1,}(?=\s)/, 'gmi');
     
     if (noFirstPerson.test(plea)) {
       setTimeout(() => {
