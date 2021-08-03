@@ -1,5 +1,5 @@
 import React from 'react';
-import PostFormUtil from '../posts/util/functions/post_form_util.js';
+import PostFormUtil from '../forms/util_functions/post_form_util.js';
 const { allowScroll, preventScroll } = PostFormUtil;
 
 const HamburgerOrExitIcon = ({

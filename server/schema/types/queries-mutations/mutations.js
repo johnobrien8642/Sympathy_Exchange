@@ -10,11 +10,11 @@ import keys from '../../../config/keys.js'
 import UserType from '../objects/user_type.js';
 import AuthService from '../../../services/auth_util.js';
 
-
-import SympathyType from '../objects/sympathy_type.js';
-import FollowType from '../objects/follow_type.js';
+import PleaInputType from '../inputs/plea_input_type.js';
 import RegisterUserInputType from '../inputs/register_user_input_type.js';
 import PleaType from '../objects/plea_type.js';
+import SympathyType from '../objects/sympathy_type.js';
+import FollowType from '../objects/follow_type.js';
 import UserAndTagType from '../unions/user_and_tag_type.js';
 import createOrUpdatePost from '../../../models/util/create_or_update_function.js';
 import DeleteFunctionUtil from '../../../models/util/delete_function_util.js';
@@ -41,6 +41,24 @@ var s3Client = new aws.S3({
 const mutation = new GraphQLObjectType({
   name: 'Mutations',
   fields: () => ({
+    createPlea: {
+      type: PleaType,
+      args: {
+        pleaInputData: { type: PleaInputType }
+      },
+      resolve(_, { pleaInputData }) {
+        const { author, text, tags } = pleaInputData;
+
+        var plea = new Plea({
+          author: author,
+          text: text
+        });
+
+        tags.forEach(tag => plea.tagIds.push(tag._id));
+
+        return plea.save();
+      }
+    },
     registerUser: {
       type: UserType,
       args: {
@@ -59,15 +77,6 @@ const mutation = new GraphQLObjectType({
         return AuthService.generateRandomUsername()
       }
     },
-    logoutUser: {
-      type: UserType,
-      args: {
-        token: { type: GraphQLString }
-      },
-      resolve(_, { token }) {
-        return AuthService.logout(token)
-      }
-    },
     loginUser: {
       type: UserType,
       args: {
@@ -76,6 +85,15 @@ const mutation = new GraphQLObjectType({
       },
       resolve(_, args) {
         return AuthService.login(args)
+      }
+    },
+    logoutUser: {
+      type: UserType,
+      args: {
+        token: { type: GraphQLString }
+      },
+      resolve(_, { token }) {
+        return AuthService.logout(token)
       }
     },
     verifyUser: {

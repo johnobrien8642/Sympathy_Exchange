@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PostFormUtil from '../../../functions/post_form_util.js'
+import PostFormUtil from '../../../../../forms/util_functions/post_form_util.js'
 const { removeBodyObj, drag, 
         onDropBody, allowDrop } = PostFormUtil;
 

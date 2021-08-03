@@ -6,7 +6,7 @@ import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 
 import Queries from '../../../../../../graphql/queries.js'
-import PostFormUtil from '../../../functions/post_form_util.js'
+import PostFormUtil from '../../../../../forms/util_functions/post_form_util.js'
 const { MentionCustomization } = PostFormUtil;
 const { FETCH_USERS_FOR_MENTIONS } = Queries;
 

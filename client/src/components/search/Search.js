@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import SearchDropDown from './resultTypes/SearchDropDown';
+import SearchDropDown from './SearchDropDown';
 
 const Search = ({
+  user,
+  mobile,
   searchClose,
   closeSearch,
+  searchRef,
   setActivityOpen,
   setDetailsOpen,
   openSearch,
-  mobile,
-  user
 }) => {
   let [input, setInput] = useState('');
   let [followedActive, setFollowedActive] = useState(mobile ? true : false)
@@ -42,18 +43,14 @@ const Search = ({
       <div
         className='searchBar'
         tabIndex='0'
+        ref={searchRef}
         onBlur={e => onBlur(e)}
         onFocus={e => {
           if (
             !e.relatedTarget || 
             e.relatedTarget.localName === 'a'
           ) {
-            setFollowedActive(true)
-
-            if (!mobile) {
-              setActivityOpen(false)
-              setDetailsOpen(false)
-            }
+            setFollowedActive(true);    
           }
         }}
       >
@@ -70,29 +67,20 @@ const Search = ({
           value={input}
           placeholder={'How are you suffering?'}
           onClick={() => {
-            // var el = document.querySelector('.searchIcon')
-            // el.style.opacity = '1'
             searchIconImgRef.current.style.opacity = '1'
-            
-            if (!mobile) {
-              setDetailsOpen(false)
-              setActivityOpen(false)
-            }
           }}
           onBlur={() => {
-            // var el = document.querySelector('.searchIcon')
-            // el.style.opacity = '.3'
             searchIconImgRef.current.style.opacity = '.3'
           }}
           onChange={e => {
               if (e.target.value === "") {
-                setInput(e.target.value)
-                setFollowedActive(true)
+                setInput(e.target.value);
+                setFollowedActive(true);
               } else {
-                setInput(e.target.value)
-                setFollowedActive(false)
-                setActive(true)
-              }
+                setInput(e.target.value);
+                setFollowedActive(false);
+                setActive(true);
+              };
           }}
         />
 
@@ -123,13 +111,9 @@ const Search = ({
           value={input}
           placeholder={'How are you suffering?'}
           onClick={() => {
-            // var el = document.querySelector('.searchIcon')
-            // el.style.opacity = '1'
             searchIconImgRef.current.style.opacity = '1'
           }}
           onBlur={() => {
-            // var el = document.querySelector('.searchIcon')
-            // el.style.opacity = '.3'
             searchIconImgRef.current.style.opacity = '.3'
           }}
           onChange={e => setInput(e.target.value)}

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import Cookies from 'js-cookie';
 
@@ -11,11 +11,11 @@ const { UPDATE_USERNAME, GENERATE_USERNAME } = Mutations;
 const { updateCacheUpdateUsername } = UserSettingsUtil;
 
 const ChangeUsername = ({
-  usernameProp,
-  refetchUser
+  usernameProp
 }) => {
   let [active, setActive] = useState(false);
   let [confirm, setConfirm] = useState(false);
+  //eslint-disable-next-line
   let [username, setUsername] = useState(usernameProp);
   let [newUsername, setNewUsername] = useState('');
   let [password, setPassword] = useState('');
@@ -156,6 +156,7 @@ const ChangeUsername = ({
         });
       }}
     >
+      <p>{errorMessage ? 'There was an error changing your username, please try again later' : ''}</p>
       <div
         className='inputAndBtnContainer'
       >

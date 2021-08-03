@@ -2,19 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import Search from '../search/Search';
-import MobileMenuDD from './Mobile_Menu_DD';
+// import MobileMenuDD from './Mobile_Menu_DD';
 import MobileSearchOrLogo from './Mobile_Search_Or_Logo';
 import RenderSearchOrExitIcon from './Render_Search_Or_Exit_Icon';
 import HamburgerOrExitIcon from './Hamburger_Or_Exit_Icon';
 
-import PostFormUtil from '../posts/util/functions/post_form_util.js';
+import PostFormUtil from '../forms/util_functions/post_form_util.js';
 const { preventScroll, allowScroll } = PostFormUtil;
 
 const MobileNav = ({
-  activityCounts, 
-  userDetailsCounts,
   loggedInBool,
-  cursorId
+  // activityCounts, 
+  // userDetailsCounts,
+  // cursorId
 }) => {
   let [menuOpen, openMenu] = useState(false)
   let [settingsOpen, openSettings] = useState(false)

@@ -7,31 +7,23 @@ const TagSchema = new Schema({
     required: true,
     index: true
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+  description: {
+    type: String,
+    required: true
+  },
+  postCount: {
+    type: Number,
+    default: 0
   },
   createdAt: {
     type: Date,
     default: Date.now
   },
-  followerCount: {
-    type: Number,
-    default: 0
-  },
-  followerHeatLastWeek: {
-    type: Number,
-    default: 0
-  },
-  postHeatLastWeek: {
-    type: Number,
-    default: 0
-  },
   kind: {
     type: String,
     default: 'Tag'
   }
-})
+});
 
 const Tag = mongoose.model('Tag', TagSchema, 'tags');
 

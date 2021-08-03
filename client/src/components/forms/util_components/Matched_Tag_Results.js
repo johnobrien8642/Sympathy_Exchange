@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
-import Queries from '../../../../../graphql/queries.js';
-import PostFormUtil from '../../functions/post_form_util.js';
+import Queries from '../../../graphql/queries.js';
+import PostFormUtil from '../util_functions/post_form_util.js';
 const { FETCH_MATCHING_TAGS } = Queries;
 const { handleFoundTag } = PostFormUtil;
 

@@ -3,6 +3,39 @@ import AllPostQueryFragment from './all_posts_query_fragment.js';
 const { ALL_POSTS, ALL_POSTS_ACTIVITY } = AllPostQueryFragment;
 
 const Queries = {
+  FETCH_USER: gql`
+    query fetchUser($query: String) {
+      user(query: $query) {
+        _id
+        username
+        tagFollows {
+          _id
+          title
+        }
+        kind
+      }
+    }
+  `,
+  FETCH_SECRET_RECOVERY_PHRASE_AFTER_REGISTER: gql`
+    query FetchSecretRecoveryPhraseAfterRegister($timedToken: String) {
+      fetchSecretRecoveryPhraseAfterRegister(timedToken: $timedToken)
+    }
+  `,
+  FETCH_SECRET_RECOVERY_PHRASE: gql`
+    query FetchSecretRecoveryPhrase($token: String) {
+      fetchSecretRecoveryPhrase(token: $token)
+    }
+  `,
+  FETCH_ALL_TAGS: gql`
+    query FetchAllTags {
+      fetchAllTags {
+        _id
+        title
+        description
+        postCount
+      }
+    }
+  `,
   FETCH_USER_FEED: gql`
     query FetchUserFeed($query: String, $cursorId: String) {
       fetchUserFeed(query: $query, cursorId: $cursorId) {
@@ -47,16 +80,7 @@ const Queries = {
       }
     }
   `,
-  FETCH_SECRET_RECOVERY_PHRASE_AFTER_REGISTER: gql`
-    query FetchSecretRecoveryPhraseAfterRegister($timedToken: String) {
-      fetchSecretRecoveryPhraseAfterRegister(timedToken: $timedToken)
-    }
-  `,
-  FETCH_SECRET_RECOVERY_PHRASE: gql`
-    query FetchSecretRecoveryPhrase($token: String) {
-      fetchSecretRecoveryPhrase(token: $token)
-    }
-  `,
+  
   FETCH_USER_LIKES: gql`
     query FetchUserLikes($query: String) {
       fetchUserLikes(query: $query) {
@@ -541,19 +565,6 @@ const Queries = {
      query currentUser {
        currentUser @client
      }
-  `,
-  FETCH_USER: gql`
-    query fetchUser($query: String) {
-      user(query: $query) {
-        _id
-        username
-        tagFollows {
-          _id
-          title
-        }
-        kind
-      }
-    }
   `,
   FETCH_POST_RADAR: gql`
     query FetchPostRadar($query: String) {

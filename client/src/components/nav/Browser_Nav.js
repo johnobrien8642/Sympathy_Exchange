@@ -2,22 +2,24 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import Search from '../search/Search';
+import CreatePleaButton from './Create_Plea_Button';
 // import UserDetails from './User_Details';
 // import ActivityCountIcon from '../nav/Activity_Count_Icon';
 
 const BrowserNav = ({
   user,
-  userDetailsCounts,
+  // userDetailsCounts,
   loggedInBool,
 }) => {
-  let [searchClose, closeSearch] = useState(false)
-  let [activityClose, closeActivity] = useState(false)
-  let [detailsClose, closeDetails] = useState(false)
-  let [activityOpen, setActivityOpen] = useState(false)
-  let [detailsOpen, setDetailsOpen] = useState(false)
-  let cursorId = useRef(new Date().getTime())
-  let totalActivityCountRef = useRef(0)
-  
+  let [searchClose, closeSearch] = useState(false);
+  // let [activityClose, closeActivity] = useState(false);
+  // let [detailsClose, closeDetails] = useState(false);
+  // let [activityOpen, setActivityOpen] = useState(false);
+  // let [detailsOpen, setDetailsOpen] = useState(false);
+  // let cursorId = useRef(new Date().getTime());
+  // let totalActivityCountRef = useRef(0);
+  let searchRef = useRef(null);
+
   if (loggedInBool.isLoggedIn) {
     return (
       <div
@@ -42,10 +44,13 @@ const BrowserNav = ({
               user={user}
               searchClose={searchClose}
               closeSearch={closeSearch}
-              setDetailsOpen={setDetailsOpen}
-              setActivityOpen={setActivityOpen}
+              searchRef={searchRef}
             />
         </div>
+
+        <CreatePleaButton 
+          user={user} 
+        />
 
         <div
           className='navTools'
@@ -56,10 +61,8 @@ const BrowserNav = ({
             <Link
               to='/dashboard'
               onClick={() => {
-                if (document.querySelector('.searchBar')) {
-                  document.querySelector('.searchBar').blur()
-                }
-
+                searchRef.current.blur()
+            
                 closeSearch(true);
               }}
             >

@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import Mutations from '../../graphql/mutations'
 import Queries from '../../graphql/queries'
 const { LOGIN_USER } = Mutations;
-const { IS_LOGGED_IN, FETCH_USER } = Queries;
+const { IS_LOGGED_IN } = Queries;
 
 const Login = ({
   setCurrentUser
@@ -14,7 +14,6 @@ const Login = ({
   let [username, setUsername] = useState('');
   let [password, setPassword] = useState('');
   let [errorMessages, addErrorMessage] = useState([]);
-  let [temp, setTemp] = useState('');
   const location = useLocation();
   const history = useHistory();
 
@@ -23,12 +22,12 @@ const Login = ({
       addErrorMessage(errorMessages.concat(location.state.errMessage))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [temp])
+  }, []);
   
   const [ loginUser ] = useMutation(LOGIN_USER, {
     update(client, { data }) {
       const { loggedIn, username, token } = data.loginUser
-      
+
       client.writeQuery({
         query: IS_LOGGED_IN,
         data: {
@@ -50,13 +49,13 @@ const Login = ({
     onCompleted() {
       history.push('/');
     },
-  })
+  });
   
   const resetInputs = () => {
     setUsername(username = '');
     setPassword(password = '');
     addErrorMessage(errorMessages = []);
-  }
+  };
 
   return (
     <div
@@ -136,7 +135,7 @@ const Login = ({
         </Link>
       </form>
     </div>
-  )
-}
+  );
+};
 
 export default Login;

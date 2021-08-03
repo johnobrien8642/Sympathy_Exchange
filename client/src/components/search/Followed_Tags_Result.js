@@ -1,6 +1,6 @@
 import React from 'react';
 
-import TagResult from '../resultTypes/Tag_Result';
+import TagResult from './result_types/Tag_Result';
 
 const FollowedTags = ({
   user,

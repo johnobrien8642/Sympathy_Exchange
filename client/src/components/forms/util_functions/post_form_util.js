@@ -453,10 +453,10 @@ const handleTagInput = (
       var cleanedArr = cleanedText.filter(str => str !== '')
       cleanedArr[0].trim()
       setTags(tags.concat(`#${cleanedArr[0]}`))
-      setTag(tag = '')
+      setTag('')
     }
   } else {
-    setTag(tag = '')
+    setTag('')
   }
 }
 
@@ -468,7 +468,7 @@ const handleFoundTag = (
     tag
   ) => {
   setTags(tags.concat(title))
-  setTag(tag = '')
+  setTag('')
 }
 
 //drag and drop

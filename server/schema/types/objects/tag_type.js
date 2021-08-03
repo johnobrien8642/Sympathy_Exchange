@@ -10,18 +10,47 @@ const TagType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     title: { type: GraphQLString },
-    kind: { type: GraphQLString },
+    description: { type: GraphQLString },
+    postCount: {
+      type: GraphQLInt,
+      resolve(parentValue) {
+        return Tag.aggregate([
+          {
+            $lookup: {
+              from: 'pleas',
+              let: { tagId: parentValue._id },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        { $in: ["$$tagId", "$tagIds"] }
+                      ]
+                    }
+                  }
+                }
+              ],
+              as: "pleas"
+            }
+          },
+          {
+            $project: {
+              pleaCount: { $size: "$pleas" }
+            }
+          }
+        ])
+        .then(res => res[0].pleaCount)
+      }
+    },
     user: {
       type: UserType,
       resolve(parentValue) {
         return Tag.findById(parentValue._id)
-          .populate('user')
-          .then(tag => tag.user)
+        .populate('user')
+        .then(tag => tag.user)
       }
     },
-    followerCount: { type: GraphQLInt },
-    followerHeatLastWeek: { type: GraphQLInt },
-    postHeatLastWeek: { type: GraphQLInt }
+    kind: { type: GraphQLString },
   })
 })
 

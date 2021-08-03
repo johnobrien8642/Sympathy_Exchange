@@ -2,10 +2,10 @@ import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
 import Cookies from 'js-cookie';
 
-import Queries from '../../../../../graphql/queries.js';
-import Mutations from '../../../../../graphql/mutations.js';
-import UpdateCacheUtil from '../../../util/functions/update_cache_util.js';
-import doesUserFollow from '../../functions/does_user_follow.js';
+import Queries from '../../graphql/queries.js';
+import Mutations from '../../graphql/mutations.js';
+import UpdateCacheUtil from '../forms/util_functions/update_cache_util.js';
+import doesUserFollow from '../forms/util_functions/does_user_follow.js';
 const { FOLLOW, UNFOLLOW } = Mutations;
 const { FETCH_USER } = Queries;
 const { followUpdate, unfollowUpdate } = UpdateCacheUtil;

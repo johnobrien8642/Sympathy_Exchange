@@ -1,8 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 
-import UserResult from './resultTypes/User_Result';
-import TagResult from './resultTypes/Tag_Result';
+import UserResult from './result_types/User_Result';
+import TagResult from './result_types/Tag_Result';
 
 import Queries from '../../graphql/queries';
 const { SEARCH_USERS_AND_TAGS } = Queries;

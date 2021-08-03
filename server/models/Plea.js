@@ -4,55 +4,32 @@ const Schema = mongoose.Schema;
 const options = { discriminatorKey: 'kind' }
 
 const PleaSchema = new Schema({
-  user: {
+  text: {
+    type: String
+  },
+  author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     index: true
   },
-  allText: {
-    type: String
-  },
-  descriptions: [
-    {
-      kind: String,
-      content: String,
-      displayIdx: Number
-    }
-  ],
-  descriptionImages: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Image'
-    }
-  ],
   tagIds: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Tag'
+      ref: 'Tag',
+      required: true
     }
   ],
-  tagTitles: {
-    type: String
+  chained: {
+    type: Boolean,
+    default: false
   },
-  mentions: [
+  pleaIdChain: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Mention'
-    }
+      ref: 'Plea'
+    },
   ],
-  notesCount: {
-    type: Number,
-    default: 0
-  },
-  notesHeatLastTwoDays: {
-    type: Number,
-    default: 0
-  },
   createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
     type: Date,
     default: Date.now
   },

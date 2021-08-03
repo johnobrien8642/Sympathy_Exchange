@@ -97,6 +97,12 @@ const RootQueryType = new GraphQLObjectType({
           })
       }
     },
+    fetchAllTags: {
+      type: GraphQLList(TagType),
+      resolve(_) {
+        return Tag.find()
+      }
+    },
     // fetchMatchingTags: {
     //   type: new GraphQLList(TagType),
     //   args: { filter: { type: GraphQLString } },

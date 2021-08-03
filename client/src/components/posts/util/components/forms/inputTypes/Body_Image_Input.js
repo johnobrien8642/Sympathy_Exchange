@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import PostFormUtil from '../../../functions/post_form_util.js'
+import PostFormUtil from '../../../../../forms/util_functions/post_form_util.js'
 const { previewBodyImages, previewLink } = PostFormUtil;
 
 const BodyImageInput = ({

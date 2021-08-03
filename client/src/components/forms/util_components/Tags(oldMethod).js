@@ -2,25 +2,25 @@ import React, { useEffect } from 'react';
 
 import MatchedTagResults from './Matched_Tag_Results'
 
-import PostFormUtil from '../../functions/post_form_util.js'
-import PostUpdateUtil from '../../functions/post_update_util.js'
+import PostFormUtil from '../util_functions/post_form_util.js';
+import PostUpdateUtil from '../util_functions/post_update_util.js';
 const { pushTags } = PostUpdateUtil;
 const { handleTagInput, removeTag } = PostFormUtil;
 
 const Tags = ({
-  post, 
   tags, 
   setTags,
   tag, 
-  setTag
+  setTag,
+  addOrRemoveTagCB
 }) => {
 
-  useEffect(() => {
-    if (post) {
-      pushTags(post.tagIds, tags, setTags)
-    }  
-    //eslint-disable-next-line
-  }, [])
+  // useEffect(() => {
+  //   if (post) {
+  //     pushTags(post.tagIds, tags, setTags)
+  //   }  
+  //   //eslint-disable-next-line
+  // }, [])
 
   return (
     <div
@@ -52,7 +52,7 @@ const Tags = ({
           type='text'
           value={tag}
           placeholder='#tags'
-          onChange={e => setTag(tag = e.target.value)}
+          onChange={e => setTag(e.target.value)}
           onKeyDown={e => {
             if (
               (e.key === 'Enter' && tag) ||
@@ -85,8 +85,10 @@ const Tags = ({
                 tag
               ) {
                 handleTagInput(
-                  tag, setTag,
-                  tags, setTags
+                  tag, 
+                  setTag,
+                  tags, 
+                  setTags
                 )
               }
             }

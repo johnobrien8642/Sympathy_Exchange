@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import Logout from '../auth/Logout';
 
 import Queries from '../../graphql/queries.js';
-import PostFormUtil from '../posts/util/functions/post_form_util.js';
+import PostFormUtil from '../forms/util_functions/post_form_util.js';
 const { FETCH_ACTIVITY_COUNTS } = Queries;
 const { allowScroll } = PostFormUtil;
 

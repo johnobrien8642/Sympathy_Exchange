@@ -3,13 +3,19 @@ import AllPostQueryFragments from './all_posts_query_fragment.js'
 const { ALL_POSTS } = AllPostQueryFragments;
 
 const Mutations = {
-  LOGIN_USER: gql`
-    mutation LoginUser($username: String!, $password: String!) {
-      loginUser(username: $username, password: $password) {
+  CREATE_PLEA: gql`
+    mutation CreatePlea($pleaInputData: PleaInputType) {
+      createPlea(pleaInputData: $pleaInputData) {
         _id
-        token
-        loggedIn
-        username
+        text
+        author {
+          _id
+          username
+        }
+        tagIds {
+          _id
+          title
+        }
       }
     }
   `,
@@ -29,6 +35,25 @@ const Mutations = {
       generateUsername
     }
   `,
+  LOGIN_USER: gql`
+    mutation LoginUser($username: String!, $password: String!) {
+      loginUser(username: $username, password: $password) {
+        _id
+        token
+        loggedIn
+        username
+      }
+    }
+  `,
+  LOGOUT_USER: gql`
+  mutation LogoutUser($token: String!) {
+    logoutUser(token: $token) {
+      token
+      loggedIn
+      username
+    }
+  }
+  `,
   VERIFY_USER: gql`
     mutation VerifyUser($token: String!) {
       verifyUser(token: $token) {
@@ -36,24 +61,15 @@ const Mutations = {
       }
     }
   `,
-  LOGOUT_USER: gql`
-    mutation LogoutUser($token: String!) {
-      logoutUser(token: $token) {
-        token
-        loggedIn
-        username
-      }
-    }
-  `,
   RECOVER_ACCOUNT: gql`
-    mutation RecoverAccount($secretRecoveryPhrase: String) {
-      recoverAccount(secretRecoveryPhrase: $secretRecoveryPhrase) {
-        _id
-        token
-        loggedIn
-        username
-      }
+  mutation RecoverAccount($secretRecoveryPhrase: String) {
+    recoverAccount(secretRecoveryPhrase: $secretRecoveryPhrase) {
+      _id
+      token
+      loggedIn
+      username
     }
+  }
   `,
   LIKE_POST: gql`
     mutation LikePost($postId: ID, $user: String, $postKind: String) {

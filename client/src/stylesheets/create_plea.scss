@@ -1,0 +1,380 @@
+.browserNav, .mobileNav {
+
+  .createPleaContainer {
+    height: fit-content;
+    margin: auto;
+
+    .createPleaBtn {
+      padding: 8px 15px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      white-space: nowrap;
+      box-sizing: content-box;
+      border-radius: 5px;
+      background-color: var(--burnt-gold);
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .pleaFormContainer.active {
+      position: relative;
+      display: block;
+      overflow: auto;
+
+      .pleaFormModal {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100%;
+        background-color: rgb(0,0,0,0.5);
+        z-index: 900;
+        overflow: auto;
+
+        form {
+          position: absolute;
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 200px;
+          width: 700px;
+          // height: 1px;
+          min-height: 480px;
+          top: 10%;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: var(--off-white);
+          z-index: 901;
+
+          .header {
+            display: flex;
+
+            h3 {
+              margin: 10px 18px;
+              font-weight: 500;
+
+              &:hover {
+                cursor: default;
+              }
+            }
+
+            a {
+              display: inline-block;
+              height: fit-content;
+              font-size: 1.1rem;
+              margin: 9px 0 9px 0;
+              text-decoration: underline;
+              color: var(--sky-blue);
+
+              &:hover {
+                cursor: pointer;
+              }
+            }
+
+            .perspectiveAlert {
+              display: inline-block;
+              height: fit-content;
+              margin: 10px 15px 10px auto;
+              font-weight: 500;
+              opacity: 0;
+              color: var(--candy-red);
+              transition: opacity .5s;
+            }
+
+            .perspectiveAlert.active {
+              opacity: 1;
+            }
+          }
+          
+          .innerContentEditableDivContainer {
+            display: flex;
+            flex-direction: column;
+
+            .contentEditableDiv {
+              margin: 5px 18px;
+              margin-bottom: auto;
+              overflow-y: auto;
+              min-height: 300px;
+              // background-color: red;
+              
+              &:empty::before {
+                content: "What kind of suffering?";
+                color: rgb(0,0,0,0.5);
+              }
+
+              &:hover {
+                cursor: text;
+              }
+            }
+
+            div {
+              display: flex;
+              margin: 5px 18px 0 18px;
+
+              span {
+                cursor: default;
+              }
+
+              .charCount.red {
+                color: var(--candy-red);
+              }
+
+              .pleaLengthAlert {
+                opacity: 0;
+                margin-left: 15px;
+                font-weight: 500;
+                transition: opacity .5s;
+                color: var(--candy-red);
+              }
+
+              .pleaLengthAlert.active {
+                opacity: 1;
+              }
+            }
+          }
+  
+          .tagsContainer {
+            position: relative;
+            margin: 8px 10px;
+            z-index: 901;
+
+            .alert {
+              display: block;
+              margin-left: 10px;
+              font-size: .85rem;
+              font-weight: 500;
+              opacity: 1;
+              transition: opacity .5s;
+            }
+
+            .alert.hidden {
+              opacity: 0;
+            }
+
+            .innerTagsContainer {
+              position: relative;
+              z-index: 901;
+
+              .chosenTags {
+                display: flex;
+                width: 100%;
+                min-height: 2.1rem;
+                // margin: 8px 8px;
+                border: 1px solid rgb(0,0,0,0.1);
+                border-radius: 1px;
+  
+                li {
+                  display: flex;
+                  font-size: .85rem;
+                  font-weight: 500;
+                  padding: 2px 5px;
+                  margin: auto 5px;
+                  white-space: nowrap;
+                  height: fit-content;
+                  background-color: var(--faintest-gold);
+                  border-radius: 5px;
+  
+                  &:hover {
+                    cursor: default;
+                  }
+  
+                  .removeIcon {
+                    margin-left: 3px;
+
+                    svg {
+                      position: relative;
+                      top: 2px;
+                      left: 2px;
+  
+                      &:hover {
+                        cursor: pointer;
+                      }
+                    }
+                  }
+  
+                  &:last-child {
+                    margin-right: 0;
+                  }
+                }
+  
+                .tagInput {
+                  position: relative;
+                  width: 100%;
+                  background-color: transparent;
+
+                  &:hover {
+                    cursor: text;
+                  }
+  
+                  .contentEditableDivTagInput {
+                    width: 100%;
+  
+                    &:empty::before {
+                      content: 'Please choose 1 to 3 tags';
+                      color: rgb(0,0,0,0.5);
+                    }
+                  }
+                }
+              }
+
+              .tagList {
+                position: absolute;
+                top: 35px;
+                left: -.5px;
+                display: none;
+                flex-wrap: wrap;
+                width: 100%;
+                opacity: 1;
+                height: 10rem;
+                overflow-y: scroll;
+                background-color: var(--off-white);
+                border: 1px solid rgb(0,0,0,0.1);
+                border-radius: 2px;
+                z-index: 905;
+  
+                li {
+                  display: flex;
+                  flex-direction: column;
+                  margin: 10px 0;
+                  width: 33.33%;
+                  width: calc(100% /3);
+                  font-size: .75rem;
+                  background-color: transparent;
+                  border-radius: 5px;
+
+                  &:hover {
+                    cursor: pointer;
+                    background-color: rgb(0,0,0,0.1);
+                  }
+
+                  div {
+                    display: flex;
+                    margin-left: 5px;
+
+                    span {
+                      display: inline-block;
+                      font-size: .8rem;
+                      margin-right: 30px;
+                    }
+                  }
+
+                  p {
+                    display: inline-block;
+                    padding: 5px 5px 0 5px;
+                  }
+  
+                  &:hover {
+                    cursor: pointer;
+                  }
+                }
+              }
+  
+              .tagList.active {
+                display: flex;
+              }
+            }
+          }
+
+          .closeOrSubmitContainer {
+
+            div {
+              position: relative;
+
+              .tagAlert {
+                position: absolute;
+                top: -75px;
+                left: -90px;
+                white-space: nowrap;
+                font-size: 1rem;
+                font-weight: 500;
+                display: block;
+                opacity: 1;
+                transition: opacity .5s;
+              }
+    
+              .tagAlert.none {
+                opacity: 0;
+              }
+            }
+          }
+  
+          .closeOrSubmitContainer,
+          .innerConfirmCloseContainer {
+            display: flex;
+            justify-content: space-between;
+  
+            .close, .submit, .cancel, .confirm {
+              font-size: 1.25rem;
+              padding: 10px;
+              border-radius: 5px;
+              margin: 8px 10px;
+  
+              &:hover {
+                cursor: pointer;
+              }
+            }
+  
+            .close, .cancel {
+              background-color: var(--off-black-font-color);
+              color: white;
+            }
+  
+            .submit, .confirm {
+              background-color: var(--burnt-gold);
+              color: var(--off-black-font-color);
+            }
+          }
+        }
+      }
+
+
+      .confirmCloseContainer.active {
+        display: flex;
+
+        .confirmCloseModal {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: rgb(0,0,0,0.5);
+          z-index: 902;
+        }
+
+        .innerConfirmCloseContainer {
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 903;
+          background-color: var(--off-white);
+
+          h3 {
+            font-size: 1.5rem;
+            padding: 10px 12px;
+            margin: 10px;
+            white-space: nowrap;
+          }
+
+          .cancelOrConfirmContainer {
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+      }
+  
+      .confirmCloseContainer.none {
+        display: none;
+        background-color: red;
+      }
+    }
+
+    .pleaFormContainer.none {
+      display: none;
+    }
+  }
+}

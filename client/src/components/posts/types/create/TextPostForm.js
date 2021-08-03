@@ -12,7 +12,7 @@ import ConfirmClose from '../../../nav/Confirm_Close.js';
 
 import Queries from '../../../../graphql/queries.js';
 import Mutations from '../../../../graphql/mutations.js';
-import PostFormUtil from '../../util/functions/post_form_util.js';
+import PostFormUtil from '../../../forms/util_functions/post_form_util.js';
 import UpdateCacheUtil from '../../util/functions/update_cache_util.js';
 const { postCreate, postUpdate } = UpdateCacheUtil;
 const { bodyPost, handleFormData, 

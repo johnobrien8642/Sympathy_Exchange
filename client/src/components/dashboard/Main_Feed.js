@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { Route, useHistory } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import React from 'react';
+// import React, { useState } from 'react';
+// import { useQuery } from '@apollo/client';
+// import { Route, useHistory } from 'react-router-dom';
+// import Cookies from 'js-cookie';
 
 // import PostsNav from '../nav/Posts_Nav';
 // import Feed from '../feeds/Feed.js';
@@ -9,23 +10,23 @@ import Cookies from 'js-cookie';
 // import CheckOutTheseBlogs from '../dashboard/util/Check_Out_These_Blogs';
 // import RepostForm from '../posts/util/components/social/Repost_Form';
 
-import Queries from '../../graphql/queries.js';
-const { FETCH_USER } = Queries;
+// import Queries from '../../graphql/queries.js';
+// const { FETCH_USER } = Queries;
 
 const MainFeed = props => {
-  let [uploading, setUploading] = useState(false)
-  let history = useHistory()
+  // let [uploading, setUploading] = useState(false)
+  // let history = useHistory()
   
-  let { loading, error, data } = useQuery(FETCH_USER, {
-    variables: {
-      query: Cookies.get('currentUser')
-    }
-  });
+  // let { loading, error, data } = useQuery(FETCH_USER, {
+  //   variables: {
+  //     query: Cookies.get('currentUser')
+  //   }
+  // });
 
-  if (loading) return 'Loading...';
-  if (error) return `Error: ${error}`;
+  // if (loading) return 'Loading...';
+  // if (error) return `Error: ${error}`;
 
-  const { user } = data;
+  // const { user } = data;
 
   return(
     <div

@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import ChangeUsername from './util/components/Change_Username';
 import ChangePassword from './util/components/Change_Password';
 import RevealSecretRecoveryPhrase from './util/components/Reveal_Secret_Recovery_Phrase';
-import DeleteMyAccount from './util/components/Delete_My_Account';
+// import DeleteMyAccount from './util/components/Delete_My_Account';
 
 import Queries from '../../graphql/queries.js';
 const { FETCH_USER } = Queries;

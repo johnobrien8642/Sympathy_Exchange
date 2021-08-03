@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import Cookies from 'js-cookie';
 
 import Nav from '../components/nav/Nav';
@@ -11,6 +12,8 @@ import UserSettings from './user/User_Settings';
 import UserDashboard from './user/User_Dashboard';
 import AuthRoute from '../util/route_util';
 import MainFeed from './dashboard/Main_Feed';
+import Queries from '../graphql/queries.js';
+import './../stylesheets/application.scss';
 // import TagFeed from './feeds/Tag_Feed';
 // import UserPostLikesFeed from './feeds/User_Post_Likes_Feed';
 // import UserBlogShow from './feeds/User_Blog_Show';
@@ -20,11 +23,13 @@ import MainFeed from './dashboard/Main_Feed';
 // uncomment below for email auth welcome page
 // import WelcomePage from './auth/Welcome_Page';
 
-import './../stylesheets/application.scss';
+const { FETCH_ALL_TAGS } = Queries;
 
 const App = () => {
   let [currentUser, setCurrentUser] = useState(Cookies.get('currentUser'));
-  
+
+  useQuery(FETCH_ALL_TAGS)
+
   useEffect(() => {
     var listener = window.addEventListener('scroll', () => {
       document.querySelector('body').style.setProperty('--scroll-y', 
