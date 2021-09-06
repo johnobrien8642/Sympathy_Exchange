@@ -1,10 +1,15 @@
 import mongoose from 'mongoose';
-import graphql, { GraphQLList } from 'graphql';
+import graphql from 'graphql';
 import UserType from './user_type.js';
 import TagType from './tag_type.js';
 
 const Plea = mongoose.model('Plea');
-const { GraphQLString, GraphQLID, GraphQLBoolean, GraphQLObjectType } = graphql;
+const { GraphQLString, 
+        GraphQLID, 
+        GraphQLInt,
+        GraphQLList, 
+        GraphQLBoolean, 
+        GraphQLObjectType } = graphql;
 
 const PleaType = new GraphQLObjectType({
   name: 'PleaType',
@@ -15,8 +20,8 @@ const PleaType = new GraphQLObjectType({
       type: UserType,
       resolve(parentValue) {
         return Plea.findById(parentValue._id)
-          .populate('user')
-          .then(plea => plea.user)
+          .populate('author')
+          .then(plea => plea.author)
       }
     },
     tagIds: {
@@ -31,12 +36,15 @@ const PleaType = new GraphQLObjectType({
     pleaIdChain: {
       type: GraphQLList(PleaType),
       resolve(parentValue) {
-        return Plea
+        return Plea.findById(parentValue._id)
+          .populate('pleaIdChain')
+          .then(plea => plea.pleaIdChain)
       }
-    }, 
+    },
+    sympathyCount: { type: GraphQLInt },
     createdAt: { type: GraphQLString },
     kind: { type: GraphQLString }
   })
-})
+});
 
 export default PleaType;

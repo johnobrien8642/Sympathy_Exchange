@@ -33,18 +33,20 @@ const Login = ({
         data: {
           isLoggedIn: loggedIn,
         }
-      })
+      });
 
-      setCurrentUser(username)
-      Cookies.set('auth-token', token)
-      Cookies.set('currentUser', username)
-      resetInputs()
+      
+
+      setCurrentUser(username);
+      Cookies.set('auth-token', token);
+      Cookies.set('currentUser', username);
+      resetInputs();
     },
     onError(error) {
       addErrorMessage(errorMessages = [])
       error.graphQLErrors.forEach((error, i) => {
         addErrorMessage(errorMessages.concat(error.message))
-      })
+      });
     },
     onCompleted() {
       history.push('/');
@@ -52,9 +54,9 @@ const Login = ({
   });
   
   const resetInputs = () => {
-    setUsername(username = '');
-    setPassword(password = '');
-    addErrorMessage(errorMessages = []);
+    setUsername('');
+    setPassword('');
+    addErrorMessage([]);
   };
 
   return (

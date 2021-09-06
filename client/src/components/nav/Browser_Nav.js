@@ -48,8 +48,8 @@ const BrowserNav = ({
             />
         </div>
 
-        <CreatePleaButton 
-          user={user} 
+        <CreatePleaButton
+          user={user}
         />
 
         <div
@@ -61,7 +61,7 @@ const BrowserNav = ({
             <Link
               to='/dashboard'
               onClick={() => {
-                searchRef.current.blur()
+                searchRef.current.blur();
             
                 closeSearch(true);
               }}

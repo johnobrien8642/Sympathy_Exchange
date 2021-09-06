@@ -1,0 +1,99 @@
+.mainFeedContainer {
+  
+  .plea {
+    margin: 20px 0;
+    width: 100%;
+    background-color: blue;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+
+    .textAndSQContainer {
+      display: flex;
+      justify-content: space-between;
+
+      .text {
+        line-height: 1.5rem;
+        margin: 10px 5px;
+        width: 100%;
+        text-align: justify;
+      }
+
+      .SQContainer {
+        display: flex;
+        flex-direction: column;
+        min-width: 200px;
+        
+        .innerSQContainer {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          margin: auto;
+          height: 100%;
+
+          .author, .score {
+            
+            &:hover {
+              cursor: default;
+            }
+          }
+
+          .author {
+            position: relative;
+            display: block;
+            margin: 10px 0;
+            font-weight: 500;
+            width: 100%;
+            text-align: center;
+          }
+  
+          .scoreAndSympathyButtonContainer {
+            margin: auto;
+            background-color: blue;
+            width: 150px;
+  
+            .score {
+              display: flex;
+              flex-direction: column;
+              margin: 10px auto 0 auto;
+              width: 70%;
+              font-size: 1.3rem;
+              border-top: 2px solid black;
+              border-bottom: 2px solid black;
+              
+              span {
+                margin: 0 auto;
+              }
+            }
+            
+            .sympathyBtnContainer {
+              width: fit-content;
+              margin: 10px auto;
+              padding: 5px;
+              border-radius: 5px;
+              background-color: orange;
+              
+              button {
+                font-size: 1.2rem;
+
+                &:hover {
+                  cursor: pointer;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .pleaTags {
+      display: flex;
+      flex-direction: row;
+
+      .tag {
+        margin: 10px 15px;
+        padding: 5px;
+        background-color: salmon;
+      }
+    }
+  }
+}

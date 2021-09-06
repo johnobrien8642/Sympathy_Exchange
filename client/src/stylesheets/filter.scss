@@ -1,0 +1,21 @@
+.mainFeedContainer {
+
+  .filterParamsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+
+    .filterParam {
+      font-size: 1.8rem;
+      width: fit-content;
+      margin: 10px 5px;
+      color: var(--sky-blue);
+      text-decoration: underline;
+      background-color: white;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

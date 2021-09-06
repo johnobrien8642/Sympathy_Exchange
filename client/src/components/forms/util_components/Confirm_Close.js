@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ConfirmClose = ({
-  confirm,
+  openForm,
   cancelBool,
   cancel,
   resetForm,
@@ -36,7 +36,7 @@ const ConfirmClose = ({
             className='confirm'
             onClick={() => {
               resetForm();
-              confirm(false);
+              openForm(false);
             }}
           >
             Confirm

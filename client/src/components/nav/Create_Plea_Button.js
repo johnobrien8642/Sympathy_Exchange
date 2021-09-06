@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
+
 import PleaForm from '../forms/Plea_Form';
 import Queries from '../../graphql/queries.js';
-import Cookies from 'js-cookie';
 const { FETCH_USER } = Queries;
 
-const CreatePleaButton = () => {
+const CreatePleaButton = ({
+  user
+}) => {
   let [formOpen, openForm] = useState(false);
 
   let { data } = useQuery(FETCH_USER, {
     variables: {
-      query: Cookies.get('currentUser')
+      currentUserId: user._id
     }
   })
   
@@ -29,7 +31,7 @@ const CreatePleaButton = () => {
 
       <PleaForm
         open={formOpen}
-        close={openForm}
+        openForm={openForm}
         user={data ? data.user : null}
       />
     </div>

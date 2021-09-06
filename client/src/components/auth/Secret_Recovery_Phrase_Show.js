@@ -85,6 +85,7 @@ const SecretRecoveryPhraseShow = () => {
       </div>
 
       <Link
+        className='confirmBtn'
         to='/'
       >
         I've read the Secret Recovery Phrase explanation, 

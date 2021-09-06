@@ -29,6 +29,11 @@ const PleaSchema = new Schema({
       ref: 'Plea'
     },
   ],
+  sympathyCount: {
+    type: Number,
+    default: 0,
+    index: true
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -39,6 +44,6 @@ const PleaSchema = new Schema({
   }
 }, options)
   
-const Plea = mongoose.model('Plea', PleaSchema, 'posts')
+const Plea = mongoose.model('Plea', PleaSchema, 'pleas')
 
 export default Plea;

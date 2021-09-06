@@ -1,11 +1,13 @@
 import { gql } from '@apollo/client';
 import AllPostQueryFragment from './all_posts_query_fragment.js';
+import Fragments from './fragments.js';
+const { NESTED_PLEA_FRAGMENT, PLEA_FRAGMENT } = Fragments;
 const { ALL_POSTS, ALL_POSTS_ACTIVITY } = AllPostQueryFragment;
 
 const Queries = {
   FETCH_USER: gql`
-    query fetchUser($query: String) {
-      user(query: $query) {
+    query fetchUser($currentUserId: String) {
+      user(currentUserId: $currentUserId) {
         _id
         username
         tagFollows {
@@ -36,39 +38,28 @@ const Queries = {
       }
     }
   `,
+  FETCH_PLEA_FEED: gql`
+    query FetchPleaFeed($filter: FilterInputType, $cursor: Int) {
+      fetchPleaFeed(filter: $filter, cursor: $cursor) {
+        ...NestedPleaFragment
+      }
+    }
+    ${NESTED_PLEA_FRAGMENT}
+    ${PLEA_FRAGMENT}
+  `,
+  FETCH_MAX_PARAMETER_FOR_FILTER: gql`
+    query FetchMaxParameterForFilter {
+      fetchMaxParameterForFilter {
+        integerLength
+        ceiling
+      }
+    }
+  `,
   FETCH_USER_FEED: gql`
+    ${NESTED_PLEA_FRAGMENT}
     query FetchUserFeed($query: String, $cursorId: String) {
       fetchUserFeed(query: $query, cursorId: $cursorId) {
-        __typename
-        ... on RepostType {
-          _id
-          kind
-          user {
-            _id
-            username
-          }
-          repostTrail {
-            _id
-            caption
-            user {
-              _id
-              username
-            }
-            repost {
-              _id
-            }
-          }
-          repostedFrom {
-            _id
-            username
-            kind
-          }
-          post {
-            __typename
-            ${ALL_POSTS}
-          }
-        }
-        ${ALL_POSTS}
+        ...NestedPleaFragment
       }
     }
   `,
@@ -558,13 +549,13 @@ const Queries = {
   `,
   IS_LOGGED_IN: gql`
     query isLoggedIn {
-       isLoggedIn @client
-     } 
-    `,
-  CURRENT_USER: gql`
-     query currentUser {
-       currentUser @client
-     }
+      isLoggedIn @client
+    }
+  `,
+  CURRENT_USER_ID: gql`
+    query currentUser {
+      currentUserId @client
+    }
   `,
   FETCH_POST_RADAR: gql`
     query FetchPostRadar($query: String) {

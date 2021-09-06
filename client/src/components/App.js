@@ -11,7 +11,7 @@ import AccountRecovery from './auth/Account_Recovery';
 import UserSettings from './user/User_Settings';
 import UserDashboard from './user/User_Dashboard';
 import AuthRoute from '../util/route_util';
-import MainFeed from './dashboard/Main_Feed';
+import MainPage from './dashboard/Main_Page';
 import Queries from '../graphql/queries.js';
 import './../stylesheets/application.scss';
 // import TagFeed from './feeds/Tag_Feed';
@@ -23,27 +23,31 @@ import './../stylesheets/application.scss';
 // uncomment below for email auth welcome page
 // import WelcomePage from './auth/Welcome_Page';
 
-const { FETCH_ALL_TAGS } = Queries;
+const { FETCH_ALL_TAGS, CURRENT_USER_ID, IS_LOGGED_IN } = Queries;
 
 const App = () => {
   let [currentUser, setCurrentUser] = useState(Cookies.get('currentUser'));
 
-  useQuery(FETCH_ALL_TAGS)
+  useQuery(FETCH_ALL_TAGS);
+  let { loading, error, data } = useQuery(CURRENT_USER_ID);
 
   useEffect(() => {
     var listener = window.addEventListener('scroll', () => {
-      document.querySelector('body').style.setProperty('--scroll-y', 
+      document.querySelector('body').style.setProperty('--scroll-y',
       `${window.scrollY}px`)
     })
 
     return () => {
-      window.removeEventListener('scroll', listener)
+      window.removeEventListener('scroll', listener);
     }
-  })
+  });
+
+  if (loading) return 'Loading...';
+  if (error) return `Error: ${error}`;
 
   return (
     <React.Fragment>
-      <Nav currentUser={currentUser} />
+      <Nav currentUser={currentUser} currentUserId={data ? data.currentUserId : null}/>
       <Switch>
         {/* <AuthRoute path={'/view/tag/:tagTitle'} component={TagFeed} />
         <AuthRoute path={'/view/blog/:blogName'} component={UserBlogShow} />
@@ -56,7 +60,7 @@ const App = () => {
       <AuthRoute exact path='/likes' component={UserPostLikesFeed} /> */}
         {/* uncomment below for email auth welcome page */}
         {/* <AuthRoute exact path='/welcome' component={WelcomePage} /> */}
-        <AuthRoute path={['/dashboard', '/likes']} component={MainFeed} />
+        <AuthRoute path={['/dashboard', '/likes']} component={MainPage} />
         <AuthRoute exact path={'/settings/account'} component={UserSettings} />
         <AuthRoute exact path='/register' component={Register} routeType={'auth'} setCurrentUser={setCurrentUser} />
         <AuthRoute exact path='/login' component={Login} routeType={'auth'} setCurrentUser={setCurrentUser} />

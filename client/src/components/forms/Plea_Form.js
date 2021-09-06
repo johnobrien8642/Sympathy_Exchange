@@ -8,7 +8,7 @@ const { CREATE_PLEA } = Mutations;
 
 const PleaForm = ({
   open,
-  close,
+  openForm,
   user
 }) => {
   let [plea, setPlea] = useState('');
@@ -60,7 +60,8 @@ const PleaForm = ({
 
   let [createPlea] = useMutation(CREATE_PLEA, {
     onCompleted() {
-      close(false);
+      reset();
+      openForm(false);
     }
   })
 
@@ -79,8 +80,8 @@ const PleaForm = ({
         textRange.moveToElementText(el);
         textRange.collapse(false);
         textRange.select();
-    }
-  }
+    };
+  };
 
   const reset = () => {
     setPlea('');
@@ -107,7 +108,7 @@ const PleaForm = ({
     <div
       className={open ? 'pleaFormContainer active' : 'pleaFormContainer none'}
     >
-      <div 
+      <div
         className='pleaFormModal'
         onClick={() => {
           setTagListActive(false);
@@ -138,7 +139,7 @@ const PleaForm = ({
             <Link
               to='/rules'
               onClick={() => {
-                close(false);
+                openForm(false);
               }}
             >
               plea rules
@@ -158,7 +159,7 @@ const PleaForm = ({
               contentEditable='true'
               ref={contentEditableDivRef}
               onInput={e => {
-
+                
                 if (e.target.textContent.length < 1000) {
                   setPlea(e.target.textContent);
                   setPleaLengthAlert(false);
@@ -195,7 +196,7 @@ const PleaForm = ({
                   setShowConfirmClose(true);
                 } else {
                   reset();
-                  close(false);
+                  openForm(false);
                 };
               }}
             >
@@ -228,7 +229,7 @@ const PleaForm = ({
           </div>
             
           <ConfirmClose
-            confirm={close}
+            confirm={openForm}
             cancelBool={showConfirmClose}
             cancel={setShowConfirmClose}
             resetForm={reset}

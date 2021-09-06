@@ -7,7 +7,7 @@ import randomWords from 'random-words';
 import Queries from '../../graphql/queries';
 import Mutations from '../../graphql/mutations';
 const { REGISTER_USER, GENERATE_USERNAME } = Mutations;
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 
 const Register = ({
   setCurrentUser
@@ -20,12 +20,19 @@ const Register = ({
   
   const [ registerUser ] = useMutation(REGISTER_USER, {
     update(client, { data }) {
-      const { loggedIn, username, token } = data.registerUser
+      const { _id, loggedIn, username, token } = data.registerUser
 
       client.writeQuery({
         query: IS_LOGGED_IN,
         data: {
           isLoggedIn: loggedIn
+        }
+      })
+
+      client.writeQuery({
+        query: CURRENT_USER_ID,
+        data: {
+          currentUserId: _id
         }
       })
 

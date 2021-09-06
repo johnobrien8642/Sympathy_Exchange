@@ -114,7 +114,7 @@ const handleActivity = (
 }
 
 const handleTimeAgo = (activity, timeAgoRef, tab) => {
-  var timeAgoString = timeAgo.format(new Date(parseInt(activity.createdAt)))
+  var timeAgoString = timeAgo.format(new Date(parseInt(activity.createdAt)));
 
   if (
       !timeAgoRef.current.includes(timeAgoString) &&

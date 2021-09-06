@@ -5,11 +5,13 @@ import CryptoJS from 'crypto-js';
 import keys from '../../../../config/keys.js'
 import UserType from '../objects/user_type.js';
 import FollowType from '../objects/follow_type.js';
+import FilterParameterType from '../objects/filter_parameter_type.js';
 import TagType from '../objects/tag_type.js';
 import UserAndTagType from '../unions/user_and_tag_type.js';
-import UserAndTagInputType from '../inputs/user_and_tag_input_type.js'
+import UserAndTagInputType from '../inputs/user_and_tag_input_type.js';
+import FilterInputType from '../inputs/filter_input_type.js';
 import PleaType from '../objects/plea_type.js';
-import SympathyType from '../objects/sympathy_type.js'
+import SympathyType from '../objects/sympathy_type.js';
 import SearchUtil from '../../../services/search_util.js';
 import RootQueryTypeUtil from './util/root_query_type_util.js';
 const User = mongoose.model('User');
@@ -19,16 +21,16 @@ const Sympathy = mongoose.model('Sympathy');
 const Follow = mongoose.model('Follow');
 const { GraphQLObjectType, GraphQLList,
         GraphQLString, GraphQLID, GraphQLInt } = graphql;
-const { handleFilterTagRegex, 
-        handleFilterPostContentRegex,
-        asyncTagPostArr,
-        asyncFetchTagPosts } = RootQueryTypeUtil;
+// const { handleFilterTagRegex, 
+//         handleFilterPostContentRegex,
+//         asyncTagPostArr,
+//         asyncFetchTagPosts } = RootQueryTypeUtil;
 
 const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: () => ({
     usersAndTags: {
-      type: new GraphQLList(UserAndTagType),
+      type: GraphQLList(UserAndTagType),
       args: { filter: { type: UserAndTagInputType } },
       async resolve(_, { filter }, ctx) {
         if (filter) {
@@ -95,6 +97,113 @@ const RootQueryType = new GraphQLObjectType({
           .then(user => {
             return CryptoJS.AES.decrypt(user.secretRecoveryPhrase, keys.secretKeyForRecoveryPhrase).toString(CryptoJS.enc.Utf8);
           })
+      }
+    },
+    fetchPleaFeed: {
+      type: GraphQLList(PleaType),
+      args: {
+        filter: { type: FilterInputType },
+        cursor: { type: GraphQLInt }
+      },
+      async resolve(_, { filter, cursor }) {
+        var firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
+        noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
+        sympathy = filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
+        sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
+        sympathyTagIdsCursor = filter['bySympCount'] && filter['byTagIds'] && cursor !== null,
+        sympathyTagIds = filter['bySympCount'] && filter['byTagIds'] && cursor === null,
+        tagIds = !filter['bySympCount'] && filter['byTagIds'] && cursor === null,
+        tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor !== null,
+        query;
+        
+        if (firstMount) {
+
+          query = {};
+        
+        } else if (noFiltersAndCursor) {
+
+          query = { sympathyCount: { $gte: cursor } };
+
+        } else if (sympathy) {
+
+          query = { 
+            $and: [
+              { sympathyCount: { $gte: filter['floor'] } },
+              { sympathyCount: { $lte: filter['ceiling'] } },
+            ]
+          }
+
+        } else if (sympathyCursor) {
+
+          query = { 
+            $and: [
+              { sympathyCount: { $gte: filter['floor'] } },
+              { sympathyCount: { $lte: filter['ceiling'] } },
+              { sympathyCount: { $gte: cursor } },
+            ]
+          }
+
+        } else if (sympathyTagIdsCursor) {
+          
+          query = { 
+            $and: [
+              { sympathyCount: { $gte: filter['floor'] } },
+              { sympathyCount: { $lte: filter['ceiling'] } },
+              { sympathyCount: { $gte: cursor } },
+              { tagIds: { $in: filter['tagIdArr'] } }
+            ]
+          }
+
+        } else if (sympathyTagIds) {
+
+          query = { 
+            $and: [
+              { sympathyCount: { $gte: filter['floor'] } },
+              { sympathyCount: { $lte: filter['ceiling'] } },
+              { tagIds: { $in: filter['tagIdArr'] } }
+            ]
+          }
+
+        } else if (tagIds) {
+
+          query = { 
+            $and: [
+              { tagIds: { $in: filter['tagIdArr'] } }
+            ]
+          }
+
+        } else if (tagIdsCursor) {
+
+          query = { 
+            $and: [
+              { sympathyCount: { $gte: cursor } },
+              { tagIds: { $in: filter['tagIdArr'] } }
+            ]
+          }
+
+        };
+        
+        return await Plea.find(query)
+        .sort({ sympathyCount: -1, createdAt: -1 })
+        .limit(25)
+      }
+    },
+    fetchMaxParameterForFilter: {
+      type: FilterParameterType,
+      async resolve(_) {
+         return await Plea.find({})
+          .sort({ 'sympathyCount': -1 })
+          .then(res => {
+            var digits = new RegExp(/^(?:\d+)/, 'g'),
+            regex = digits.exec(res[0].sympathyCount),
+            ceil, divisor
+
+            divisor = res[0].sympathyCount < 100 ? 10 : 100
+            
+            ceil = Math.ceil(res[0].sympathyCount/divisor)
+            
+            return { integerLength: regex[0].toString().length, ceiling: ceil }
+          });
       }
     },
     fetchAllTags: {
@@ -1040,14 +1149,13 @@ const RootQueryType = new GraphQLObjectType({
     //         return users
     //       })
     //     })
-
     //   }
     // },
     user: {
       type: UserType,
-      args: { query: { type: GraphQLString } },
-      resolve(parentValue, { query }) {
-        return User.findOne({ username: query })
+      args: { currentUserId: { type: GraphQLString } },
+      resolve(parentValue, { currentUserId }) {
+        return User.findById( currentUserId );
       }
     },
     users: {

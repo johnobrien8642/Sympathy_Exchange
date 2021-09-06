@@ -14,7 +14,7 @@ import './index.css';
 import Queries from './graphql/queries'
 import Mutations from './graphql/mutations'
 
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 const { VERIFY_USER } = Mutations;
 
 const token = Cookies.get('auth-token');
@@ -69,31 +69,22 @@ const client = new ApolloClient({
 						merge: (existing = [], incoming = []) => {
 							return incoming
 						}
-					}
+					},
         //  fetchLikesRepostsAndComments: {
         //     merge: (existing = [], incoming = []) => {
         //       return incoming
         //     }
         //   },
-        // fetchUserFeed: {
-        //   keyArgs: ['query'],
-        //     merge: (existing = [], incoming = []) => {
-
-        //     //post_form_util.js #updateCacheCreate and #updateCacheDelete,
-        //     //object with __typename is added to the beginning of the array.
-        //     //This tells merge function that we are adding or deleting a
-        //     //post and would like the incoming array returned.
-        //     if (incoming.length > 0 && "__typename" in incoming[0]) {
-        //       return incoming.slice(1, incoming.length)
-        //     } else {
-        //       const elements = [...existing, ...incoming].reduce((array, current) => {
-        //         return array.map(i => i.__ref).includes(current.__ref) ? array : [...array, current];
-        //       }, []);
+        fetchPleaFeed: {
+          keyArgs: ['filter', 'cursor'],
+            merge: (existing = [], incoming = []) => {            
+              const elements = [...existing, ...incoming].reduce((array, current) => {
+                return array.map(i => i.__ref).includes(current.__ref) ? array : [...array, current];
+              }, []);
             
-        //       return elements
-        //     }
-        //   }
-        // },
+              return elements
+          }
+        },
         // fetchTagFeed: {
         //   keyArgs: ['query'],
         //     merge: (existing = [], incoming = []) => {
@@ -208,10 +199,19 @@ if (token) {
   client
     .mutate({ mutation: VERIFY_USER, variables: { token } })
     .then(({ data }) => {
+			const { _id, loggedIn } = data.verifyUser
+			
+			client.writeQuery({
+				query: CURRENT_USER_ID,
+				data: {
+					currentUserId: _id
+				}
+			})
+
       client.writeQuery({
         query: IS_LOGGED_IN,
         data: {
-          isLoggedIn: data.verifyUser.loggedIn
+          isLoggedIn: loggedIn
         }
       })
     })
