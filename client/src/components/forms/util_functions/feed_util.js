@@ -14,6 +14,7 @@ const header = (user, tag) => {
   }
 }
 
+
 const infiniteScroll = (
   client,
   updateCacheFunc,

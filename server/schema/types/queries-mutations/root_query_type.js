@@ -121,8 +121,8 @@ const RootQueryType = new GraphQLObjectType({
           query = {};
         
         } else if (noFiltersAndCursor) {
-
-          query = { sympathyCount: { $gte: cursor } };
+          
+          query = { sympathyCount: { $lt: cursor } };
 
         } else if (sympathy) {
 
@@ -131,7 +131,7 @@ const RootQueryType = new GraphQLObjectType({
               { sympathyCount: { $gte: filter['floor'] } },
               { sympathyCount: { $lte: filter['ceiling'] } },
             ]
-          }
+          };
 
         } else if (sympathyCursor) {
 
@@ -139,7 +139,7 @@ const RootQueryType = new GraphQLObjectType({
             $and: [
               { sympathyCount: { $gte: filter['floor'] } },
               { sympathyCount: { $lte: filter['ceiling'] } },
-              { sympathyCount: { $gte: cursor } },
+              { sympathyCount: { $lte: cursor } },
             ]
           }
 
@@ -149,7 +149,7 @@ const RootQueryType = new GraphQLObjectType({
             $and: [
               { sympathyCount: { $gte: filter['floor'] } },
               { sympathyCount: { $lte: filter['ceiling'] } },
-              { sympathyCount: { $gte: cursor } },
+              { sympathyCount: { $lte: cursor } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
           }
@@ -176,7 +176,7 @@ const RootQueryType = new GraphQLObjectType({
 
           query = { 
             $and: [
-              { sympathyCount: { $gte: cursor } },
+              { sympathyCount: { $lte: cursor } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
           }
@@ -184,8 +184,8 @@ const RootQueryType = new GraphQLObjectType({
         };
         
         return await Plea.find(query)
-        .sort({ sympathyCount: -1, createdAt: -1 })
-        .limit(25)
+          .limit(10)
+          .sort({ sympathyCount: -1, createdAt: -1 });
       }
     },
     fetchMaxParameterForFilter: {
@@ -208,8 +208,8 @@ const RootQueryType = new GraphQLObjectType({
     },
     fetchAllTags: {
       type: GraphQLList(TagType),
-      resolve(_) {
-        return Tag.find()
+      async resolve(_) {
+        return await Tag.find({})
       }
     },
     // fetchMatchingTags: {

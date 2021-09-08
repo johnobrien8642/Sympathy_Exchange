@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import AllPostQueryFragment from './all_posts_query_fragment.js';
 import Fragments from './fragments.js';
-const { NESTED_PLEA_FRAGMENT, PLEA_FRAGMENT } = Fragments;
+const { NESTED_PLEA_FRAGMENT, PLEA_FRAGMENT, TITLE_ONLY_TAG_FRAGMENT } = Fragments;
 const { ALL_POSTS, ALL_POSTS_ACTIVITY } = AllPostQueryFragment;
 
 const Queries = {
@@ -54,6 +54,14 @@ const Queries = {
         ceiling
       }
     }
+  `,
+  FETCH_ALL_TAGS: gql`
+    query FetchAllTags {
+      fetchAllTags {
+        ...TitleOnlyTagFragment
+      }
+    }
+    ${TITLE_ONLY_TAG_FRAGMENT}
   `,
   FETCH_USER_FEED: gql`
     ${NESTED_PLEA_FRAGMENT}

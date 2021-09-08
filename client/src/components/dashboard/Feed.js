@@ -1,33 +1,32 @@
-import React, { useRef, useEffect } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useEffect } from 'react';
+import { useQuery, useApolloClient } from '@apollo/client';
 import PleaShow from '../plea_shows/Plea_Show';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import FeedUtil from './util_functions/feed_util.js';
 import Queries from '../../graphql/queries';
 const { FETCH_PLEA_FEED } = Queries;
+const { fetchMoreWithClient, setCursor } = FeedUtil;
 
 const Feed = ({
-  filter
+  filter,
+  lastPleaSympathyCountRef
 }) => {
-  let lastPleaSympathyCount = useRef(null);
+  const client = useApolloClient();
+
   // feed query can be dynamic, either for fetching everything or fetching
   // with a filter
-
-  let { loading, error, data, refetch: fetchMorePleas } = useQuery(FETCH_PLEA_FEED, {
+  
+  let { loading, error, data } = useQuery(FETCH_PLEA_FEED, {
     variables: {
       filter: filter,
-      cursor: lastPleaSympathyCount.current
+      cursor: lastPleaSympathyCountRef.current
     }
   });
 
-  useEffect(() => {
-    if (data && data.fetchPleaFeed.length > 0) {
-      lastPleaSympathyCount.current =
-        data.fetchPleaFeed[data.fetchPleaFeed.length - 1].sympathyCount
-    }
-  }, [data]);
-
   if (loading) return 'Loading...';
   if (error) return `Feed Error: ${error.message}`;
+
+  setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef);
   
   return (
       <div
@@ -35,7 +34,13 @@ const Feed = ({
       >
         <InfiniteScroll
           dataLength={data.fetchPleaFeed.length}
-          next={fetchMorePleas}
+          next={() => fetchMoreWithClient(
+              client,
+              filter,
+              lastPleaSympathyCountRef.current,
+              FETCH_PLEA_FEED
+            )
+          }
           hasMore={true}
           endMessage={
             <div
@@ -44,7 +49,6 @@ const Feed = ({
               <p>This is the end for these Pleas</p>
             </div>
           }
-
         >
           {data.fetchPleaFeed.map(plea => {
             return (

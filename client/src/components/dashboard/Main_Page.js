@@ -14,21 +14,16 @@ const MainPage = () => {
 
   return(
     <div
-      className='mainFeedContainer'
+      className='mainPageContainer'
     >
       <div
         className='col1'
       >
-        <div
-          className='tagContainer'
-        >
-          <Filter
-            lastPleaSympathyCountRef={lastPleaSympathyCount}
-            setFilter={setFilter}
-            filter={filter}
-          />
-          These are the tags
-        </div>
+        <Filter
+          lastPleaSympathyCountRef={lastPleaSympathyCount}
+          setFilter={setFilter}
+          filter={filter}
+        />
       </div>
       <div
         className='col2'

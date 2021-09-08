@@ -1,4 +1,4 @@
-.mainFeedContainer {
+.mainPageContainer {
   display: flex;
   // justify-content: space-between;
   position: relative;
@@ -21,6 +21,12 @@
     width: 300px;
     // margin: 0 15px;
 
+    .filterContainer {
+  
+      .filterParamsContainer {
+        background-color: blue;
+      }
+    }
   }
   
   .col2 {
@@ -28,12 +34,6 @@
     margin: 0 auto;
     width: 600px;
 
-    .filterParamsContainer {
-      position: absolute;
-      left: -20%;
-      // margin: 0 0 0 150px;
-      background-color: blue;
-    }
   }
 
   .col3 {

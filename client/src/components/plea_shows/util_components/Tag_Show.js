@@ -9,7 +9,7 @@ const TagShow = ({
       className='tag'
       key={tag._id}
     >
-      This is a tag
+      {tag.title}
     </div>
   )
 };

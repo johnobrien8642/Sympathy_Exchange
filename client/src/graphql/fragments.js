@@ -43,6 +43,22 @@ const Fragments = {
       kind
       __typename
     }
+  `,
+  FULL_TAG_FRAGMENT: gql`
+    fragment FullTagFragment on TagType {
+      _id
+      title
+      description
+      postCount
+      __typename
+    }
+  `,
+  TITLE_ONLY_TAG_FRAGMENT: gql`
+    fragment TitleOnlyTagFragment on TagType {
+      _id
+      title
+      __typename
+    }
   `
 }
 

@@ -1,20 +1,62 @@
-.mainFeedContainer {
+.mainPageContainer {
 
-  .filterParamsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    height: fit-content;
-
-    .filterParam {
-      font-size: 1.8rem;
-      width: fit-content;
-      margin: 10px 5px;
-      color: var(--sky-blue);
-      text-decoration: underline;
+  .filterContainer {
+    
+    .sympathyCountFilterParamsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      height: fit-content;
+      margin: 5px;
       background-color: white;
+  
+      .sympathyCountParam {
+        font-size: 1.4rem;
+        width: fit-content;
+        padding: 3px;
+        margin: 10px 5px;
+        color: var(--sky-blue);
+        text-decoration: underline;
+        border-radius: 2px;
+        // background-color: black;
+  
+        &:hover {
+          cursor: pointer;
+        }
+      }
 
-      &:hover {
-        cursor: pointer;
+      .sympathyCountParam.selected {
+        color: black;
+      }
+    }
+  
+    .tagFilterContainer {
+      display: flex;
+      flex-flow: row wrap;
+      margin: 10px 0;
+      padding: 5px;
+      overflow: auto;
+      height: 300px;
+      background-color: var(--faint-gold);
+      
+      .tag {
+        font-size: 1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        text-align: center;
+        width: fit-content;
+        height: fit-content;
+        padding: 5px 8px;
+        border-radius: 5px;
+        margin: -1px 5px;
+        background-color: white;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .tag.selected {
+        background-color: var(--burnt-gold);
       }
     }
   }
