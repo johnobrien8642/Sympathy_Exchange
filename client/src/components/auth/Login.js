@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import Mutations from '../../graphql/mutations'
 import Queries from '../../graphql/queries'
 const { LOGIN_USER } = Mutations;
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 
 const Login = ({
   setCurrentUser
@@ -26,7 +26,7 @@ const Login = ({
   
   const [ loginUser ] = useMutation(LOGIN_USER, {
     update(client, { data }) {
-      const { loggedIn, username, token } = data.loginUser
+      const { _id, loggedIn, username, token } = data.loginUser
 
       client.writeQuery({
         query: IS_LOGGED_IN,
@@ -35,7 +35,12 @@ const Login = ({
         }
       });
 
-      
+      client.writeQuery({
+        query: CURRENT_USER_ID,
+        data: {
+          currentUserId: _id
+        }
+      });
 
       setCurrentUser(username);
       Cookies.set('auth-token', token);

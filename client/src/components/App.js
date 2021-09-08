@@ -44,7 +44,7 @@ const App = () => {
 
   if (loading) return 'Loading...';
   if (error) return `Error: ${error}`;
-
+  console.log(data)
   return (
     <React.Fragment>
       <Nav currentUser={currentUser} currentUserId={data ? data.currentUserId : null}/>
