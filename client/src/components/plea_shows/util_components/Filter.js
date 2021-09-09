@@ -23,6 +23,7 @@ const Filter = ({
         filter={filter}
         setFilter={setFilter}
         lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+        fetchMoreBoolRef={fetchMoreBoolRef}
       />
     </div>
   );

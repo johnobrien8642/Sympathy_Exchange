@@ -40,33 +40,38 @@ const SympathyCountFilterParams = ({
             className={selectedIndex.current === i ? 'sympathyCountParam selected' : 'sympathyCountParam'}
             key={i}
             onClick={() => {
-              if (str === 'All') {
-                selectedIndex.current = i;
-                lastPleaSympathyCountRef.current = null;
-                fetchMoreBoolRef.current = true;
-
-                setFilter({
-                  floor: null,
-                  ceiling: null,
-                  tagIdArr: filter.tagIdArr,
-                  bySympCount: false,
-                  byTagIds: filter.byTagIds
-                });
-              } else {
-                selectedIndex.current = i;
-                lastPleaSympathyCountRef.current = null;
-                fetchMoreBoolRef.current = true;
-
-                setFilter({
-                  floor: parseInt(str),
-                  ceiling: parseInt(
-                    str.split('')[0] +
-                    '9'.repeat(fetchMaxParameterForFilter.integerLength - 1)
-                    ),
+              if (selectedIndex.current !== i) {
+                if (str === 'All') {
+                  selectedIndex.current = i;
+                  lastPleaSympathyCountRef.current = null;
+                  fetchMoreBoolRef.current = true;
+  
+                  setFilter({
+                    floor: null,
+                    ceiling: null,
                     tagIdArr: filter.tagIdArr,
-                    bySympCount: true,
+                    bySympCount: false,
                     byTagIds: filter.byTagIds
-                });
+                  });
+                } else {
+                  selectedIndex.current = i;
+                  lastPleaSympathyCountRef.current = null;
+                  fetchMoreBoolRef.current = true;
+  
+                  setFilter({
+                    floor: parseInt(str),
+                    ceiling: parseInt(
+                      str.split('')[0] +
+                      '9'.repeat(fetchMaxParameterForFilter.integerLength - 1)
+                      ),
+                      tagIdArr: filter.tagIdArr,
+                      bySympCount: true,
+                      byTagIds: filter.byTagIds
+                  });
+                }
+              } else {
+                lastPleaSympathyCountRef.current = null;
+                fetchMoreBoolRef.current = true;
               }
             }}
           >

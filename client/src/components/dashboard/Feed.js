@@ -45,7 +45,7 @@ const Feed = ({
   if (!fetchMoreBoolRef.current) {
     setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef);
   }
-  
+  console.log(data.fetchPleaFeed.length)
   return (
       <div
         className='feed'

@@ -31,8 +31,8 @@ const MainPage = () => {
         className='col2'
       >
         <Feed
-          fetchMoreBoolRef={fetchMoreBoolRef}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+          fetchMoreBoolRef={fetchMoreBoolRef}
           filter={filter}
         />
       </div>

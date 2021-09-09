@@ -6,6 +6,7 @@ const { FETCH_ALL_TAGS } = Queries;
 const TagFilterParams = ({
   filter,
   setFilter,
+  fetchMoreBoolRef,
   lastPleaSympathyCountRef
 }) => {
   let { loading, error, data } = useQuery(FETCH_ALL_TAGS);
@@ -26,23 +27,28 @@ const TagFilterParams = ({
             key={t._id}
             onClick={() => {
               const { floor, ceiling, tagIdArr, bySympCount } = filter;
+              let newArr;
               
               if (tagIdArr.includes(t._id)) {
-                let newArr =
+                newArr =
                   tagIdArr.length === 1 ?
                   [] :
                   tagIdArr.filter(id => id !== t._id);
-
-                setFilter({
-                  floor: floor,
-                  ceiling: ceiling,
-                  tagIdArr: newArr,
-                  bySympCount: bySympCount,
-                  byTagIds: newArr.length === 0 ? false : true
-                });
+                
+                  
+                  setFilter({
+                    floor: floor,
+                    ceiling: ceiling,
+                    tagIdArr: newArr,
+                    bySympCount: bySympCount,
+                    byTagIds: newArr.length === 0 ? false : true
+                  });
+                  
+                  lastPleaSympathyCountRef.current = null;
+                  fetchMoreBoolRef.current = true;
               } else {
-                let newArr = tagIdArr.concat(t._id)
-        
+                newArr = tagIdArr.concat(t._id);
+                
                 setFilter({
                   floor: floor,
                   ceiling: ceiling,
@@ -50,6 +56,9 @@ const TagFilterParams = ({
                   bySympCount: bySympCount,
                   byTagIds: true
                 });
+
+                lastPleaSympathyCountRef.current = null;
+                fetchMoreBoolRef.current = true;
               }
             }}
           >
