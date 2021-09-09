@@ -15,7 +15,6 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
     var newData, oldArr, newArr;
 
     if (filterChanged) {
-      var arr = [...res.data.fetchPleaFeed]
       
       client.writeQuery({
         query: query,
@@ -24,9 +23,11 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
           cursor: cursor
         },
         data: {
-          fetchPleaFeed: arr
+          fetchPleaFeed: res.data.fetchPleaFeed
         }
       })
+
+      return res.data.fetchPleaFeed
     } else {
       var readFeed = client.readQuery({
         query: query,

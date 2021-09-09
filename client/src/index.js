@@ -81,7 +81,7 @@ const client = new ApolloClient({
               const elements = [...incoming].reduce((array, current) => {
                 return array.map(i => i.__ref).includes(current.__ref) ? array : [...array, current];
               }, []);
-              
+              console.log(elements)
               return elements
           }
         },

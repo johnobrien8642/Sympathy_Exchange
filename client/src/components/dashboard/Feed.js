@@ -26,14 +26,15 @@ const Feed = ({
 
   useEffect(() => {
     if (fetchMoreBoolRef.current) {
-      fetchMoreWithClient(
+      var fetchPleaFeed = fetchMoreWithClient(
         client,
         filter,
         lastPleaSympathyCountRef.current,
         FETCH_PLEA_FEED,
         true
-      )
+      );
 
+      setCursor(fetchPleaFeed, lastPleaSympathyCountRef)
       fetchMoreBoolRef.current = false;
     }
   }, [fetchMoreBoolRef.current])
@@ -41,7 +42,9 @@ const Feed = ({
   if (loading) return 'Loading...';
   if (error) return `Feed Error: ${error.message}`;
 
-  setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef);
+  if (!fetchMoreBoolRef.current) {
+    setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef);
+  }
   
   return (
       <div
