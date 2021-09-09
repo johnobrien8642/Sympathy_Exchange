@@ -78,7 +78,7 @@ const client = new ApolloClient({
         fetchPleaFeed: {
           keyArgs: false,
             merge: (existing = [], incoming = []) => {
-              const elements = [...existing, ...incoming].reduce((array, current) => {
+              const elements = [...incoming].reduce((array, current) => {
                 return array.map(i => i.__ref).includes(current.__ref) ? array : [...array, current];
               }, []);
               

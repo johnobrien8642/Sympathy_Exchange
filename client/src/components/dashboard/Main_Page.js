@@ -10,7 +10,8 @@ const MainPage = () => {
     bySympCount: false,
     byTagIds: false
   });
-  let lastPleaSympathyCount = useRef(null);
+  let lastPleaSympathyCountRef = useRef(null);
+  let fetchMoreBoolRef = useRef(false);
 
   return(
     <div
@@ -20,7 +21,8 @@ const MainPage = () => {
         className='col1'
       >
         <Filter
-          lastPleaSympathyCountRef={lastPleaSympathyCount}
+          lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+          fetchMoreBoolRef={fetchMoreBoolRef}
           setFilter={setFilter}
           filter={filter}
         />
@@ -29,7 +31,8 @@ const MainPage = () => {
         className='col2'
       >
         <Feed
-          lastPleaSympathyCountRef={lastPleaSympathyCount}
+          fetchMoreBoolRef={fetchMoreBoolRef}
+          lastPleaSympathyCountRef={lastPleaSympathyCountRef}
           filter={filter}
         />
       </div>

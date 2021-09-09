@@ -5,7 +5,8 @@ import TagFilterParams from './Tag_Filter_Params';
 const Filter = ({
   filter,
   setFilter,
-  lastPleaSympathyCountRef
+  lastPleaSympathyCountRef,
+  fetchMoreBoolRef
 }) => {
   
   return (
@@ -16,6 +17,7 @@ const Filter = ({
         filter={filter}
         setFilter={setFilter}
         lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+        fetchMoreBoolRef={fetchMoreBoolRef}
       />
       <TagFilterParams 
         filter={filter}

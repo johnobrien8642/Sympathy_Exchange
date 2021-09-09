@@ -1,14 +1,16 @@
 import React, { useRef } from 'react';
-import { useQuery } from '@apollo/client';
+import { useQuery, useApolloClient } from '@apollo/client';
 import Queries from '../../../graphql/queries.js';
-const { FETCH_MAX_PARAMETER_FOR_FILTER } = Queries;
+const { FETCH_MAX_PARAMETER_FOR_FILTER, FETCH_PLEA_FEED } = Queries;
 
 const SympathyCountFilterParams = ({
   filter,
   setFilter,
-  lastPleaSympathyCountRef
+  lastPleaSympathyCountRef,
+  fetchMoreBoolRef
 }) => {
   let selectedIndex = useRef(0);
+  const client = useApolloClient();
 
   let { loading, error, data } = useQuery(FETCH_MAX_PARAMETER_FOR_FILTER);
 
@@ -53,16 +55,17 @@ const SympathyCountFilterParams = ({
               } else {
                 selectedIndex.current = i;
                 lastPleaSympathyCountRef.current = null;
+                fetchMoreBoolRef.current = true;
 
                 setFilter({
                   floor: parseInt(str),
                   ceiling: parseInt(
                     str.split('')[0] +
                     '9'.repeat(fetchMaxParameterForFilter.integerLength - 1)
-                  ),
-                  tagIdArr: filter.tagIdArr,
-                  bySympCount: true,
-                  byTagIds: filter.byTagIds
+                    ),
+                    tagIdArr: filter.tagIdArr,
+                    bySympCount: true,
+                    byTagIds: filter.byTagIds
                 });
               }
             }}

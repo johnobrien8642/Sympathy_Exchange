@@ -3,7 +3,7 @@
 //which breaks when a user navigates away from the page and then back.
 //Until this bug is resolved I use an instance of useApolloClient and
 //just manually call the query with appropriate variables
-const fetchMoreWithClient = async (client, filter, cursor, query) => {
+const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged) => {
   await client.query({
     query: query,
     variables: {
@@ -12,23 +12,10 @@ const fetchMoreWithClient = async (client, filter, cursor, query) => {
     },
     fetchPolicy: 'no-cache'
   }).then(res => {
-    var readFeed = client.readQuery({
-      query: query,
-      variables: {
-        filter: filter,
-        cursor: cursor
-      }
-    })
+    var newData, oldArr, newArr;
 
-    if (readFeed) {
-      var { fetchPleaFeed } = readFeed;
-    }
-    
-    var newData, oldArr, newArr
-    if (fetchPleaFeed) {
-      oldArr = fetchPleaFeed;
-      newData = res.data.fetchPleaFeed;
-      newArr = [...oldArr, ...newData];
+    if (filterChanged) {
+      var arr = [...res.data.fetchPleaFeed]
       
       client.writeQuery({
         query: query,
@@ -37,9 +24,38 @@ const fetchMoreWithClient = async (client, filter, cursor, query) => {
           cursor: cursor
         },
         data: {
-          fetchPleaFeed: newArr
+          fetchPleaFeed: arr
         }
       })
+    } else {
+      var readFeed = client.readQuery({
+        query: query,
+        variables: {
+          filter: filter,
+          cursor: cursor
+        }
+      })
+
+      if (readFeed) {
+        var { fetchPleaFeed } = readFeed;
+      }
+
+      if (fetchPleaFeed) {
+        oldArr = fetchPleaFeed;
+        newData = res.data.fetchPleaFeed;
+        newArr = [...oldArr, ...newData];
+        
+        client.writeQuery({
+          query: query,
+          variables: {
+            filter: filter,
+            cursor: cursor
+          },
+          data: {
+            fetchPleaFeed: newArr
+          }
+        });
+      }
     }
   })
 };

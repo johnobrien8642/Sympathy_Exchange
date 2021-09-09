@@ -122,7 +122,7 @@ const RootQueryType = new GraphQLObjectType({
         
         } else if (noFiltersAndCursor) {
           
-          query = { sympathyCount: { $lt: cursor } };
+          query = { sympathyCount: { $lte: cursor } };
 
         } else if (sympathy) {
 
@@ -141,7 +141,7 @@ const RootQueryType = new GraphQLObjectType({
               { sympathyCount: { $lte: filter['ceiling'] } },
               { sympathyCount: { $lte: cursor } },
             ]
-          }
+          };
 
         } else if (sympathyTagIdsCursor) {
           
@@ -152,7 +152,7 @@ const RootQueryType = new GraphQLObjectType({
               { sympathyCount: { $lte: cursor } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
-          }
+          };
 
         } else if (sympathyTagIds) {
 
@@ -162,7 +162,7 @@ const RootQueryType = new GraphQLObjectType({
               { sympathyCount: { $lte: filter['ceiling'] } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
-          }
+          };
 
         } else if (tagIds) {
 
@@ -170,7 +170,7 @@ const RootQueryType = new GraphQLObjectType({
             $and: [
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
-          }
+          };
 
         } else if (tagIdsCursor) {
 
@@ -179,7 +179,7 @@ const RootQueryType = new GraphQLObjectType({
               { sympathyCount: { $lte: cursor } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
-          }
+          };
 
         };
         
