@@ -23,7 +23,7 @@ import './../stylesheets/application.scss';
 // uncomment below for email auth welcome page
 // import WelcomePage from './auth/Welcome_Page';
 
-const { FETCH_ALL_TAGS, CURRENT_USER_ID, IS_LOGGED_IN } = Queries;
+const { FETCH_ALL_TAGS, CURRENT_USER_ID } = Queries;
 
 const App = () => {
   let [currentUser, setCurrentUser] = useState(Cookies.get('currentUser'));

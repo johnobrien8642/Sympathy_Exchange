@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloClient, InMemoryCache,
-          ApolloProvider, HttpLink } from '@apollo/client';
+          ApolloProvider, HttpLink, useApolloClient } from '@apollo/client';
 import { HashRouter } from 'react-router-dom';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
@@ -17,7 +17,7 @@ import Mutations from './graphql/mutations'
 const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 const { VERIFY_USER } = Mutations;
 
-const token = Cookies.get('auth-token');
+const token = localStorage.getItem('auth-token');
 const envURI = process.env.NODE_ENV === 'development' ? `http://localhost:5000/graphql` : process.env.APOLLO_URL
 
 const authLink = setContext((_, { headers }) => {
@@ -81,7 +81,7 @@ const client = new ApolloClient({
               const elements = [...incoming].reduce((array, current) => {
                 return array.map(i => i.__ref).includes(current.__ref) ? array : [...array, current];
               }, []);
-              console.log(elements)
+              
               return elements
           }
         },

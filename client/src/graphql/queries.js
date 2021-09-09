@@ -28,16 +28,16 @@ const Queries = {
       fetchSecretRecoveryPhrase(token: $token)
     }
   `,
-  FETCH_ALL_TAGS: gql`
-    query FetchAllTags {
-      fetchAllTags {
-        _id
-        title
-        description
-        postCount
-      }
-    }
-  `,
+  // FETCH_ALL_TAGS: gql`
+  //   query FetchAllTags {
+  //     fetchAllTags {
+  //       _id
+  //       title
+  //       description
+  //       postCount
+  //     }
+  //   }
+  // `,
   FETCH_PLEA_FEED: gql`
     query FetchPleaFeed($filter: FilterInputType, $cursor: Int) {
       fetchPleaFeed(filter: $filter, cursor: $cursor) {
@@ -563,6 +563,11 @@ const Queries = {
   CURRENT_USER_ID: gql`
     query currentUser {
       currentUserId @client
+    }
+  `,
+  AUTH_TOKEN: gql`
+    query currentUser {
+      authToken @client
     }
   `,
   FETCH_POST_RADAR: gql`

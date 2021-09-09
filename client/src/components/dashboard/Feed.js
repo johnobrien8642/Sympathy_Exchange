@@ -37,7 +37,14 @@ const Feed = ({
       setCursor(fetchPleaFeed, lastPleaSympathyCountRef)
       fetchMoreBoolRef.current = false;
     }
-  }, [fetchMoreBoolRef.current])
+  }, 
+    [
+      client,
+      fetchMoreBoolRef,
+      filter,
+      lastPleaSympathyCountRef
+    ]
+  )
 
   if (loading) return 'Loading...';
   if (error) return `Feed Error: ${error.message}`;
@@ -45,7 +52,7 @@ const Feed = ({
   if (!fetchMoreBoolRef.current) {
     setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef);
   }
-  console.log(data.fetchPleaFeed.length)
+
   return (
       <div
         className='feed'

@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 import Mutations from '../../graphql/mutations';
 import Queries from '../../graphql/queries';
 const { LOGOUT_USER } = Mutations;
-const { IS_LOGGED_IN } = Queries;
+const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 
 const Logout = ({
   listener
@@ -20,12 +20,18 @@ const Logout = ({
         data: {
           isLoggedIn: data.logoutUser.loggedIn,
         }
-      })
+      });
+
+      client.writeQuery({
+        query: CURRENT_USER_ID,
+        data: {
+          currentUserId: ''
+        }
+      });
     },
     onCompleted() {
       document.removeEventListener('click', listener, true)
-      Cookies.set('auth-token', '')
-      Cookies.set('currentUser', '')
+      localStorage.setItem('auth-token', '');
       history.push('/')
     },
     onError(error) {

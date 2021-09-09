@@ -9,9 +9,7 @@ import Mutations from '../../graphql/mutations';
 const { REGISTER_USER, GENERATE_USERNAME } = Mutations;
 const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 
-const Register = ({
-  setCurrentUser
-}) => {
+const Register = () => {
   let [username, setUsername] = useState(randomWords(3).join('_'));
   let [password, setPassword] = useState('');
   let [confirmPassword, setConfirmPassword] = useState('');
@@ -27,18 +25,16 @@ const Register = ({
         data: {
           isLoggedIn: loggedIn
         }
-      })
+      });
 
       client.writeQuery({
         query: CURRENT_USER_ID,
         data: {
           currentUserId: _id
         }
-      })
-
-      setCurrentUser(username)
-      Cookies.set('auth-token', token);
-      Cookies.set('currentUser', username);
+      });
+      
+      localStorage.setItem('auth-token', token)
       resetInputs();
     },
     onError(error) {  

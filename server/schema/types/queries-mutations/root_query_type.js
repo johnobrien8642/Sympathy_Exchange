@@ -106,8 +106,6 @@ const RootQueryType = new GraphQLObjectType({
         cursor: { type: GraphQLInt }
       },
       async resolve(_, { filter, cursor }) {
-        console.log(filter)
-        console.log(cursor)
         var firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
         noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
         sympathy = filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
