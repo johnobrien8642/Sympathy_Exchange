@@ -6,6 +6,7 @@ const MainPage = () => {
   let [filter, setFilter] = useState({
     floor: null,
     ceiling: null,
+    rangeArr: [],
     tagIdArr: [],
     bySympCount: false,
     byTagIds: false

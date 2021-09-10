@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloClient, InMemoryCache,
-          ApolloProvider, HttpLink, useApolloClient } from '@apollo/client';
+          ApolloProvider, HttpLink } from '@apollo/client';
 import { HashRouter } from 'react-router-dom';
 import { onError } from '@apollo/client/link/error';
 import { setContext } from '@apollo/client/link/context';
-import Cookies from 'js-cookie';
 
 import App from './components/App';
 import "bootstrap-icons/font/bootstrap-icons.css"

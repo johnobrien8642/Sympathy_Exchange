@@ -128,8 +128,8 @@ const RootQueryType = new GraphQLObjectType({
 
           query = { 
             $and: [
-              { sympathyCount: { $gte: filter['floor'] } },
-              { sympathyCount: { $lte: filter['ceiling'] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
             ]
           };
 
@@ -137,8 +137,8 @@ const RootQueryType = new GraphQLObjectType({
 
           query = { 
             $and: [
-              { sympathyCount: { $gte: filter['floor'] } },
-              { sympathyCount: { $lte: filter['ceiling'] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
               { sympathyCount: { $lte: cursor } },
             ]
           };
@@ -147,8 +147,8 @@ const RootQueryType = new GraphQLObjectType({
           
           query = { 
             $and: [
-              { sympathyCount: { $gte: filter['floor'] } },
-              { sympathyCount: { $lte: filter['ceiling'] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
               { sympathyCount: { $lte: cursor } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
@@ -158,8 +158,8 @@ const RootQueryType = new GraphQLObjectType({
 
           query = { 
             $and: [
-              { sympathyCount: { $gte: filter['floor'] } },
-              { sympathyCount: { $lte: filter['ceiling'] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
               { tagIds: { $in: filter['tagIdArr'] } }
             ]
           };
@@ -193,6 +193,7 @@ const RootQueryType = new GraphQLObjectType({
       async resolve(_) {
          return await Plea.find({})
           .sort({ 'sympathyCount': -1 })
+          .limit(1)
           .then(res => {
             var digits = new RegExp(/^(?:\d+)/, 'g'),
             regex = digits.exec(res[0].sympathyCount),
@@ -202,7 +203,7 @@ const RootQueryType = new GraphQLObjectType({
             
             ceil = Math.ceil(res[0].sympathyCount/divisor)
             
-            return { integerLength: regex[0].toString().length, ceiling: ceil }
+            return { ceiling2: res[0].sympathyCount, integerLength: regex[0].toString().length, ceiling: ceil }
           });
       }
     },

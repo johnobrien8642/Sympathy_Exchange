@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useLocation, useHistory, Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 import Mutations from '../../graphql/mutations'
 import Queries from '../../graphql/queries'
 const { LOGIN_USER } = Mutations;
-const { IS_LOGGED_IN, CURRENT_USER_ID, AUTH_TOKEN } = Queries;
+const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 
 const Login = () => {
   let [username, setUsername] = useState('');
@@ -24,7 +23,7 @@ const Login = () => {
   
   const [ loginUser ] = useMutation(LOGIN_USER, {
     update(client, { data }) {
-      const { _id, loggedIn, username, token } = data.loginUser
+      const { _id, loggedIn, token } = data.loginUser
 
       client.writeQuery({
         query: IS_LOGGED_IN,
@@ -39,8 +38,7 @@ const Login = () => {
           currentUserId: _id
         }
       });
-
-      Cookies.set('auth-token', token);
+      
       localStorage.setItem('auth-token', token);
       resetInputs();
     },

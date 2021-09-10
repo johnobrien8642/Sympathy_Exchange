@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useHistory, Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import randomWords from 'random-words';
 
 import Queries from '../../graphql/queries';
@@ -18,7 +17,7 @@ const Register = () => {
   
   const [ registerUser ] = useMutation(REGISTER_USER, {
     update(client, { data }) {
-      const { _id, loggedIn, username, token } = data.registerUser
+      const { _id, loggedIn, token } = data.registerUser
 
       client.writeQuery({
         query: IS_LOGGED_IN,
@@ -33,7 +32,7 @@ const Register = () => {
           currentUserId: _id
         }
       });
-      
+
       localStorage.setItem('auth-token', token)
       resetInputs();
     },

@@ -1,40 +1,52 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useQuery } from '@apollo/client';
+import ReactSlider from 'react-slider';
 import Queries from '../../../graphql/queries.js';
 const { FETCH_MAX_PARAMETER_FOR_FILTER } = Queries;
 
 const SympathyCountFilterParams = ({
   filter,
   setFilter,
+  initSliderVal,
   lastPleaSympathyCountRef,
   fetchMoreBoolRef
 }) => {
-  let selectedIndex = useRef(0);
 
-  let { loading, error, data } = useQuery(FETCH_MAX_PARAMETER_FOR_FILTER);
-
-  if (loading) return 'Loading...';
-  if (error) return `Error in Sympathy Count Filter Params: ${error.message}`;
-
-  const { fetchMaxParameterForFilter } = data;
-  const { integerLength, ceiling } = fetchMaxParameterForFilter;
+  useEffect(() => {
+    let newObj = {...filter};
+    newObj.rangeArr = initSliderVal;
+    setFilter(newObj)
+  }, [])
   
-  let filterParamsArr = ['All'],
-  zeroes = '0'.repeat(integerLength - 1);
-    
-  if (ceiling !== 1) {
-    filterParamsArr.push(`0-1${'0'.repeat(integerLength - 1)}`)
-    for (var i = 1; i < ceiling; i++) {
-      let str = i.toString() + zeroes;
-      filterParamsArr.push(str)
-    };
-  };
+  // let { loading, error, data } = useQuery(FETCH_MAX_PARAMETER_FOR_FILTER);
 
+  // if (loading) return 'Loading...';
+  // if (error) return `Error in Sympathy Count Filter Params: ${error.message}`;
+
+  // const { fetchMaxParameterForFilter } = data;
+  // const { integerLength, ceiling, ceiling2 } = fetchMaxParameterForFilter;
+  
+  // let filterParamsArr = ['All'],
+  // zeroes = '0'.repeat(integerLength - 1);
+    
+  // if (ceiling !== 1) {
+  //   filterParamsArr.push(`0-1${'0'.repeat(integerLength - 1)}`)
+  //   for (var i = 1; i < ceiling; i++) {
+  //     let str = i.toString() + zeroes;
+  //     filterParamsArr.push(str)
+  //   };
+  // };
+
+  // filter.rangeArr.push('0');
+  // if (ceiling2) {
+  //   filter.rangeArr.push(ceiling2.toString());
+  // };
+  
   return (
     <div
       className='sympathyCountFilterParamsContainer'
     >
-      {filterParamsArr.map((str, i) => {
+      {/* {filterParamsArr.map((str, i) => {
         return (
           <div
             className={selectedIndex.current === i ? 'sympathyCountParam selected' : 'sympathyCountParam'}
@@ -78,7 +90,24 @@ const SympathyCountFilterParams = ({
             {str === 'All' ? str : `${str}s`}
           </div>
         )
-      })}
+      })} */}
+
+      <ReactSlider
+        value={filter.rangeArr}
+        max={initSliderVal[initSliderVal.length - 1]}
+        onChange={(value, index) => {
+          let newObj = {...filter};
+          newObj.rangeArr = value;
+          newObj.bySympCount = true;
+          lastPleaSympathyCountRef.current = null;
+          fetchMoreBoolRef.current = true;
+          setFilter(newObj)
+        }}
+        className="horizontal-slider"
+        thumbClassName="thumb"
+        trackClassName="track"
+        renderThumb={(props, state) => <div {...props}><span className='value'>{state.valueNow}</span></div>}
+      />
     </div>
   )
 };

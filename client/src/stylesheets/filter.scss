@@ -1,13 +1,49 @@
 .mainPageContainer {
 
   .filterContainer {
+    position: relative;
     
     .sympathyCountFilterParamsContainer {
+      position: relative;
       display: flex;
       flex-wrap: wrap;
       height: fit-content;
       margin: 5px;
       background-color: white;
+      z-index: 99;
+
+      .horizontal-slider {
+        background-color: white;
+        width: 100%;
+        height: 50px;
+
+        .thumb {
+          position: relative;
+          width: 10px;
+          height: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          border-radius: 5px;
+          padding: 5px;
+          background-color: var(--happy-gold);
+
+          .value {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+            background-color: white;
+          }
+        }
+
+        .track {
+          background-color: var(--sky-blue);
+          top: 50%;
+          transform: translateY(-50%);
+          height: 10px;
+        }
+      }
   
       .sympathyCountParam {
         font-size: 1.4rem;

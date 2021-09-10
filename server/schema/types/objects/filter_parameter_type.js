@@ -5,7 +5,8 @@ const FilterParameterType = new GraphQLObjectType({
   name: 'FilterParameterType',
   fields: () => ({
     integerLength: { type: GraphQLInt },
-    ceiling: { type: GraphQLInt }
+    ceiling: { type: GraphQLInt },
+    ceiling2: { type: GraphQLInt }
   })
 });
 

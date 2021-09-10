@@ -4,7 +4,7 @@
 //Until this bug is resolved I use an instance of useApolloClient and
 //just manually call the query with appropriate variables
 const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged) => {
-  await client.query({
+  return await client.query({
     query: query,
     variables: {
       filter: filter,
@@ -13,7 +13,7 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
     fetchPolicy: 'no-cache'
   }).then(res => {
     var newData, oldArr, newArr;
-
+    
     if (filterChanged) {
       
       client.writeQuery({
@@ -25,7 +25,7 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
         data: {
           fetchPleaFeed: res.data.fetchPleaFeed
         }
-      })
+      });
 
       return res.data.fetchPleaFeed
     } else {

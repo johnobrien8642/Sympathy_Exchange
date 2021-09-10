@@ -52,6 +52,7 @@ const Queries = {
       fetchMaxParameterForFilter {
         integerLength
         ceiling
+        ceiling2
       }
     }
   `,

@@ -5,8 +5,7 @@
   margin: 120px auto;
   width: 90%;
   background-color: purple;
-  overflow: hidden;
-  // column-gap: 1rem;
+  z-index: 1;
 
   .col1, .col2, .col3, .col4 {
     height: fit-content;

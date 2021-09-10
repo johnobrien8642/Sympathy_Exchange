@@ -24,16 +24,16 @@ const Feed = ({
     }
   });
 
-  useEffect(() => {
+  useEffect(async () => {
     if (fetchMoreBoolRef.current) {
-      var fetchPleaFeed = fetchMoreWithClient(
+      var fetchPleaFeed = await fetchMoreWithClient(
         client,
         filter,
         lastPleaSympathyCountRef.current,
         FETCH_PLEA_FEED,
         true
       );
-
+      
       setCursor(fetchPleaFeed, lastPleaSympathyCountRef)
       fetchMoreBoolRef.current = false;
     }
