@@ -57,7 +57,7 @@ const App = () => {
         component={UserFollowersOrFollowingOrActivityFeed} 
         />
         <AuthRoute exact path='/discover' component={Discover} />
-      <AuthRoute exact path='/likes' component={UserPostLikesFeed} /> */}
+        <AuthRoute exact path='/likes' component={UserPostLikesFeed} /> */}
         {/* uncomment below for email auth welcome page */}
         {/* <AuthRoute exact path='/welcome' component={WelcomePage} /> */}
         <AuthRoute path={['/dashboard', '/likes']} component={MainPage} />

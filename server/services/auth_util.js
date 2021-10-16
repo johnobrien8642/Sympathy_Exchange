@@ -11,7 +11,7 @@ import User from '../models/User.js';
 const register = async (data, ctx) => {
   try {
   const { message, isValid } = validateRegisterInput(data);
-
+  
   if (!isValid) {
     throw new Error(message)
   };

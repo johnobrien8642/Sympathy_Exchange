@@ -195,15 +195,20 @@ const RootQueryType = new GraphQLObjectType({
           .sort({ 'sympathyCount': -1 })
           .limit(1)
           .then(res => {
-            var digits = new RegExp(/^(?:\d+)/, 'g'),
-            regex = digits.exec(res[0].sympathyCount),
-            ceil, divisor
+            try {
+              var digits = new RegExp(/^(?:\d+)/, 'g'),
+              regex = digits.exec(res[0].sympathyCount),
+              ceil, divisor
+ 
+              divisor = res[0].sympathyCount < 100 ? 10 : 100
+             
+              ceil = Math.ceil(res[0].sympathyCount/divisor)
+             
+              return { ceiling2: res[0].sympathyCount, integerLength: regex[0].toString().length, ceiling: ceil }
 
-            divisor = res[0].sympathyCount < 100 ? 10 : 100
-            
-            ceil = Math.ceil(res[0].sympathyCount/divisor)
-            
-            return { ceiling2: res[0].sympathyCount, integerLength: regex[0].toString().length, ceiling: ceil }
+            } catch(err) {
+              throw new Error('We were unable to fetch filter parameters at this time. Please try again later.')
+            }
           });
       }
     },
