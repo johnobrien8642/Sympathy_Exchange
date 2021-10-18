@@ -204,7 +204,7 @@ const RootQueryType = new GraphQLObjectType({
              
               ceil = Math.ceil(res[0].sympathyCount/divisor)
              
-              return { ceiling2: res[0].sympathyCount, integerLength: regex[0].toString().length, ceiling: ceil }
+              return { ceiling: res[0].sympathyCount, integerLength: regex[0].toString().length }
 
             } catch(err) {
               throw new Error('We were unable to fetch filter parameters at this time. Please try again later.')

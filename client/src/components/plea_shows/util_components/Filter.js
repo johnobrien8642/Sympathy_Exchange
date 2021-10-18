@@ -18,7 +18,7 @@ const Filter = ({
   if (error) return `Error in Sympathy Count Filter Params: ${error.message}`;
 
   const { fetchMaxParameterForFilter } = data;
-  const { integerLength, ceiling, ceiling2 } = fetchMaxParameterForFilter;
+  const { ceiling } = fetchMaxParameterForFilter;
 
   return (
     <div
@@ -27,7 +27,7 @@ const Filter = ({
       <SympathyCountFilterParams
         filter={filter}
         setFilter={setFilter}
-        initSliderVal={[0, ceiling2]}
+        initSliderVal={[0, ceiling]}
         lastPleaSympathyCountRef={lastPleaSympathyCountRef}
         fetchMoreBoolRef={fetchMoreBoolRef}
       />

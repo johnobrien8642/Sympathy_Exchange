@@ -1,8 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useEffect } from 'react';
 import ReactSlider from 'react-slider';
-import Queries from '../../../graphql/queries.js';
-const { FETCH_MAX_PARAMETER_FOR_FILTER } = Queries;
 
 const SympathyCountFilterParams = ({
   filter,
@@ -16,7 +13,7 @@ const SympathyCountFilterParams = ({
     let newObj = {...filter};
     newObj.rangeArr = initSliderVal;
     setFilter(newObj)
-  }, [])
+  }, [filter, initSliderVal, setFilter])
   
   // let { loading, error, data } = useQuery(FETCH_MAX_PARAMETER_FOR_FILTER);
 

@@ -2,6 +2,10 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const PleaComboSchema = new Schema({
+	userId: {
+		type: Schema.Types.ObjectId,
+		ref: 'User'
+	},
 	pleaLL: [
 		{
 			type: Schema.Types.ObjectId,

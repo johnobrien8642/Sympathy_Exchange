@@ -24,6 +24,6 @@ const PleaComboLLNodeSchema = new Schema({
     },
 });
 
-const PleaComboLLNode = mongoose.model('PleaComboLLNode', PleaComboLLNodeSchema, 'pleaComboLLNodes' )
+const PleaComboLLNode = mongoose.model('PleaComboLLNode', PleaComboLLNodeSchema, 'pleaComboLLNodes' );
 
 export default PleaComboLLNode;

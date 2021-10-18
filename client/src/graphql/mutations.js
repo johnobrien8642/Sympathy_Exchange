@@ -72,6 +72,13 @@ const Mutations = {
     }
   }
   `,
+  CREATE_PLEA_COMBO: gql`
+    mutation CreatePleaCombo($createPleaComboInput: PleaComboInputType) {
+      createPleaCombo(createPleaComboInput: $createPleaComboInput) {
+        _id
+      }
+    }
+  `,
   LIKE_POST: gql`
     mutation LikePost($postId: ID, $user: String, $postKind: String) {
       likePost(postId: $postId, user: $user, postKind: $postKind) {

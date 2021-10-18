@@ -13,6 +13,8 @@ import AuthService from '../../../services/auth_util.js';
 import PleaInputType from '../inputs/plea_input_type.js';
 import RegisterUserInputType from '../inputs/register_user_input_type.js';
 import PleaType from '../objects/plea_type.js';
+import PleaComboType from '../objects/plea_combo_type.js';
+import PleaComboInputType from '../inputs/plea_combo_input_type.js';
 import SympathyType from '../objects/sympathy_type.js';
 import FollowType from '../objects/follow_type.js';
 import UserAndTagType from '../unions/user_and_tag_type.js';
@@ -127,6 +129,15 @@ const mutation = new GraphQLObjectType({
               throw new Error('That Secret Recovery Phrase is invalid.')
             }
           });
+      }
+    },
+    createPleaCombo: {
+      type: PleaComboType,
+      args: {
+        pleaComboInput: { type: PleaComboInputType }
+      },
+      resolve(_, { pleaComboInput }) {
+  
       }
     },
     // createOrUpdatePost: {
