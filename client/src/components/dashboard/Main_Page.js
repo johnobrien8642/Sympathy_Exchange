@@ -12,6 +12,7 @@ const MainPage = () => {
     byTagIds: false
   });
   let lastPleaSympathyCountRef = useRef(null);
+  let lastObjectIdRef = useRef(null);
   let fetchMoreBoolRef = useRef(false);
 
   return(
@@ -23,6 +24,7 @@ const MainPage = () => {
       >
         <Filter
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+          lastObjectIdRef={lastObjectIdRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
           setFilter={setFilter}
           filter={filter}
@@ -33,6 +35,7 @@ const MainPage = () => {
       >
         <Feed
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+          lastObjectIdRef={lastObjectIdRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
           filter={filter}
         />

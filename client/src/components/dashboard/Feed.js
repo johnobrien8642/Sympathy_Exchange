@@ -10,6 +10,7 @@ const { fetchMoreWithClient, setCursor } = FeedUtil;
 const Feed = ({
   filter,
   lastPleaSympathyCountRef,
+  lastObjectIdRef,
   fetchMoreBoolRef
 }) => {
   const client = useApolloClient();
@@ -26,11 +27,17 @@ const Feed = ({
 
   useEffect(() => {
 
+    //There seems to be an unresolved issue with Apollo's fetchMore,
+    //which breaks when a user navigates away from the page and then back.
+    //Until this bug is resolved I use an instance of useApolloClient and
+    //just manually call the query with appropriate variables
+
     async function asyncFetchMoreWithClient() {
       return await fetchMoreWithClient(
         client,
         filter,
         lastPleaSympathyCountRef.current,
+        lastObjectIdRef.current,
         FETCH_PLEA_FEED,
         true
       );
@@ -47,7 +54,8 @@ const Feed = ({
       client,
       fetchMoreBoolRef,
       filter,
-      lastPleaSympathyCountRef
+      lastPleaSympathyCountRef,
+      lastObjectIdRef,
     ]
   )
 
@@ -55,7 +63,7 @@ const Feed = ({
   if (error) return `Feed Error: ${error.message}`;
 
   if (!fetchMoreBoolRef.current) {
-    setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef);
+    setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef, lastObjectIdRef);
   }
 
   return (
@@ -68,6 +76,7 @@ const Feed = ({
               client,
               filter,
               lastPleaSympathyCountRef.current,
+              lastObjectIdRef.current,
               FETCH_PLEA_FEED
             )
           }
@@ -81,6 +90,7 @@ const Feed = ({
           }
         >
           {data.fetchPleaFeed.map(plea => {
+            console.log(plea)
             return (
               <React.Fragment
                 key={plea._id}

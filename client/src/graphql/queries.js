@@ -39,8 +39,8 @@ const Queries = {
   //   }
   // `,
   FETCH_PLEA_FEED: gql`
-    query FetchPleaFeed($filter: FilterInputType, $cursor: Int) {
-      fetchPleaFeed(filter: $filter, cursor: $cursor) {
+    query FetchPleaFeed($filter: FilterInputType, $cursor: Int, $altCursor: String) {
+      fetchPleaFeed(filter: $filter, cursor: $cursor, altCursor: $altCursor) {
         ...NestedPleaFragment
       }
     }
@@ -52,7 +52,6 @@ const Queries = {
       fetchMaxParameterForFilter {
         integerLength
         ceiling
-        ceiling2
       }
     }
   `,

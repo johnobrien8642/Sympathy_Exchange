@@ -103,10 +103,13 @@ const RootQueryType = new GraphQLObjectType({
       type: GraphQLList(PleaType),
       args: {
         filter: { type: FilterInputType },
-        cursor: { type: GraphQLInt }
+        cursor: { type: GraphQLInt },
+        altCursor: { type: GraphQLString }
       },
-      async resolve(_, { filter, cursor }) {
+      async resolve(_, { filter, cursor, altCursor }) {
+        console.log(cursor, altCursor)
         var firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
+        noSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0,
         noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
         sympathy = filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
         sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
@@ -120,6 +123,10 @@ const RootQueryType = new GraphQLObjectType({
 
           query = {};
         
+        } else if (noSympathyYet) {
+          
+          query = { _id: { $lte: altCursor } }
+
         } else if (noFiltersAndCursor) {
           
           query = { sympathyCount: { $lte: cursor } };
@@ -182,6 +189,8 @@ const RootQueryType = new GraphQLObjectType({
           };
 
         };
+
+        console.log(query)
         
         return await Plea.find(query)
           .limit(10)

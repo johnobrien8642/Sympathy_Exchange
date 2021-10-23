@@ -14,7 +14,7 @@ import PleaInputType from '../inputs/plea_input_type.js';
 import RegisterUserInputType from '../inputs/register_user_input_type.js';
 import PleaType from '../objects/plea_type.js';
 import PleaComboType from '../objects/plea_combo_type.js';
-import PleaComboInputType from '../inputs/plea_combo_input_type.js';
+import PleaComboInputType from '../inputs/plea_combo_ll_node_input_type.js';
 import SympathyType from '../objects/sympathy_type.js';
 import FollowType from '../objects/follow_type.js';
 import UserAndTagType from '../unions/user_and_tag_type.js';

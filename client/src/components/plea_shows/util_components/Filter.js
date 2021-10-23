@@ -9,6 +9,7 @@ const Filter = ({
   filter,
   setFilter,
   lastPleaSympathyCountRef,
+  lastObjectIdRef,
   fetchMoreBoolRef
 }) => {
 
@@ -29,6 +30,7 @@ const Filter = ({
         setFilter={setFilter}
         initSliderVal={[0, ceiling]}
         lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+        lastObjectIdRef={lastObjectIdRef}
         fetchMoreBoolRef={fetchMoreBoolRef}
       />
       <TagFilterParams 

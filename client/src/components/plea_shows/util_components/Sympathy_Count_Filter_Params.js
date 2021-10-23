@@ -6,14 +6,16 @@ const SympathyCountFilterParams = ({
   setFilter,
   initSliderVal,
   lastPleaSympathyCountRef,
+  objectIdRef,
   fetchMoreBoolRef
 }) => {
-
+  
   useEffect(() => {
     let newObj = {...filter};
     newObj.rangeArr = initSliderVal;
     setFilter(newObj)
-  }, [filter, initSliderVal, setFilter])
+    //eslint-disable-next-line
+  }, [])
   
   // let { loading, error, data } = useQuery(FETCH_MAX_PARAMETER_FOR_FILTER);
 

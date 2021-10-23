@@ -3,12 +3,20 @@
 //which breaks when a user navigates away from the page and then back.
 //Until this bug is resolved I use an instance of useApolloClient and
 //just manually call the query with appropriate variables
-const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged) => {
+const fetchMoreWithClient = async (
+  client, 
+  filter, 
+  cursor, 
+  altCursor,
+  query, 
+  filterChanged
+) => {
   return await client.query({
     query: query,
     variables: {
       filter: filter,
-      cursor: cursor
+      cursor: cursor,
+      altCursor: altCursor
     },
     fetchPolicy: 'no-cache'
   }).then(res => {
@@ -20,7 +28,8 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
         query: query,
         variables: {
           filter: filter,
-          cursor: cursor
+          cursor: cursor,
+          altCursor: altCursor
         },
         data: {
           fetchPleaFeed: res.data.fetchPleaFeed
@@ -33,7 +42,8 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
         query: query,
         variables: {
           filter: filter,
-          cursor: cursor
+          cursor: cursor,
+          altCursor: altCursor
         }
       })
 
@@ -50,7 +60,8 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
           query: query,
           variables: {
             filter: filter,
-            cursor: cursor
+            cursor: cursor,
+            altCursor: altCursor
           },
           data: {
             fetchPleaFeed: newArr
@@ -61,8 +72,19 @@ const fetchMoreWithClient = async (client, filter, cursor, query, filterChanged)
   })
 };
 
-const setCursor = (dataArr, cursorRef) => {
-  return dataArr.length > 0 ? cursorRef.current = dataArr[dataArr.length - 1].sympathyCount : null;
+const setCursor = (dataArr, cursorRef, altCursorRef) => {
+  if (dataArr.length > 0) {
+    let lastFromArr = dataArr[dataArr.length - 1];
+    
+    if (lastFromArr.sympathyCount === 0) {
+      cursorRef.current = 0;
+      altCursorRef.current = lastFromArr._id;
+    } else {
+      cursorRef.current = lastFromArr.sympathyCount;
+      altCursorRef.current = null;
+    }
+  }
+  // return dataArr.length > 0 ? cursorRef.current = dataArr[dataArr.length - 1].sympathyCount.toString() : null;
 };
 
 const setFeed = (feedArrRef, dataArr) => {

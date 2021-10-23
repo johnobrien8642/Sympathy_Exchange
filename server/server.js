@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+ import mongoose from 'mongoose';
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import path from 'path';
@@ -10,17 +10,17 @@ global.__dirname = path.resolve('./')
 const app = express();
 
 mongoose
-.connect(keys.mongoURL, { 
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  serverSelectionTimeoutMS: 1000,
-  bufferMaxEntries: 0,
-  bufferCommands: false
-})
-.then(() => console.log('Connected to MongoDB successfully'))
-.catch(err => console.log(err))
+  .connect(keys.mongoURL, { 
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    serverSelectionTimeoutMS: 1000,
+    bufferMaxEntries: 0,
+    bufferCommands: false
+  })
+  .then(() => console.log('Connected to MongoDB successfully'))
+  .catch(err => console.log(err))
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))
