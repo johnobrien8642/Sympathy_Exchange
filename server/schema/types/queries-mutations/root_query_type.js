@@ -107,7 +107,6 @@ const RootQueryType = new GraphQLObjectType({
         altCursor: { type: GraphQLString }
       },
       async resolve(_, { filter, cursor, altCursor }) {
-        console.log(cursor, altCursor)
         var firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
         noSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0,
         noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
@@ -189,8 +188,6 @@ const RootQueryType = new GraphQLObjectType({
           };
 
         };
-
-        console.log(query)
         
         return await Plea.find(query)
           .limit(10)

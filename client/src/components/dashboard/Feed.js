@@ -90,7 +90,6 @@ const Feed = ({
           }
         >
           {data.fetchPleaFeed.map(plea => {
-            console.log(plea)
             return (
               <React.Fragment
                 key={plea._id}

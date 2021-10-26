@@ -72,6 +72,14 @@ const Mutations = {
     }
   }
   `,
+  SYMPATHIZE: gql`
+    mutation Sympathize($pleaId: ID) {
+      sympathize(pleaId: $pleaId) {
+        _id
+      }
+    }
+  `
+  ,
   CREATE_PLEA_COMBO: gql`
     mutation CreatePleaCombo($createPleaComboInput: PleaComboInputType) {
       createPleaCombo(createPleaComboInput: $createPleaComboInput) {

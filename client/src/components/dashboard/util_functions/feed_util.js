@@ -80,7 +80,8 @@ const setCursor = (dataArr, cursorRef, altCursorRef) => {
       cursorRef.current = 0;
       altCursorRef.current = lastFromArr._id;
     } else {
-      cursorRef.current = lastFromArr.sympathyCount;
+      let last = lastFromArr.sympathyCount.toString();
+      cursorRef.current = parseInt(last.substring(0, last.indexOf('.')));
       altCursorRef.current = null;
     }
   }

@@ -5,6 +5,7 @@ import Validator from 'validator';
 import aws from 'aws-sdk';
 import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
+import lodash from 'lodash';
 
 import keys from '../../../config/keys.js'
 import UserType from '../objects/user_type.js';
@@ -21,6 +22,7 @@ import UserAndTagType from '../unions/user_and_tag_type.js';
 import createOrUpdatePost from '../../../models/util/create_or_update_function.js';
 import DeleteFunctionUtil from '../../../models/util/delete_function_util.js';
 import { GraphQLJSONObject } from 'graphql-type-json';
+const { indexOf, isString } = lodash;
 const { deletePost, 
         asyncDeleteAllPosts, 
         asyncDeleteAllActivityAndProfilePic,
@@ -131,13 +133,34 @@ const mutation = new GraphQLObjectType({
           });
       }
     },
-    createPleaCombo: {
-      type: PleaComboType,
+    sympathize: {
+      type: PleaType,
       args: {
-        pleaComboInput: { type: PleaComboInputType }
+        pleaId: { type: GraphQLID }
       },
-      resolve(_, { pleaComboInput }) {
-  
+      async resolve(_, { pleaId }) {
+        let plea = 
+          await Plea
+            .findById(pleaId);
+
+        plea.sympathyCount += 1
+    
+        return await plea.save() 
+      }
+    },
+    unsympathize: {
+      type: PleaType,
+      args: {
+        pleaId: { type: GraphQLID }
+      },
+      async resolve(_, { pleaId }) {
+        let plea = 
+          await Plea
+            .findById(pleaId);
+
+        plea.sympathyCount -= 1
+    
+        return await plea.save() 
       }
     },
     // createOrUpdatePost: {

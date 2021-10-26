@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 import graphql from 'graphql';
+import lodash from 'lodash';
 import UserType from './user_type.js';
 import TagType from './tag_type.js';
+const { indexOf } = lodash;
 
 const Plea = mongoose.model('Plea');
 const { GraphQLString, 
         GraphQLID, 
         GraphQLInt,
+        GraphQLFloat,
         GraphQLList, 
         GraphQLBoolean, 
         GraphQLObjectType } = graphql;
@@ -41,7 +44,30 @@ const PleaType = new GraphQLObjectType({
           .then(plea => plea.pleaIdChain)
       }
     },
-    sympathyCount: { type: GraphQLInt },
+    sympathyCount: { 
+      type: GraphQLFloat,
+      async resolve(parentValue) {
+        return Plea
+          .findById(parentValue._id)
+          .then(async (plea) => {
+            const pleaIds = 
+              await Plea
+                .find({ sympathyCount: { $gt: 0 } })
+                .sort({ sympathyCount: 1, createdAt: 1 })
+                .distinct("_id");
+            
+            const pleaIdStrings =
+              pleaIds.map(String);
+            
+            const index = indexOf(pleaIdStrings, plea._id.toString(), true);
+
+            let decimal = index / plea.sympathyCount;
+            let roundToFour = decimal.toFixed(4);
+
+            return plea.sympathyCount + roundToFour.slice(1);
+          })
+      }
+    },
     createdAt: { type: GraphQLString },
     kind: { type: GraphQLString }
   })
