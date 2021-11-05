@@ -99,8 +99,10 @@ const PleaForm = ({
       newTags.splice(index, 1);
       setTags(newTags);
     } else {
+      let sortedTags;
       newTags.push(tag);
-      setTags(newTags);
+      sortedTags = newTags.sort();
+      setTags(sortedTags);
     };
   };
 

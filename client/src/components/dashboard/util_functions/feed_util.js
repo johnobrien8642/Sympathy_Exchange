@@ -75,13 +75,13 @@ const fetchMoreWithClient = async (
 const setCursor = (dataArr, cursorRef, altCursorRef) => {
   if (dataArr.length > 0) {
     let lastFromArr = dataArr[dataArr.length - 1];
-    
+  
     if (lastFromArr.sympathyCount === 0) {
       cursorRef.current = 0;
       altCursorRef.current = lastFromArr._id;
     } else {
       let last = lastFromArr.sympathyCount.toString();
-      cursorRef.current = parseInt(last.substring(0, last.indexOf('.')));
+      cursorRef.current = parseFloat(last);
       altCursorRef.current = null;
     }
   }

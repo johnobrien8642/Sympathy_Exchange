@@ -27,6 +27,7 @@ const { deletePost,
         asyncDeleteAllPosts, 
         asyncDeleteAllActivityAndProfilePic,
         handleS3Cleanup, handles3AndObjectCleanup } = DeleteFunctionUtil;
+const DECIMAL_TO_ADD = .01;
 
   const User = mongoose.model('User');
   const Tag = mongoose.model('Tag');
@@ -58,7 +59,7 @@ const mutation = new GraphQLObjectType({
           text: text
         });
 
-        tags.forEach(tag => plea.tagIds.push(tag._id));
+        tags.sort().forEach(tag => plea.tagIds.push(tag._id));
 
         return plea.save();
       }
@@ -142,10 +143,16 @@ const mutation = new GraphQLObjectType({
         let plea = 
           await Plea
             .findById(pleaId);
+        
+        plea.sympathyCountTicker += 1
 
-        plea.sympathyCount += 1
-    
-        return await plea.save() 
+        if (plea.sympathyCountTicker > 4) {
+          const newFloat = (parseFloat(plea.sympathyCount.toString()) + DECIMAL_TO_ADD);
+          plea.sympathyCount = newFloat.toFixed(3);
+          plea.sympathyCountTicker = 0;
+        }
+        
+        return await plea.save();
       }
     },
     unsympathize: {
@@ -158,9 +165,20 @@ const mutation = new GraphQLObjectType({
           await Plea
             .findById(pleaId);
 
-        plea.sympathyCount -= 1
-    
-        return await plea.save() 
+        let float = plea.sympathyCount.toString();
+
+        if (plea.sympathyCountTicker === 0) {
+          if (!float) {
+            return
+          } else {
+            const newFloat = (float - DECIMAL_TO_ADD);
+            plea.sympathyCount = newFloat.toString();
+            return await plea.save();
+          }
+        } else {
+          plea.sympathyCountTicker -= 1;
+          return await plea.save();
+        }
       }
     },
     // createOrUpdatePost: {

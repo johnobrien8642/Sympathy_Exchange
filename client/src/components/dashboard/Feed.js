@@ -61,7 +61,7 @@ const Feed = ({
 
   if (loading) return 'Loading...';
   if (error) return `Feed Error: ${error.message}`;
-
+  
   if (!fetchMoreBoolRef.current) {
     setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef, lastObjectIdRef);
   }

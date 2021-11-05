@@ -118,6 +118,8 @@ const RootQueryType = new GraphQLObjectType({
         tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor !== null,
         query;
         
+        let sortedTags = filter['tagIdArr'].sort();
+        
         if (firstMount) {
 
           query = {};
@@ -150,13 +152,13 @@ const RootQueryType = new GraphQLObjectType({
           };
 
         } else if (sympathyTagIdsCursor) {
-          
+
           query = { 
             $and: [
               { sympathyCount: { $gte: filter.rangeArr[0] } },
               { sympathyCount: { $lte: filter.rangeArr[1] } },
               { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter['tagIdArr'] } }
+              { tagIds: { $eq: sortedTags } }
             ]
           };
 
@@ -166,15 +168,15 @@ const RootQueryType = new GraphQLObjectType({
             $and: [
               { sympathyCount: { $gte: filter.rangeArr[0] } },
               { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { tagIds: { $in: filter['tagIdArr'] } }
+              { tagIds: { $eq: sortedTags } }
             ]
           };
 
         } else if (tagIds) {
-
+          
           query = { 
             $and: [
-              { tagIds: { $in: filter['tagIdArr'] } }
+              { tagIds: { $eq: sortedTags } }
             ]
           };
 
@@ -183,7 +185,7 @@ const RootQueryType = new GraphQLObjectType({
           query = { 
             $and: [
               { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter['tagIdArr'] } }
+              { tagIds: { $eq: sortedTags } }
             ]
           };
 
@@ -204,13 +206,15 @@ const RootQueryType = new GraphQLObjectType({
             try {
               var digits = new RegExp(/^(?:\d+)/, 'g'),
               regex = digits.exec(res[0].sympathyCount),
-              ceil, divisor
+              ceil, divisor, ceilingNum;
  
               divisor = res[0].sympathyCount < 100 ? 10 : 100
              
               ceil = Math.ceil(res[0].sympathyCount/divisor)
+
+              ceilingNum = Math.ceil(parseFloat(res[0].sympathyCount.toString()));
              
-              return { ceiling: res[0].sympathyCount, integerLength: regex[0].toString().length }
+              return { ceiling: ceilingNum, integerLength: regex[0].toString().length }
 
             } catch(err) {
               throw new Error('We were unable to fetch filter parameters at this time. Please try again later.')

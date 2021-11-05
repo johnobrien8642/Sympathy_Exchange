@@ -47,27 +47,11 @@ const PleaType = new GraphQLObjectType({
     sympathyCount: { 
       type: GraphQLFloat,
       async resolve(parentValue) {
-        return Plea
-          .findById(parentValue._id)
-          .then(async (plea) => {
-            const pleaIds = 
-              await Plea
-                .find({ sympathyCount: { $gt: 0 } })
-                .sort({ sympathyCount: 1, createdAt: 1 })
-                .distinct("_id");
-            
-            const pleaIdStrings =
-              pleaIds.map(String);
-            
-            const index = indexOf(pleaIdStrings, plea._id.toString(), true);
-
-            let decimal = index / plea.sympathyCount;
-            let roundToFour = decimal.toFixed(4);
-
-            return plea.sympathyCount + roundToFour.slice(1);
-          })
+        return await Plea.findById(parentValue._id)
+          .then(plea => parseFloat(plea.sympathyCount.toString()))
       }
     },
+    // sympathyCount: { type: GraphQLInt },
     createdAt: { type: GraphQLString },
     kind: { type: GraphQLString }
   })
