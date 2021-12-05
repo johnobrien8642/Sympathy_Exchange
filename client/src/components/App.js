@@ -27,8 +27,6 @@ import './../stylesheets/application.scss';
 const { FETCH_ALL_TAGS, CURRENT_USER_ID } = Queries;
 
 const App = () => {
-  let [currentUser, setCurrentUser] = useState(Cookies.get('currentUser'));
-
   useQuery(FETCH_ALL_TAGS);
   let { loading, error, data } = useQuery(CURRENT_USER_ID);
 
@@ -44,7 +42,7 @@ const App = () => {
   });
 
   if (loading) return 'Loading...';
-  if (error) return `Error: ${error}`;
+  if (error) return `Error in App.js: ${error}`;
   
   return (
     <React.Fragment>

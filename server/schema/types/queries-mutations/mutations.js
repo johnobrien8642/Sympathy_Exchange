@@ -32,13 +32,13 @@ const REG_DECIMAL_TO_ADD = .01;
 const HOT_DECIMAL_TO_ADD = .1;
 const HOT_STREAK_THRESH = 12;
 
-  const User = mongoose.model('User');
-  const Tag = mongoose.model('Tag');
-  const Follow = mongoose.model('Follow');
-  const Plea = mongoose.model('Plea');
-  const Sympathy = mongoose.model('Sympathy');
-  const { GraphQLObjectType, GraphQLID,
-        GraphQLString, GraphQLList, GraphQLBoolean, GraphQLInt } = graphql;
+const User = mongoose.model('User');
+const Tag = mongoose.model('Tag');
+const Follow = mongoose.model('Follow');
+const Plea = mongoose.model('Plea');
+const Sympathy = mongoose.model('Sympathy');
+const { GraphQLObjectType, GraphQLID,
+      GraphQLString, GraphQLList, GraphQLBoolean, GraphQLInt } = graphql;
 
 var s3Client = new aws.S3({
   secretAccessKey: keys.secretAccessKey,
@@ -249,6 +249,82 @@ const mutation = new GraphQLObjectType({
         }
       }
     },
+    follow: {
+      type: UserAndTagType,
+      args: {
+        currentUserArg: { type: GraphQLString },
+        item: { type: GraphQLString },
+        itemKind: { type: GraphQLString }
+      },
+      async resolve(_, { currentUserArg, item, itemKind }) {
+        let follow = new Follow({
+          onModel: itemKind
+        })
+        const recastItem = mongoose.Types.ObjectId(item);
+        
+        const currentUser = await User.findOne({ _id: currentUserArg });
+        const userToFollow = await User.findOne({ _id: recastItem });
+        const tagToFollow = await Tag.findOne({ _id: recastItem });
+        
+        follow.user = currentUser._id;
+        
+        if (userToFollow) {
+          follow.follows = userToFollow._id;
+          currentUser.userFollows.push(userToFollow._id);
+
+          await follow.save();
+          await currentUser.save();
+          
+          return userToFollow;
+        } else if (tagToFollow) {
+          follow.follows = tagToFollow._id;
+          currentUser.tagFollows.push(tag._id);
+
+          await follow.save();
+          await currentUser.save();
+
+          return tagToFollow;
+        }
+      }
+    },
+    unfollow: {
+      type: UserAndTagType,
+      args: {
+        currentUserArg: { type: GraphQLString },
+        item: { type: GraphQLID }
+      },
+      async resolve(_, { currentUserArg, item }) {
+        const recastItem = mongoose.Types.ObjectId(item);
+
+        const currentUser = await User.findOne({ _id: currentUserArg });
+        const userToUnfollow = await User.findOne({ _id: recastItem });
+        const tagToUnfollow = await Tag.findOne({ _id: recastItem });
+
+        if (userToUnfollow) {
+          currentUser.userFollows =
+            currentUser.userFollows.filter(obj => obj._id.toString() !== userToUnfollow._id.toString());
+
+          await currentUser.save();
+          await Follow.deleteOne({ 
+            user: mongoose.Types.ObjectId(currentUser._id), 
+            follows: mongoose.Types.ObjectId(userToUnfollow._id) 
+          });
+          
+          return userToUnfollow;
+        } else if (tagToUnfollow) {
+          currentUser.tagFollows = 
+            currentUser.tagFollows.filter(obj => obj._id.toString() !== tagToUnfollow._id.toString());
+
+          await currentUser.save();
+          Follow.deleteOne({ 
+            user: mongoose.Types.ObjectId(currentUser._id), 
+            follows: mongoose.Types.ObjectId(tagToUnfollow._id)
+          });
+          
+          return tagToUnfollow;
+        }
+      }
+    },
     // createOrUpdatePost: {
     //   type: PleaOrVariantType,
     //   args: {
@@ -312,87 +388,6 @@ const mutation = new GraphQLObjectType({
     //       foundPost.notesCount = foundPost.notesCount - 1
 
     //       return foundPost.save().then(post => post)
-    //     })
-    //   }
-    // },
-    // follow: {
-    //   type: UserAndTagType,
-    //   args: {
-    //     user: { type: GraphQLString },
-    //     item: { type: GraphQLString },
-    //     itemKind: { type: GraphQLString }
-    //   },
-    //   resolve(_, { user, item, itemKind }) {
-    //     var follow = new Follow({
-    //       onModel: itemKind
-    //     })
-    //     var recastItem = mongoose.Types.ObjectId(item)
-
-    //     return Promise.all([
-    //       User.findOne({ blogName: user }),
-    //       User.findOne({ _id: recastItem }),
-    //       Tag.findOne({ _id: recastItem }),
-    //     ]).then(([user, followsUser, tag ]) => {
-    //       follow.user = user._id
-          
-    //       if (followsUser) {
-    //         follow.follows = followsUser._id
-    //         followsUser.followerCount = followsUser.followerCount + 1
-    //         user.userFollows.push(followsUser._id)
-
-    //         return Promise.all([
-    //           follow.save(),
-    //           followsUser.save(),
-    //           user.save()
-    //         ]).then(([follow, followsUser, user]) => followsUser)
-    //       } else if (tag) {
-    //         follow.follows = tag._id
-    //         tag.followerCount = tag.followerCount + 1
-    //         user.tagFollows.push(tag._id)
-
-    //         return Promise.all([
-    //           follow.save(),
-    //           user.save(),
-    //           tag.save()
-    //         ]).then(([follow, user, tag]) => tag)
-    //       }
-    //     })
-    //   }
-    // },
-    // unfollow: {
-    //   type: UserAndTagType,
-    //   args: {
-    //     user: { type: GraphQLString },
-    //     item: { type: GraphQLID }
-    //   },
-    //   resolve(_, { user, item }) {
-    //     var recastItem = mongoose.Types.ObjectId(item)
-
-    //     return Promise.all([
-    //       User.findOne({ blogName: user }),
-    //       User.findOne({ _id: recastItem }),
-    //       Tag.findOne({ _id: recastItem }),
-    //     ]).then(([user, followsUser, tag]) => {
-
-    //       if (followsUser) {
-    //         user.userFollows = user.userFollows.filter(obj => obj._id.toString() !== followsUser._id.toString())
-    //         followsUser.followerCount = followsUser.followerCount - 1
-            
-    //         return Promise.all([
-    //           user.save(),
-    //           followsUser.save(),
-    //           Follow.deleteOne({ user: mongoose.Types.ObjectId(user._id), follows: mongoose.Types.ObjectId(followsUser._id) })
-    //         ]).then(([user, followsUser, follow]) => followsUser)
-    //       } else if (tag) {
-    //         user.userFollows = user.userFollows.filter(obj => obj._id.toString() !== tag._id.toString())
-    //         tag.followerCount = tag.followerCount - 1
-      
-    //         return Promise.all([
-    //           tag.save(),
-    //           user.save(),
-    //           Follow.deleteOne({ user: mongoose.Types.ObjectId(user._id), follows: mongoose.Types.ObjectId(tag._id) })
-    //         ]).then(([tag, user, follow]) => tag)
-    //       }
     //     })
     //   }
     // },

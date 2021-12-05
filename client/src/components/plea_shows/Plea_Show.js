@@ -33,14 +33,17 @@ const PleaShow = ({
               >
                 {plea.text}
               </div>
-              <AuthorAndSQ plea={plea} />
+              <AuthorAndSQ 
+                plea={plea}
+                currentUserId={data ? data.currentUserId : null}
+              />
             </div>
           )
         })}
       </div>
       <Tags tags={plea.tagIds} />
       <ChainPleaButton openForm={openForm} />
-      <PleaForm 
+      <PleaForm
         open={open}
         openForm={openForm}
         pleaProp={plea}

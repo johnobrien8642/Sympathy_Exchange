@@ -110,8 +110,8 @@ const Mutations = {
     }
   `,
   FOLLOW: gql`
-    mutation Follow($user: String, $item: String, $itemKind: String) {
-      follow(user: $user, item: $item, itemKind: $itemKind) {
+    mutation Follow($currentUserArg: String, $item: String, $itemKind: String) {
+      follow(currentUserArg: $currentUserArg, item: $item, itemKind: $itemKind) {
         __typename
         ... on UserType {
           _id
@@ -123,8 +123,8 @@ const Mutations = {
     }
   `,
   UNFOLLOW: gql`
-    mutation Unfollow($user: String, $item: ID) {
-      unfollow(user: $user, item: $item) {
+    mutation Unfollow($currentUserArg: String, $item: ID) {
+      unfollow(currentUserArg: $currentUserArg, item: $item) {
         __typename
         ... on UserType {
           _id

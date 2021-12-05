@@ -230,24 +230,24 @@ const followUpdate = (
   query,
   kind
 ) => {
-  var readFeed = client.readQuery({
+  const readFeed = client.readQuery({
     query: gqlQuery,
     variables: {
-      query: query
+      currentUserId: query
     }
-  })
+  });
   
-  var { user } = readFeed;
+  const { user } = readFeed;
 
-  var newArr = kind === 'User' ? 
-  [...user.userFollows, follow._id] : 
-  [...user.tagFollows, follow._id]
+  const newArr = kind === 'User' ? 
+    [...user.userFollows, follow._id] :
+    [...user.tagFollows, follow._id]
 
   if (kind === 'User') {
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        query: query
+        currentUserId: query
       },
       data: {
         user: {
@@ -259,7 +259,7 @@ const followUpdate = (
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        query: query
+        currentUserId: query
       },
       data: {
         user: {
@@ -277,24 +277,24 @@ const unfollowUpdate = (
   query,
   kind
 ) => {
-  var readFeed = client.readQuery({
+  const readFeed = client.readQuery({
     query: gqlQuery,
     variables: {
-      query: query
+      currentUserId: query
     }
   })
   
-  var { user } = readFeed;
-
-  var newArr = kind === 'User' ? 
-  user.userFollows.filter(obj => obj._id !== unfollow._id) : 
-  user.tagFollows.filter(obj => obj._id !== unfollow._id)
-
+  const { user } = readFeed;
+  
+  const newArr = kind === 'User' ?
+    user.userFollows.filter(obj => obj._id !== unfollow._id) : 
+    user.tagFollows.filter(obj => obj._id !== unfollow._id)
+  
   if (kind === 'User') {
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        query: query
+        currentUserId: query
       },
       data: {
         user: {
@@ -306,7 +306,7 @@ const unfollowUpdate = (
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        query: query
+        currentUserId: query
       },
       data: {
         user: {

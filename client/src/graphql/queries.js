@@ -10,6 +10,10 @@ const Queries = {
       user(currentUserId: $currentUserId) {
         _id
         username
+        userFollows {
+          _id
+          username
+        }
         tagFollows {
           _id
           title

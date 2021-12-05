@@ -1,10 +1,12 @@
 import React from 'react';
 import Score from './Score';
 import SympathyButton from './Sympathy_Button';
+import FollowButton from '../../social/Follow_Button';
 
 const AuthorAndSQ = ({
   plea,
-  chained
+  chained,
+  currentUserId
 }) => {
 
   function handleSympathyButtonShow() {
@@ -24,6 +26,10 @@ const AuthorAndSQ = ({
           className='author'
         >
           {plea.author.username}
+          <FollowButton 
+            user={plea.author}
+            currentUserId={currentUserId}
+          />
         </span>
 
         <div

@@ -38,6 +38,12 @@ const UserSchema = new Schema({
       ref: 'Plea'
     }
   ],
+  userFollows: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
   tagFollows: [
     {
       type: Schema.Types.ObjectId,

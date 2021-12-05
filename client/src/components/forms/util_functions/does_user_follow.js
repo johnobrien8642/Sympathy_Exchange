@@ -3,7 +3,6 @@ const doesUserFollowUser = (
   user,
   tag
 ) => {
-
   if (currentUser) {
     if (user) {
       return currentUser.userFollows.some(obj => obj._id === user._id)

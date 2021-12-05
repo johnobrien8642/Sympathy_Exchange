@@ -31,12 +31,20 @@ const UserType = new GraphQLObjectType({
     //       .then(user => user.savedPleasAndVariants)
     //   }
     // },
+    userFollows: {
+      type: GraphQLList(UserType),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .populate('userFollows')
+          .then(user => user.userFollows);
+      }
+    },
     tagFollows: {
       type: GraphQLList(TagType),
       resolve(parentValue) {
         return User.findById(parentValue._id)
           .populate('tagFollows')
-          .then(user => user.tagFollows)
+          .then(user => user.tagFollows);
       }
     },
     sympathizedPleaIdStringArr: {

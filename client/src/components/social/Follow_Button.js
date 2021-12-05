@@ -14,15 +14,16 @@ const FollowButton = ({
   feed,
   user,
   tag,
+  currentUserId
 }) => {
   let [follow] = useMutation(FOLLOW, {
     update(client, { data }) {
       var { follow } = data
       
-      followUpdate(client, follow, FETCH_USER, Cookies.get('currentUser'), user ? 'User' : 'Tag')
+      followUpdate(client, follow, FETCH_USER, currentUserId, user ? 'User' : 'Tag');
     },
     onError(error) {
-      console.log(error.message)
+      console.log(`Error in follow mutation: ${error.message}`)
     }
   });
 
@@ -30,22 +31,22 @@ const FollowButton = ({
     update(client, { data }) {
       var { unfollow } = data
       
-      unfollowUpdate(client, unfollow, FETCH_USER, Cookies.get('currentUser'), user ? 'User' : 'Tag')
+      unfollowUpdate(client, unfollow, FETCH_USER, currentUserId, user ? 'User' : 'Tag');
     },
     onError(error) {
-      console.log(error.message)
+      console.log(`Error in unfollow mutation: ${error.message}`)
     }
   });
 
   let { loading, error, data: currentUser } = useQuery(FETCH_USER, {
     variables: {
-      query: Cookies.get('currentUser')
+      currentUserId: currentUserId
     }
   })
 
   if (loading) return 'Loading...';
-  if (error) return `Error: ${error}`;
-
+  if (error) return `Error in Follow_Button.js: ${error.message}`;
+  
   if (tag) {
     if (doesUserFollow(currentUser.user, user, tag)) {
       return (
@@ -55,7 +56,7 @@ const FollowButton = ({
               e.preventDefault();
               unfollow({
                 variables: {
-                  user: Cookies.get('currentUser'),
+                  currentUserArg: currentUserId,
                   item: user ? user._id : tag._id
                 }
               })
@@ -73,7 +74,7 @@ const FollowButton = ({
               e.preventDefault();
               follow({
                 variables: {
-                  user: Cookies.get('currentUser'),
+                  currentUserArg: currentUserId,
                   item: user ? user._id : tag._id,
                   itemKind: user ? 'User' : 'Tag'
                 }
@@ -86,7 +87,7 @@ const FollowButton = ({
       )
     }
   } else {
-    if (currentUser.user.blogName !== user.blogName) {
+    if (currentUser.username !== user.username) {
       if (doesUserFollow(currentUser.user, user, tag)) {
         return (
           <React.Fragment>
@@ -95,7 +96,7 @@ const FollowButton = ({
                 e.preventDefault();
                 unfollow({
                   variables: {
-                    user: Cookies.get('currentUser'),
+                    currentUserArg: currentUserId,
                     item: user ? user._id : tag._id
                   }
                 })
@@ -113,7 +114,7 @@ const FollowButton = ({
                 e.preventDefault();
                 follow({
                   variables: {
-                    user: Cookies.get('currentUser'),
+                    currentUserArg: currentUserId,
                     item: user ? user._id : tag._id,
                     itemKind: user ? 'User' : 'Tag'
                   }

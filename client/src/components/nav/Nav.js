@@ -11,7 +11,7 @@ const { IS_LOGGED_IN,
 const Nav = ({
   currentUserId
 }) => {
-  let cursorId = useRef(new Date().getTime())
+  let cursorId = useRef(new Date().getTime());
   
   let { loading: loading2, 
         error: error2, 
@@ -19,7 +19,7 @@ const Nav = ({
           variables: {
             currentUserId: currentUserId
           },
-        fetchPolicy: 'cache-and-network'
+        // fetchPolicy: 'cache-and-network'
       })
 
     useEffect(() => {
