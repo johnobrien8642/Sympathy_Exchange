@@ -22,12 +22,15 @@ import UserAndTagType from '../unions/user_and_tag_type.js';
 import createOrUpdatePost from '../../../models/util/create_or_update_function.js';
 import DeleteFunctionUtil from '../../../models/util/delete_function_util.js';
 import { GraphQLJSONObject } from 'graphql-type-json';
-const { indexOf, isString } = lodash;
+const { indexOf, isString, sortedIndex, clone } = lodash;
 const { deletePost, 
         asyncDeleteAllPosts, 
         asyncDeleteAllActivityAndProfilePic,
         handleS3Cleanup, handles3AndObjectCleanup } = DeleteFunctionUtil;
-const DECIMAL_TO_ADD = .01;
+//Streaks and Decimals last set 11/5/2021
+const REG_DECIMAL_TO_ADD = .01;
+const HOT_DECIMAL_TO_ADD = .1;
+const HOT_STREAK_THRESH = 12;
 
   const User = mongoose.model('User');
   const Tag = mongoose.model('Tag');
@@ -46,21 +49,27 @@ var s3Client = new aws.S3({
 const mutation = new GraphQLObjectType({
   name: 'Mutations',
   fields: () => ({
-    createPlea: {
+    createOrChainPlea: {
       type: PleaType,
       args: {
         pleaInputData: { type: PleaInputType }
       },
       resolve(_, { pleaInputData }) {
-        const { author, text, tags } = pleaInputData;
-
-        var plea = new Plea({
+        const { author, text, tagIds, pleaIdChain, chained } = pleaInputData;
+        
+        let plea = new Plea({
           author: author,
-          text: text
+          text: text,
+          chained: chained ? chained : false,
+          pleaIdChain: pleaIdChain.length ? pleaIdChain : []
         });
 
-        tags.sort().forEach(tag => plea.tagIds.push(tag._id));
-
+        plea.pleaIdChain.push(plea._id)
+        
+        //tagIds array needs to always be sorted for filtering purposes.
+        //See the filtering $eq query for more info.
+        tagIds.sort().forEach(tagId => plea.tagIds.push(tagId));
+        
         return plea.save();
       }
     },
@@ -98,7 +107,7 @@ const mutation = new GraphQLObjectType({
         token: { type: GraphQLString }
       },
       resolve(_, { token }) {
-        return AuthService.logout(token)
+        return AuthService.logout(token);
       }
     },
     verifyUser: {
@@ -107,7 +116,7 @@ const mutation = new GraphQLObjectType({
         token: { type: GraphQLString }
       },
       resolve(_, args) {
-        return AuthService.verify(args)
+        return AuthService.verify(args);
       }
     },
     recoverAccount: {
@@ -137,45 +146,104 @@ const mutation = new GraphQLObjectType({
     sympathize: {
       type: PleaType,
       args: {
-        pleaId: { type: GraphQLID }
+        pleaId: { type: GraphQLID },
+        currentUserId: { type: GraphQLID }
       },
-      async resolve(_, { pleaId }) {
-        let plea = 
+      async resolve(_, { pleaId, currentUserId }) {
+        let plea =
           await Plea
             .findById(pleaId);
-        
-        plea.sympathyCountTicker += 1
 
-        if (plea.sympathyCountTicker > 4) {
-          const newFloat = (parseFloat(plea.sympathyCount.toString()) + DECIMAL_TO_ADD);
-          plea.sympathyCount = newFloat.toFixed(3);
-          plea.sympathyCountTicker = 0;
-        }
+        let currentUser =
+          await User
+            .findById(currentUserId);
         
+        const { _id } = plea;
+        const twelveHoursAgo = new Date(new Date() - 43200000);
+        
+        const sympsForLastTwelveHours =
+          await Sympathy
+            .find(
+              {
+                $and: [
+                  { _id: { $eq: _id } },
+                  { createdAt: { $gt: twelveHoursAgo } }
+                ]
+              }
+            );
+            
+        if (sympsForLastTwelveHours.length > HOT_STREAK_THRESH) {
+          plea.hotStreakTicker += 1
+          
+          if (plea.hotStreakTicker > 5) {
+            const newFloat = (parseFloat(plea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
+            plea.sympathyCount = newFloat.toFixed(3);
+            plea.hotStreakTicker = 0;
+          }
+        } else if (sympsForLastTwelveHours.length < HOT_STREAK_THRESH) {
+          plea.hotStreakTicker = 0;
+          plea.sympathyCountTicker += 1;
+          
+          if (plea.sympathyCountTicker > 4) {
+            const newFloat = (parseFloat(plea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
+            plea.sympathyCount = newFloat.toFixed(3);
+            plea.sympathyCountTicker = 0;
+          }
+        }
+            
+        const symp = new Sympathy({
+          plea: _id,
+          user: currentUserId
+        });
+        
+        currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 0, plea._id);
+        
+        await currentUser.save();
+        await symp.save();
         return await plea.save();
       }
     },
     unsympathize: {
       type: PleaType,
       args: {
-        pleaId: { type: GraphQLID }
+        pleaId: { type: GraphQLID },
+        currentUserId: { type: GraphQLID }
       },
-      async resolve(_, { pleaId }) {
+      async resolve(_, { pleaId, currentUserId }) {
         let plea = 
           await Plea
             .findById(pleaId);
 
+        let currentUser = 
+          await User
+            .findById(currentUserId);
+        
+        const symp = new Sympathy({
+          plea: pleaId,
+          user: currentUserId,
+          unsympathy: true
+        });
+        
+        currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 1);
+        await currentUser.save();
+        await symp.save();
+
         let float = plea.sympathyCount.toString();
 
+        //if sympathyCountTicker is already at 0
+        //then penalize sympathyCount
         if (plea.sympathyCountTicker === 0) {
+          //if float is 0 then do nothing
           if (!float) {
             return
           } else {
-            const newFloat = (float - DECIMAL_TO_ADD);
+            const newFloat = (float - REG_DECIMAL_TO_ADD);
             plea.sympathyCount = newFloat.toString();
             return await plea.save();
           }
         } else {
+          //if sympathyCountTicker > 0 then only penalize
+          //sympathyCountTicker, sympathyCount is safe
           plea.sympathyCountTicker -= 1;
           return await plea.save();
         }

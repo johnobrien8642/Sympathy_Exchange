@@ -17,7 +17,7 @@ const { IS_LOGGED_IN, CURRENT_USER_ID } = Queries;
 const { VERIFY_USER } = Mutations;
 
 const token = localStorage.getItem('auth-token');
-const envURI = process.env.NODE_ENV === 'development' ? `http://localhost:5000/graphql` : process.env.APOLLO_URL
+const envURI = process.env.NODE_ENV === 'development' ? `http://localhost:4000/graphql` : process.env.APOLLO_URL
 
 const authLink = setContext((_, { headers }) => {
   return {

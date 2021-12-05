@@ -2,14 +2,18 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import Tags from './util_components/Tags';
+import PleaChain from './util_components/Plea_Chain';
 import ConfirmClose from './util_components/Confirm_Close';
 import Mutations from '../../graphql/mutations.js';
-const { CREATE_PLEA } = Mutations;
+const { CREATE_OR_CHAIN_PLEA } = Mutations;
 
 const PleaForm = ({
   open,
   openForm,
-  user
+  user,
+  pleaProp,
+  chained,
+  currentUserId
 }) => {
   let [plea, setPlea] = useState('');
   let [tagListActive, setTagListActive] = useState(false);
@@ -18,7 +22,7 @@ const PleaForm = ({
   let [pleaLengthAlert, setPleaLengthAlert] = useState(false);
   let [perspectiveAlert, setPerspectiveAlert] = useState(false);
   let [tag, setTag] = useState('');
-  let [tags, setTags] = useState([]);
+  let [tags, setTags] = useState(pleaProp ? pleaProp.tagIds : []);
   let contentEditableDivRef = useRef(null);
   
   useEffect(() => {
@@ -58,7 +62,7 @@ const PleaForm = ({
     
   }, [plea]);
 
-  let [createPlea] = useMutation(CREATE_PLEA, {
+  let [createOrChainPlea] = useMutation(CREATE_OR_CHAIN_PLEA, {
     onCompleted() {
       reset();
       openForm(false);
@@ -105,7 +109,7 @@ const PleaForm = ({
       setTags(sortedTags);
     };
   };
-
+  
   return (
     <div
       className={open ? 'pleaFormContainer active' : 'pleaFormContainer none'}
@@ -122,12 +126,14 @@ const PleaForm = ({
           onSubmit={e => {
             e.preventDefault();
 
-            createPlea({
+            createOrChainPlea({
               variables: {
                 pleaInputData: {
-                  author: user._id,
+                  author: user ? user._id : currentUserId,
                   text: plea,
-                  tags: tags
+                  tagIds: tags.map(tag => tag._id),
+                  pleaIdChain: pleaProp ? pleaProp.pleaIdChain.map(plea => plea._id) : [],
+                  chained: chained ? chained : false
                 }
               }
             })
@@ -156,6 +162,7 @@ const PleaForm = ({
           <div
             className='innerContentEditableDivContainer'
           >
+            <PleaChain pleaChain={(open && pleaProp) ? pleaProp.pleaIdChain : []}/>
             <div
               className='contentEditableDiv'
               contentEditable='true'

@@ -1,6 +1,6 @@
 import graphql from 'graphql';
 import TagInputType from '../inputs/tag_input_type.js';
-const { GraphQLString, GraphQLID, GraphQLList, GraphQLInputObjectType } = graphql;
+const { GraphQLBoolean, GraphQLString, GraphQLID, GraphQLList, GraphQLInputObjectType } = graphql;
 
 const PleaInputType = new GraphQLInputObjectType({
   name: 'PleaInputType',
@@ -8,7 +8,9 @@ const PleaInputType = new GraphQLInputObjectType({
     _id: { type: GraphQLID },
     author: { type: GraphQLID },
     text: { type: GraphQLString },
-    tags: { type: GraphQLList(TagInputType) }
+    pleaIdChain: { type: GraphQLList(GraphQLID) },
+    tagIds: { type: GraphQLList(GraphQLID) },
+    chained: { type: GraphQLBoolean }
   })
 })
 

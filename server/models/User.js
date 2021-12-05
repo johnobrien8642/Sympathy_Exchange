@@ -26,6 +26,12 @@ const UserSchema = new Schema({
     type: Boolean,
     required: false
   },
+  sympathizedPleaIdStringArr: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Plea'
+    }
+  ],
   savedPleas: [
     {
       type: Schema.Types.ObjectId,

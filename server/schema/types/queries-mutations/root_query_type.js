@@ -222,6 +222,7 @@ const RootQueryType = new GraphQLObjectType({
           });
       }
     },
+    
     fetchAllTags: {
       type: GraphQLList(TagType),
       async resolve(_) {
@@ -1183,10 +1184,10 @@ const RootQueryType = new GraphQLObjectType({
     plea: {
       type: PleaType,
       args: {
-        query: { type: GraphQLID }
+        pleaId: { type: GraphQLID }
       },
-      resolve(parentValue, { query }) {
-        return Plea.findById(query)
+      resolve(parentValue, { pleaId }) {
+        return Plea.findById(pleaId);
       }
     },
     tags: {

@@ -3,9 +3,9 @@ import AllPostQueryFragments from './all_posts_query_fragment.js'
 const { ALL_POSTS } = AllPostQueryFragments;
 
 const Mutations = {
-  CREATE_PLEA: gql`
-    mutation CreatePlea($pleaInputData: PleaInputType) {
-      createPlea(pleaInputData: $pleaInputData) {
+  CREATE_OR_CHAIN_PLEA: gql`
+    mutation CreateOrChainPlea($pleaInputData: PleaInputType) {
+      createOrChainPlea(pleaInputData: $pleaInputData) {
         _id
         text
         author {
@@ -73,8 +73,16 @@ const Mutations = {
   }
   `,
   SYMPATHIZE: gql`
-    mutation Sympathize($pleaId: ID) {
-      sympathize(pleaId: $pleaId) {
+    mutation Sympathize($pleaId: ID, $currentUserId: ID) {
+      sympathize(pleaId: $pleaId, currentUserId: $currentUserId) {
+        _id
+      }
+    }
+  `
+  ,
+  UNSYMPATHIZE: gql`
+    mutation Unsympathize($pleaId: ID, $currentUserId: ID) {
+      unsympathize(pleaId: $pleaId, currentUserId: $currentUserId) {
         _id
       }
     }

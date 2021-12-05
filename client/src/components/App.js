@@ -10,6 +10,7 @@ import SecretRecoveryPhraseShow from './auth/Secret_Recovery_Phrase_Show';
 import AccountRecovery from './auth/Account_Recovery';
 import UserSettings from './user/User_Settings';
 import UserDashboard from './user/User_Dashboard';
+import ChainPleaForm from './forms/Chain_Plea_Form';
 import AuthRoute from '../util/route_util';
 import MainPage from './dashboard/Main_Page';
 import Queries from '../graphql/queries.js';
@@ -47,7 +48,7 @@ const App = () => {
   
   return (
     <React.Fragment>
-      <Nav currentUser={currentUser} currentUserId={data ? data.currentUserId : null}/>
+      <Nav currentUserId={data ? data.currentUserId : null} />
       <Switch>
         {/* <AuthRoute path={'/view/tag/:tagTitle'} component={TagFeed} />
         <AuthRoute path={'/view/blog/:blogName'} component={UserBlogShow} />
@@ -62,8 +63,8 @@ const App = () => {
         {/* <AuthRoute exact path='/welcome' component={WelcomePage} /> */}
         <AuthRoute path={['/dashboard', '/likes']} component={MainPage} />
         <AuthRoute exact path={'/settings/account'} component={UserSettings} />
-        <AuthRoute exact path='/register' component={Register} routeType={'auth'} setCurrentUser={setCurrentUser} />
-        <AuthRoute exact path='/login' component={Login} routeType={'auth'} setCurrentUser={setCurrentUser} />
+        <AuthRoute exact path='/register' component={Register} routeType={'auth'} />
+        <AuthRoute exact path='/login' component={Login} routeType={'auth'} />
         <AuthRoute exact path='/reveal_secret_recovery_phrase' component={SecretRecoveryPhraseShow} />
         <AuthRoute exact path={'/:username'} component={UserDashboard} />
         <Route exact path='/account_recovery' component={AccountRecovery} />

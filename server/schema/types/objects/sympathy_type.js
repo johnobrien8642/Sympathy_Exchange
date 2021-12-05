@@ -3,8 +3,10 @@ import graphql from 'graphql';
 import UserType from './user_type.js';
 import PleaType from './plea_type.js';
 const Sympathy = mongoose.model('Sympathy');
-const { GraphQLID, GraphQLObjectType, 
-        GraphQLString } = graphql;
+const { GraphQLID, 
+        GraphQLObjectType, 
+        GraphQLString, 
+        GraphQLBoolean } = graphql;
 
 const SympathyType = new GraphQLObjectType({
   name: 'SympathyType',
@@ -18,12 +20,12 @@ const SympathyType = new GraphQLObjectType({
           .then(like => like.user)
       }
     },
-    post: {
+    plea: {
       type: PleaType,
       resolve(parentValue) {
         return Sympathy.findById(parentValue._id)
-          .populate('post')
-          .then(like => like.post)
+          .populate('plea')
+          .then(sympathy => sympathy.plea);
       }
     },
     postAuthor: {
@@ -34,6 +36,7 @@ const SympathyType = new GraphQLObjectType({
           .then(like => like.postAuthor)
       }
     },
+    unsympathy: { type: GraphQLBoolean },
     createdAt: { type: GraphQLString },
     kind: { type: GraphQLString }
   })

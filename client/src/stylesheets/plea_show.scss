@@ -1,6 +1,6 @@
 .mainPageContainer {
   
-  .plea {
+  .plea-show-container {
     margin: 20px 0;
     width: 100%;
     background-color: blue;
@@ -11,72 +11,75 @@
       display: flex;
       justify-content: space-between;
 
-      .text {
-        line-height: 1.5rem;
-        margin: 10px 5px;
-        width: 100%;
-        text-align: justify;
-      }
+      .inner {
 
-      .SQContainer {
-        display: flex;
-        flex-direction: column;
-        min-width: 200px;
-        
-        .innerSQContainer {
+        .text {
+          line-height: 1.5rem;
+          margin: 10px 5px;
+          width: 100%;
+          text-align: justify;
+        }
+  
+        .SQContainer {
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          margin: auto;
-          height: 100%;
-
-          .author, .score {
-            
-            &:hover {
-              cursor: default;
-            }
-          }
-
-          .author {
-            position: relative;
-            display: block;
-            margin: 10px 0;
-            font-weight: 500;
-            width: 100%;
-            text-align: center;
-          }
-  
-          .scoreAndSympathyButtonContainer {
+          min-width: 200px;
+          
+          .innerSQContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             margin: auto;
-            background-color: blue;
-            width: 150px;
+            height: 100%;
   
-            .score {
-              display: flex;
-              flex-direction: column;
-              margin: 10px auto 0 auto;
-              width: 70%;
-              font-size: 1.3rem;
-              border-top: 2px solid black;
-              border-bottom: 2px solid black;
+            .author, .score {
               
-              span {
-                margin: 0 auto;
+              &:hover {
+                cursor: default;
               }
             }
-            
-            .sympathyBtnContainer {
-              width: fit-content;
-              margin: 10px auto;
-              padding: 5px;
-              border-radius: 5px;
-              background-color: orange;
+  
+            .author {
+              position: relative;
+              display: block;
+              margin: 10px 0;
+              font-weight: 500;
+              width: 100%;
+              text-align: center;
+            }
+    
+            .scoreAndSympathyButtonContainer {
+              margin: auto;
+              background-color: blue;
+              width: 150px;
+    
+              .score {
+                display: flex;
+                flex-direction: column;
+                margin: 10px auto 0 auto;
+                width: 70%;
+                font-size: 1.3rem;
+                border-top: 2px solid black;
+                border-bottom: 2px solid black;
+                
+                span {
+                  margin: 0 auto;
+                }
+              }
               
-              button {
-                font-size: 1.2rem;
-
-                &:hover {
-                  cursor: pointer;
+              .sympathyBtnContainer {
+                width: fit-content;
+                margin: 10px auto;
+                padding: 5px;
+                border-radius: 5px;
+                background-color: orange;
+                
+                button {
+                  font-size: 1.2rem;
+  
+                  &:hover {
+                    cursor: pointer;
+                  }
                 }
               }
             }
@@ -93,6 +96,15 @@
         margin: 10px 15px;
         padding: 5px;
         background-color: salmon;
+      }
+    }
+
+    .chain-plea-button {
+      background-color: var(--burnt-gold);
+      padding: 20px;
+
+      &:hover {
+        cursor: pointer;
       }
     }
   }

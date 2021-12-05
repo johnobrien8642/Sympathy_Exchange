@@ -15,6 +15,14 @@ const Fragments = {
         description
       }
       chained
+      pleaIdChain {
+        _id
+        text
+        author {
+          _id
+          username
+        }
+      }
       sympathyCount
       createdAt
       kind

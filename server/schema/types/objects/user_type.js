@@ -38,6 +38,13 @@ const UserType = new GraphQLObjectType({
           .populate('tagFollows')
           .then(user => user.tagFollows)
       }
+    },
+    sympathizedPleaIdStringArr: {
+      type: GraphQLList(GraphQLString),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .distinct('sympathizedPleaIdStringArr');
+      }
     }
   })
 })

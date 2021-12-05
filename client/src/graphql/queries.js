@@ -6,7 +6,7 @@ const { ALL_POSTS, ALL_POSTS_ACTIVITY } = AllPostQueryFragment;
 
 const Queries = {
   FETCH_USER: gql`
-    query fetchUser($currentUserId: String) {
+    query FetchUser($currentUserId: String) {
       user(currentUserId: $currentUserId) {
         _id
         username
@@ -14,9 +14,18 @@ const Queries = {
           _id
           title
         }
+        sympathizedPleaIdStringArr
         kind
       }
     }
+  `,
+  FETCH_PLEA: gql`
+    query FetchPlea($pleaId: ID) {
+      plea(pleaId: $pleaId) {
+        ...NestedPleaFragment
+      }
+    }
+    ${NESTED_PLEA_FRAGMENT}
   `,
   FETCH_SECRET_RECOVERY_PHRASE_AFTER_REGISTER: gql`
     query FetchSecretRecoveryPhraseAfterRegister($timedToken: String) {

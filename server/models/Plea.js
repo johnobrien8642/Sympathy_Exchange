@@ -39,6 +39,10 @@ const PleaSchema = new Schema({
     default: 0,
     index: true
   },
+  hotStreakTicker: {
+    type: Number,
+    default: 0,
+  },
   createdAt: {
     type: Date,
     default: Date.now

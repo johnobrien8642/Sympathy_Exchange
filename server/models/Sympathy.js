@@ -10,6 +10,10 @@ const SympathySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
+  unsympathy: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now

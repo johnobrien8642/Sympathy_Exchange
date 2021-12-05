@@ -1,11 +1,11 @@
 import React from 'react';
-import TagShow from './util_components/Tag_Show';
+import Tags from './util_components/Tags';
 import AuthorAndSQ from './util_components/AuthorAndSQ';
 
 const NonChained = ({
   plea
 }) => {
-  
+
   return (
     <div
       className='plea'
@@ -13,28 +13,19 @@ const NonChained = ({
       <div
         className='textAndSQContainer'
       >
-        <div
-          className='text'
-        >
-          {plea.text}
-        </div>
-
-        <AuthorAndSQ plea={plea} />
-      </div>
-
-      <div
-        className='pleaTags'
-      >
-        {plea.tagIds.map(tag => {
-          return (
-            <React.Fragment
-              key={tag._id}
+        {plea.pleaIdChain.map(plea => {
+          <div className='inner'>
+            <div
+            className='text'
             >
-              <TagShow tag={tag} />
-            </React.Fragment>
-          )
+              {plea.text}
+            </div>
+            <AuthorAndSQ plea={plea} />
+          </div>
         })}
       </div>
+
+      <Tags tags={plea.tagIds} />
     </div>
   )
 };

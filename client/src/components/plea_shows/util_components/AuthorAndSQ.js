@@ -3,8 +3,15 @@ import Score from './Score';
 import SympathyButton from './Sympathy_Button';
 
 const AuthorAndSQ = ({
-  plea
+  plea,
+  chained
 }) => {
+
+  function handleSympathyButtonShow() {
+    if (!chained) {
+      return <SympathyButton plea={plea} />
+    }
+  }
 
   return (
     <div
@@ -23,7 +30,7 @@ const AuthorAndSQ = ({
           className='scoreAndSympathyButtonContainer'
         >
           <Score plea={plea} />
-          <SympathyButton plea={plea} />
+          {handleSympathyButtonShow()}
         </div>
       </div>
     </div>
