@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { useQuery } from '@apollo/client';
 import Queries from '../../../graphql/queries.js';
 const { FETCH_ALL_TAGS } = Queries;

@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Feed from './Feed';
-import Filter from '../plea_shows/util_components/Filter';
+import HandleSetFilter from '../plea_shows/util_components/Handle_Set_Filter';
 
 const MainPage = () => {
   let [filter, setFilter] = useState({
@@ -22,7 +22,7 @@ const MainPage = () => {
       <div
         className='col1'
       >
-        <Filter
+        <HandleSetFilter
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
           lastObjectIdRef={lastObjectIdRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
@@ -34,10 +34,10 @@ const MainPage = () => {
         className='col2'
       >
         <Feed
+          filter={filter}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
           lastObjectIdRef={lastObjectIdRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
-          filter={filter}
         />
       </div>
       <div

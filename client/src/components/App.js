@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import Cookies from 'js-cookie';
-
 import Nav from '../components/nav/Nav';
 import Login from '../components/auth/Login';
 import Register from './auth/Register';
@@ -10,12 +8,11 @@ import SecretRecoveryPhraseShow from './auth/Secret_Recovery_Phrase_Show';
 import AccountRecovery from './auth/Account_Recovery';
 import UserSettings from './user/User_Settings';
 import UserDashboard from './user/User_Dashboard';
-import ChainPleaForm from './forms/Chain_Plea_Form';
-import AuthRoute from '../util/route_util';
+import TagFeed from './feeds/Tag_Feed';
 import MainPage from './dashboard/Main_Page';
+import AuthRoute from '../util/route_util';
 import Queries from '../graphql/queries.js';
 import './../stylesheets/application.scss';
-// import TagFeed from './feeds/Tag_Feed';
 // import UserPostLikesFeed from './feeds/User_Post_Likes_Feed';
 // import UserBlogShow from './feeds/User_Blog_Show';
 // import UserPostShow from './feeds/User_Post_Show';
@@ -48,8 +45,7 @@ const App = () => {
     <React.Fragment>
       <Nav currentUserId={data ? data.currentUserId : null} />
       <Switch>
-        {/* <AuthRoute path={'/view/tag/:tagTitle'} component={TagFeed} />
-        <AuthRoute path={'/view/blog/:blogName'} component={UserBlogShow} />
+        {/* <AuthRoute path={'/view/blog/:blogName'} component={UserBlogShow} />
         <AuthRoute exact path='/blog/view/:blogName/:postId' component={UserPostShow} />
         <AuthRoute 
         exact path={['/followers', '/following', '/activity']} 
@@ -59,6 +55,7 @@ const App = () => {
         <AuthRoute exact path='/likes' component={UserPostLikesFeed} /> */}
         {/* uncomment below for email auth welcome page */}
         {/* <AuthRoute exact path='/welcome' component={WelcomePage} /> */}
+        <AuthRoute path={'/tag-feed/:tagId'} component={TagFeed} />
         <AuthRoute path={['/dashboard', '/likes']} component={MainPage} />
         <AuthRoute exact path={'/settings/account'} component={UserSettings} />
         <AuthRoute exact path='/register' component={Register} routeType={'auth'} />

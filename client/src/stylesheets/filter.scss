@@ -1,9 +1,15 @@
+.tag-feed-container {
+  .filter-container {
+    margin-top: 100px;
+  }
+}
+
 .mainPageContainer {
 
-  .filterContainer {
+  .filter-container {
     position: relative;
     
-    .sympathyCountFilterParamsContainer {
+    .sympathy-count-filter-params-container {
       position: relative;
       display: flex;
       flex-wrap: wrap;

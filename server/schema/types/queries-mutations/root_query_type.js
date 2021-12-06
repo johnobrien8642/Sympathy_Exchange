@@ -14,13 +14,14 @@ import PleaType from '../objects/plea_type.js';
 import SympathyType from '../objects/sympathy_type.js';
 import SearchUtil from '../../../services/search_util.js';
 import RootQueryTypeUtil from './util/root_query_type_util.js';
+import e from 'express';
 const User = mongoose.model('User');
 const Plea = mongoose.model('Plea');
 const Tag = mongoose.model('Tag');
 const Sympathy = mongoose.model('Sympathy');
 const Follow = mongoose.model('Follow');
 const { GraphQLObjectType, GraphQLList,
-        GraphQLString, GraphQLID, GraphQLInt } = graphql;
+        GraphQLString, GraphQLID, GraphQLInt, GraphQLBoolean } = graphql;
 // const { handleFilterTagRegex, 
 //         handleFilterPostContentRegex,
 //         asyncTagPostArr,
@@ -104,55 +105,90 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         filter: { type: FilterInputType },
         cursor: { type: GraphQLInt },
-        altCursor: { type: GraphQLString }
+        altCursor: { type: GraphQLString },
+        tagBool: { type: GraphQLBoolean }
       },
-      async resolve(_, { filter, cursor, altCursor }) {
-        var firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
-        noSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0,
-        noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
-        sympathy = filter['bySympCount'] && !filter['byTagIds'] && cursor === null,
-        sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor !== null,
-        sympathyTagIdsCursor = filter['bySympCount'] && filter['byTagIds'] && cursor !== null,
-        sympathyTagIds = filter['bySympCount'] && filter['byTagIds'] && cursor === null,
-        tagIds = !filter['bySympCount'] && filter['byTagIds'] && cursor === null,
-        tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor !== null,
-        query;
-        
-        let sortedTags = filter['tagIdArr'].sort();
+      async resolve(_, { filter, cursor, altCursor, tagBool }) {
+        //find() params
+        const firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null;
+        const noSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0;
+        const noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null;
+        const sympathy = filter['bySympCount'] && !filter['byTagIds'] && cursor === null;
+        const sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor !== null;
+        const sympathyTagIdsCursor = filter['bySympCount'] && filter['byTagIds'] && cursor !== null;
+        const sympathyTagIds = filter['bySympCount'] && filter['byTagIds'] && cursor === null;
+        const tagIds = !filter['bySympCount'] && filter['byTagIds'] && cursor === null;
+        const tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor !== null;
+
+        // sort() params
+        const bySympathyCount = filter['feedSort'] === 'bySympathyCount';
+        const byCreatedAt = filter['feedSort'] === 'byCreatedAt';
+
+        const sortedTags = filter['tagIdArr'].sort();
+        let query;
+        let sort;
         
         if (firstMount) {
-
-          query = {};
-        
+          if (tagBool) {
+            query = { tagIds: { $in: filter['tagIdArr'] } };
+          } else {
+            query = {};
+          }
         } else if (noSympathyYet) {
-          
-          query = { _id: { $lte: altCursor } }
-
+          if (tagBool) {
+            query = {
+              tagIds: { $in: filter['tagIdArr'] },
+              _id: { $lte: altCursor } 
+            }
+          } else {
+            query = { _id: { $lte: altCursor } }
+          }
         } else if (noFiltersAndCursor) {
-          
-          query = { sympathyCount: { $lte: cursor } };
-
+          if (tagBool) {
+            query = {
+              tagIds: { $in: filter['tagIdArr'] },
+              sympathyCount: { $lte: cursor } 
+            };
+          } else {
+            query = { sympathyCount: { $lte: cursor } };
+          }
         } else if (sympathy) {
-
-          query = { 
-            $and: [
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-            ]
-          };
-
+          if (tagBool) {
+            query = { 
+              $and: [
+                { tagIds: { $in: filter['tagIdArr'] } },
+                { sympathyCount: { $gte: filter.rangeArr[0] } },
+                { sympathyCount: { $lte: filter.rangeArr[1] } },
+              ]
+            };
+          } else {
+            query = { 
+              $and: [
+                { sympathyCount: { $gte: filter.rangeArr[0] } },
+                { sympathyCount: { $lte: filter.rangeArr[1] } },
+              ]
+            };
+          }
         } else if (sympathyCursor) {
-
-          query = { 
-            $and: [
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $lte: cursor } },
-            ]
-          };
-
+          if (tagBool) {
+            query = { 
+              $and: [
+                { tagIds: { $in: filter['tagIdArr'] } },
+                { sympathyCount: { $gte: filter.rangeArr[0] } },
+                { sympathyCount: { $lte: filter.rangeArr[1] } },
+                { sympathyCount: { $lte: cursor } },
+              ]
+            };
+          } else {
+            query = { 
+              $and: [
+                { sympathyCount: { $gte: filter.rangeArr[0] } },
+                { sympathyCount: { $lte: filter.rangeArr[1] } },
+                { sympathyCount: { $lte: cursor } },
+              ]
+            };
+          }
         } else if (sympathyTagIdsCursor) {
-
           query = { 
             $and: [
               { sympathyCount: { $gte: filter.rangeArr[0] } },
@@ -161,9 +197,7 @@ const RootQueryType = new GraphQLObjectType({
               { tagIds: { $eq: sortedTags } }
             ]
           };
-
         } else if (sympathyTagIds) {
-
           query = { 
             $and: [
               { sympathyCount: { $gte: filter.rangeArr[0] } },
@@ -171,35 +205,49 @@ const RootQueryType = new GraphQLObjectType({
               { tagIds: { $eq: sortedTags } }
             ]
           };
-
         } else if (tagIds) {
-          
           query = { 
             $and: [
               { tagIds: { $eq: sortedTags } }
             ]
           };
-
         } else if (tagIdsCursor) {
-
           query = { 
             $and: [
               { sympathyCount: { $lte: cursor } },
               { tagIds: { $eq: sortedTags } }
             ]
           };
+        };
 
+        if (bySympathyCount) {
+          sort = { sympathyCount: -1, createdAt: -1 } 
+        } else if (byCreatedAt) {
+          sort = { createdAt: -1 }
         };
         
         return await Plea.find(query)
           .limit(10)
-          .sort({ sympathyCount: -1, createdAt: -1 });
+          .sort(sort);
       }
     },
     fetchMaxParameterForFilter: {
       type: FilterParameterType,
-      async resolve(_) {
-         return await Plea.find({})
+      args: { tagId: { type: GraphQLID } },
+      async resolve(_, { tagId }) {
+        let query;
+        
+        if (tagId) {
+          query = {
+            tagIds: { 
+              $in: [ mongoose.Types.ObjectId(tagId) ] 
+            }
+          }
+        } else {
+          query = {}
+        };
+
+        return await Plea.find(query)
           .sort({ 'sympathyCount': -1 })
           .limit(1)
           .then(res => {
@@ -207,22 +255,19 @@ const RootQueryType = new GraphQLObjectType({
               var digits = new RegExp(/^(?:\d+)/, 'g'),
               regex = digits.exec(res[0].sympathyCount),
               ceil, divisor, ceilingNum;
- 
-              divisor = res[0].sympathyCount < 100 ? 10 : 100
-             
-              ceil = Math.ceil(res[0].sympathyCount/divisor)
 
+              divisor = res[0].sympathyCount < 100 ? 10 : 100;
+            
+              ceil = Math.ceil(res[0].sympathyCount/divisor); 
               ceilingNum = Math.ceil(parseFloat(res[0].sympathyCount.toString()));
-             
-              return { ceiling: ceilingNum, integerLength: regex[0].toString().length }
-
+            
+              return { ceiling: ceilingNum, integerLength: regex[0].toString().length };  
             } catch(err) {
               throw new Error('We were unable to fetch filter parameters at this time. Please try again later.')
             }
           });
       }
     },
-    
     fetchAllTags: {
       type: GraphQLList(TagType),
       async resolve(_) {
@@ -1198,9 +1243,9 @@ const RootQueryType = new GraphQLObjectType({
     },
     tag: {
       type: TagType,
-      args: { query: { type: GraphQLString } },
-      resolve(_, { query }) {
-        return Tag.findOne({ title: query })
+      args: { tagId: { type: GraphQLID } },
+      resolve(_, { tagId }) {
+        return Tag.findById(tagId);
       }
     },
     sympathy: {

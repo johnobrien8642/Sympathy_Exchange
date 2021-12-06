@@ -41,6 +41,14 @@ const Queries = {
       fetchSecretRecoveryPhrase(token: $token)
     }
   `,
+  FETCH_TAG: gql`
+    query FetchTag($tagId: ID) {
+      tag(tagId: $tagId) {
+        _id
+        title
+      }
+    }
+  `,
   // FETCH_ALL_TAGS: gql`
   //   query FetchAllTags {
   //     fetchAllTags {
@@ -52,8 +60,8 @@ const Queries = {
   //   }
   // `,
   FETCH_PLEA_FEED: gql`
-    query FetchPleaFeed($filter: FilterInputType, $cursor: Int, $altCursor: String) {
-      fetchPleaFeed(filter: $filter, cursor: $cursor, altCursor: $altCursor) {
+    query FetchPleaFeed($filter: FilterInputType, $cursor: Int, $altCursor: String, $tagBool: Boolean) {
+      fetchPleaFeed(filter: $filter, cursor: $cursor, altCursor: $altCursor, tagBool: $tagBool) {
         ...NestedPleaFragment
       }
     }
@@ -61,8 +69,8 @@ const Queries = {
     ${PLEA_FRAGMENT}
   `,
   FETCH_MAX_PARAMETER_FOR_FILTER: gql`
-    query FetchMaxParameterForFilter {
-      fetchMaxParameterForFilter {
+    query FetchMaxParameterForFilter($tagId: ID) {
+      fetchMaxParameterForFilter(tagId: $tagId) {
         integerLength
         ceiling
       }
@@ -276,17 +284,6 @@ const Queries = {
           }
         }
         ${ALL_POSTS}
-      }
-    }
-  `,
-  FETCH_TAG: gql`
-    query FetchTag($query: String) {
-      tag(query: $query) {
-        _id
-        title
-        followerCount
-        followerHeatLastWeek
-        postHeatLastWeek
       }
     }
   `,

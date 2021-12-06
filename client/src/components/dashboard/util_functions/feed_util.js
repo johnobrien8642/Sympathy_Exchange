@@ -9,14 +9,16 @@ const fetchMoreWithClient = async (
   cursor, 
   altCursor,
   query, 
-  filterChanged
+  filterChanged,
+  tagBool
 ) => {
   return await client.query({
     query: query,
     variables: {
       filter: filter,
       cursor: cursor,
-      altCursor: altCursor
+      altCursor: altCursor,
+      tagBool
     },
     fetchPolicy: 'no-cache'
   }).then(res => {
@@ -29,7 +31,8 @@ const fetchMoreWithClient = async (
         variables: {
           filter: filter,
           cursor: cursor,
-          altCursor: altCursor
+          altCursor: altCursor,
+          tagBool: tagBool
         },
         data: {
           fetchPleaFeed: res.data.fetchPleaFeed
@@ -43,7 +46,8 @@ const fetchMoreWithClient = async (
         variables: {
           filter: filter,
           cursor: cursor,
-          altCursor: altCursor
+          altCursor: altCursor,
+          tagBool: tagBool
         }
       })
 
@@ -61,7 +65,8 @@ const fetchMoreWithClient = async (
           variables: {
             filter: filter,
             cursor: cursor,
-            altCursor: altCursor
+            altCursor: altCursor,
+            tagBool: tagBool
           },
           data: {
             fetchPleaFeed: newArr

@@ -14,7 +14,8 @@ const FilterInputType = new GraphQLInputObjectType({
     rangeArr: { type: GraphQLList(GraphQLInt) },
     tagIdArr: { type: GraphQLList(GraphQLID) },
     bySympCount: { type: GraphQLBoolean },
-    byTagIds: { type: GraphQLBoolean }
+    byTagIds: { type: GraphQLBoolean },
+    feedSort: { type: GraphQLString }
   })
 });
 

@@ -1,33 +1,30 @@
 import React from 'react';
-
-import FollowButton from '../posts/util/components/social/Follow_Button';
+import { useQuery } from '@apollo/client';
+import FollowButton from '../social/Follow_Button';
+import Queries from '../../graphql/queries.js';
+const { CURRENT_USER_ID } = Queries;
 
 const TagShow = ({
   tag
 }) => {
+  let { data } = useQuery(CURRENT_USER_ID);
 
   return (
     <div
-      className='tagShow'
+      className='tag-show'
     >
       <div
-        className='tagShowHeader'
+        className='tag-show-header'
       >
         <h1
           className='title'
-        >{tag.title}</h1>
-        <FollowButton tag={tag} />
-      </div>
-
-      <div
-        className='tagShowData'
-      >
-        <span
-          className='followersCount'
-        >{tag.followerCount} followers</span>
-        <span
-          className='postsCount'
-        >{tag.postHeatLastWeek} recent posts</span>
+        >
+          {tag.title}
+        </h1>
+        <FollowButton
+          tag={tag}
+          currentUserId={data ? data.currentUserId : null}
+        />
       </div>
     </div>
   )
