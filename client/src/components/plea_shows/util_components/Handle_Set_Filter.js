@@ -15,10 +15,10 @@ const HandleSetFilter = ({
   tagFeed,
   tag
 }) => {
-
+  
   let { loading, error, data } = useQuery(FETCH_MAX_PARAMETER_FOR_FILTER, {
     variables: {
-      tagId: tag._id
+      tagId: tag?._id
     }
   });
 
@@ -47,8 +47,8 @@ const HandleSetFilter = ({
           fetchMoreBoolRef={fetchMoreBoolRef}
         />
       )
-    }
-  }
+    };
+  };
 
   return (
     <div

@@ -22,19 +22,22 @@ const PleaShow = ({
       <div
         className='textAndSQContainer'
       >
-        {plea.pleaIdChain.map(plea => {
+        {plea.pleaIdChain.map(p => {
+          if (p.author === undefined) {
+            console.log(plea)
+          }
           return (
             <div 
               className='inner'
-              key={plea._id + masterPleaId}
+              key={p._id + masterPleaId}
             >
               <div
                 className='text'
               >
-                {plea.text}
+                {p.text}
               </div>
               <AuthorAndSQ 
-                plea={plea}
+                plea={p}
                 currentUserId={data ? data.currentUserId : null}
               />
             </div>

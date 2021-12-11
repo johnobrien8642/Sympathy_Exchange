@@ -16,7 +16,7 @@ const Feed = ({
   tag
 }) => {
   const client = useApolloClient();
-
+  
   // feed query can be dynamic, either for fetching everything or fetching
   // with a filter
 

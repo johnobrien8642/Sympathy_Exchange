@@ -5,18 +5,20 @@ const options = { discriminatorKey: 'kind' }
 
 const PleaSchema = new Schema({
   text: {
-    type: String
+    type: String,
+    required: true
   },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    index: true
+    index: true,
+    required: true
   },
   tagIds: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Tag',
-      required: true
+      required: true,
     }
   ],
   chained: {

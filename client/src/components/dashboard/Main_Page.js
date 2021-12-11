@@ -9,7 +9,8 @@ const MainPage = () => {
     rangeArr: [],
     tagIdArr: [],
     bySympCount: false,
-    byTagIds: false
+    byTagIds: false,
+    feedSort: 'bySympathyCount'
   });
   let lastPleaSympathyCountRef = useRef(null);
   let lastObjectIdRef = useRef(null);

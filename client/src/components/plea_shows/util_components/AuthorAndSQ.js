@@ -8,7 +8,6 @@ const AuthorAndSQ = ({
   chained,
   currentUserId
 }) => {
-
   function handleSympathyButtonShow() {
     if (!chained) {
       return <SympathyButton plea={plea} />
