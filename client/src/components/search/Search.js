@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-
+import { useQuery } from '@apollo/client';
 import SearchDropDown from './SearchDropDown';
+import Queries from '../../graphql/queries.js';
+const { CURRENT_USER_ID } = Queries;
 
 const Search = ({
   user,
@@ -16,6 +18,8 @@ const Search = ({
   let [followedActive, setFollowedActive] = useState(mobile ? true : false)
   let [active, setActive] = useState(false);
   let searchIconImgRef = useRef(null);
+
+  let { data } = useQuery(CURRENT_USER_ID);
   
   useEffect(() => {
     if (searchClose) {
@@ -90,6 +94,7 @@ const Search = ({
           followedActive={followedActive}
           active={active}
           setActive={setActive}
+          currentUserId={data ? data.currentUserId : null}
         />
       </div>
     )

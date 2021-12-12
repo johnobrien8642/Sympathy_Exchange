@@ -26,7 +26,7 @@ const TagFilterParams = ({
             className={filter.tagIdArr.includes(t._id) ? 'tag selected' : 'tag'}
             key={t._id}
             onClick={() => {
-              const { floor, ceiling, tagIdArr, bySympCount } = filter;
+              const { floor, ceiling, tagIdArr, rangeArr, bySympCount, feedSort } = filter;
               let newArr;
               
               if (tagIdArr.includes(t._id)) {
@@ -39,9 +39,11 @@ const TagFilterParams = ({
                   setFilter({
                     floor: floor,
                     ceiling: ceiling,
+                    rangeArr: rangeArr,
                     tagIdArr: newArr,
                     bySympCount: bySympCount,
-                    byTagIds: newArr.length === 0 ? false : true
+                    byTagIds: newArr.length === 0 ? false : true,
+                    feedSort: feedSort
                   });
                   
                   lastPleaSympathyCountRef.current = null;
@@ -52,9 +54,11 @@ const TagFilterParams = ({
                 setFilter({
                   floor: floor,
                   ceiling: ceiling,
+                  rangeArr: rangeArr,
                   tagIdArr: newArr,
                   bySympCount: bySympCount,
-                  byTagIds: true
+                  byTagIds: true,
+                  feedSort: feedSort
                 });
 
                 lastPleaSympathyCountRef.current = null;

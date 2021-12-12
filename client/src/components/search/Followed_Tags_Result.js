@@ -15,7 +15,7 @@ const FollowedTags = ({
       return <span></span>
     }
   }
-
+  console.log(user)
   if (followedActive) {
     return (
       <React.Fragment>

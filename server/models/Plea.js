@@ -31,6 +31,12 @@ const PleaSchema = new Schema({
       ref: 'Plea'
     },
   ],
+  chainedByThesePleas: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Plea'
+    }
+  ],
   sympathyCount: {
     type: Schema.Types.Decimal128,
     default: 0.0,

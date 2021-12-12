@@ -54,23 +54,36 @@ const mutation = new GraphQLObjectType({
       args: {
         pleaInputData: { type: PleaInputType }
       },
-      resolve(_, { pleaInputData }) {
-        const { author, text, tagIds, pleaIdChain, chained } = pleaInputData;
-        
-        let plea = new Plea({
+      async resolve(_, { pleaInputData }) {
+        const { author, text, tagIds, pleaIdChain, chaining } = pleaInputData;
+        let pleasThatWillBeChained;
+
+        let newPlea = new Plea({
           author: author,
           text: text,
-          chained: chained ? chained : false,
+          chained: chaining ? chaining : false,
           pleaIdChain: pleaIdChain.length ? pleaIdChain : []
         });
+        
+        if (chaining) {
+          pleasThatWillBeChained = await Plea.find({ _id: { $in: pleaIdChain }});
 
-        plea.pleaIdChain.push(plea._id)
+          newPlea.sympathyCount = pleasThatWillBeChained.reduce((prev, next) => { return prev += next.sympathyCount }, 0)
+
+          for (let i = 0; i < pleasThatWillBeChained.length; i++) {
+            let foundPlea = await Plea.findById(pleasThatWillBeChained[i]);
+            foundPlea.chainedByThesePleas.push(newPlea._id);
+            await foundPlea.save();
+          }
+        };
+        
+        newPlea.pleaIdChain.push(newPlea._id);
         
         //tagIds array needs to always be sorted for filtering purposes.
         //See the filtering $eq query for more info.
-        tagIds.sort().forEach(tagId => plea.tagIds.push(tagId));
+        tagIds.sort().forEach(tagId => newPlea.tagIds.push(tagId));
         
-        return plea.save();
+        return newPlea.save();
       }
     },
     registerUser: {
@@ -154,6 +167,12 @@ const mutation = new GraphQLObjectType({
           await Plea
             .findById(pleaId);
 
+        const { chainedByThesePleas } = plea;
+
+        let chainedByThesePleasFound =
+          await Plea
+            .find({ _id: { $in: chainedByThesePleas }});
+        
         let currentUser =
           await User
             .findById(currentUserId);
@@ -167,7 +186,8 @@ const mutation = new GraphQLObjectType({
               {
                 $and: [
                   { _id: { $eq: _id } },
-                  { createdAt: { $gt: twelveHoursAgo } }
+                  { createdAt: { $gt: twelveHoursAgo } },
+                  { negated: { $eq: false } }
                 ]
               }
             );
@@ -178,15 +198,35 @@ const mutation = new GraphQLObjectType({
           if (plea.hotStreakTicker > 5) {
             const newFloat = (parseFloat(plea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
             plea.sympathyCount = newFloat.toFixed(3);
+            
+            // for (let i = 0; i < chainedByThesePleasFound; i++) {
+            //   let chainedPlea = chainedByThesePleasFound[i];
+            //   if (chainedPlea._id !== plea._id) {
+            //     const newFloat = (parseFloat(chainedPlea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD)
+            //     chainedPlea.sympathyCount = newFloat.toFixed(3);
+            //     await chainedPlea.save();
+            //   }
+            // }
+
             plea.hotStreakTicker = 0;
           }
         } else if (sympsForLastTwelveHours.length < HOT_STREAK_THRESH) {
           plea.hotStreakTicker = 0;
           plea.sympathyCountTicker += 1;
           
-          if (plea.sympathyCountTicker > 4) {
+          if (plea.sympathyCountTicker === 1) {
             const newFloat = (parseFloat(plea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
             plea.sympathyCount = newFloat.toFixed(3);
+
+            // for (let i = 0; i < chainedByThesePleasFound.length; i++) {
+            //   let chainedPlea = chainedByThesePleasFound[i];
+            //   if (chainedPlea._id !== plea._id) {
+            //     const newFloat = (parseFloat(chainedPlea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
+            //     chainedPlea.sympathyCount = newFloat.toFixed(3);
+            //     await chainedPlea.save();
+            //   }
+            // }
+
             plea.sympathyCountTicker = 0;
           }
         }
@@ -214,22 +254,41 @@ const mutation = new GraphQLObjectType({
           await Plea
             .findById(pleaId);
 
+        const { chainedByThesePleas } = plea;
+
+        let chainedByThesePleasFound =
+          await Plea
+            .find({ _id: { $in: chainedByThesePleas }});
+
         let currentUser = 
           await User
             .findById(currentUserId);
+        
+        let sympsToNegate =
+          await Sympathy
+            .find({
+              plea: plea._id,
+              negated: false
+            })
         
         const symp = new Sympathy({
           plea: pleaId,
           user: currentUserId,
           unsympathy: true
         });
+
+        // for (let i = 0; i < sympsToNegate.length; i++) {  
+        //   let symp = sympsToNegate[i];
+        //   symp.negated = true;
+        //   await symp.save();
+        // }
         
         currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 1);
         await currentUser.save();
         await symp.save();
 
-        let float = plea.sympathyCount.toString();
-
+        let float = parseFloat(plea.sympathyCount.toString());
+        
         //if sympathyCountTicker is already at 0
         //then penalize sympathyCount
         if (plea.sympathyCountTicker === 0) {
@@ -238,7 +297,17 @@ const mutation = new GraphQLObjectType({
             return
           } else {
             const newFloat = (float - REG_DECIMAL_TO_ADD);
-            plea.sympathyCount = newFloat.toString();
+            plea.sympathyCount = newFloat.toFixed(3);
+
+            // for (let i = 0; i < chainedByThesePleasFound.length; i++) {
+            //   let chainedPlea = chainedByThesePleasFound[i];
+            //   if (chainedPlea._id !== plea._id) {
+            //     const newFloat = (parseFloat(chainedPlea.sympathyCount.toString()) - REG_DECIMAL_TO_ADD)
+            //     chainedPlea.sympathyCount = newFloat.toFixed(3);
+            //     await chainedPlea.save();
+            //   }
+            // }
+
             return await plea.save();
           }
         } else {

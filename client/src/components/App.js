@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import Nav from '../components/nav/Nav';

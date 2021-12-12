@@ -6,11 +6,6 @@ import PleaChainShow from '../util_components/Plea_Chain_Show';
 const PleaChain = ({
   pleaChain
 }) => {
-  let keyHash;
-  if (pleaChain.length) {
-    keyHash = bcrypt.hashSync(pleaChain[0]._id)
-  }
-  
   if (pleaChain.length) {
     return (
       <div
@@ -18,10 +13,13 @@ const PleaChain = ({
       >
         {pleaChain.map(plea => {
           return (
-            <PleaChainShow
-              uniqHash={keyHash}
-              plea={plea}
-            />
+            <React.Fragment 
+              key={plea._id + bcrypt.hashSync(plea._id + 'PleaChain')}
+            >
+              <PleaChainShow
+                plea={plea}
+              />
+            </React.Fragment>
           )
         })}
       </div>

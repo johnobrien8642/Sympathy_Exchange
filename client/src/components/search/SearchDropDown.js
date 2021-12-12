@@ -1,10 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import Cookies from 'js-cookie';
-
 import FollowedTags from './Followed_Tags_Result';
 import Results from './Results';
-
 import Queries from '../../graphql/queries.js'
 const { FETCH_USER } = Queries;
 
@@ -13,12 +10,13 @@ const SearchDropDown = ({
   input,
   followedActive,
   active,
-  setActive
+  setActive,
+  currentUserId
 }) => {
 
   let { loading, error, data } = useQuery(FETCH_USER, {
     variables: {
-      query: Cookies.get('currentUser')
+      currentUserId: currentUserId
     }
   })
 
