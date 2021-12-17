@@ -10,7 +10,7 @@ const PleaInputType = new GraphQLInputObjectType({
     text: { type: GraphQLString },
     pleaIdChain: { type: GraphQLList(GraphQLID) },
     tagIds: { type: GraphQLList(GraphQLID) },
-    chained: { type: GraphQLBoolean }
+    chaining: { type: GraphQLBoolean }
   })
 })
 

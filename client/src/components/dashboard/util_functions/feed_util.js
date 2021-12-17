@@ -18,7 +18,7 @@ const fetchMoreWithClient = async (
       filter: filter,
       cursor: cursor,
       altCursor: altCursor,
-      tagBool
+      tagBool: tagBool
     },
     fetchPolicy: 'no-cache'
   }).then(res => {
@@ -35,7 +35,7 @@ const fetchMoreWithClient = async (
           tagBool: tagBool
         },
         data: {
-          fetchPleaFeed: res.data.fetchPleaFeed
+          fetchPleaFeed: [{ __typename: 'filterChanged'}, ...res.data.fetchPleaFeed]
         }
       });
 

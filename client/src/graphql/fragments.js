@@ -24,6 +24,7 @@ const Fragments = {
         }
       }
       sympathyCount
+      combinedSympathyCount
       createdAt
       kind
       __typename
@@ -47,6 +48,7 @@ const Fragments = {
         ...PleaFragment
       }
       sympathyCount
+      combinedSympathyCount
       createdAt
       kind
       __typename

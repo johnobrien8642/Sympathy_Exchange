@@ -1,7 +1,5 @@
 import React from 'react';
 import { useMutation, useQuery } from '@apollo/client';
-import Cookies from 'js-cookie';
-
 import Queries from '../../graphql/queries.js';
 import Mutations from '../../graphql/mutations.js';
 import UpdateCacheUtil from '../forms/util_functions/update_cache_util.js';
@@ -51,8 +49,9 @@ const FollowButton = ({
     if (doesUserFollow(currentUser.user, user, tag)) {
       return (
         <React.Fragment>
-          <form
-            onSubmit={e => {
+          <button
+            className='follow-btn'
+            onClick={e => {
               e.preventDefault();
               unfollow({
                 variables: {
@@ -62,15 +61,16 @@ const FollowButton = ({
               })
             }}
           >
-            <button type='submit'>Unfollow</button>
-          </form>
+            Unfollow
+          </button>
         </React.Fragment>
       )
     } else {
       return (
         <React.Fragment>
-          <form
-            onSubmit={e => {
+          <button
+            className='follow-btn'
+            onClick={e => {
               e.preventDefault();
               follow({
                 variables: {
@@ -81,8 +81,8 @@ const FollowButton = ({
               })
             }}
           >
-            <button type='submit'>Follow</button>
-          </form>
+            Follow
+          </button>
         </React.Fragment>
       )
     }
@@ -91,8 +91,9 @@ const FollowButton = ({
       if (doesUserFollow(currentUser.user, user, tag)) {
         return (
           <React.Fragment>
-            <form
-              onSubmit={e => {
+            <button
+              className='follow-btn'
+              onClick={e => {
                 e.preventDefault();
                 unfollow({
                   variables: {
@@ -102,15 +103,16 @@ const FollowButton = ({
                 })
               }}
             >
-              <button type='submit'>Unfollow</button>
-            </form>
+              Unfollow
+            </button>
           </React.Fragment>
         )
       } else {
         return (
           <React.Fragment>
-            <form
-              onSubmit={e => {
+            <button
+              className='follow-btn'
+              onClick={e => {
                 e.preventDefault();
                 follow({
                   variables: {
@@ -121,8 +123,8 @@ const FollowButton = ({
                 })
               }}
             >
-              <button type='submit'>Follow</button>
-            </form>
+              Follow
+            </button>
           </React.Fragment>
         )
       }

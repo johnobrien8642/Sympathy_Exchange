@@ -11,35 +11,49 @@ const PleaShow = ({
   plea
 }) => {
   let [open, openForm] = useState(false);
-  const masterPleaId = plea._id
+  const masterPleaId = plea._id;
 
   let { data } = useQuery(CURRENT_USER_ID);
+
+  function handleShowCombinedSQ() {
+    if (plea.chained) {
+      return (
+        <div
+          className='combined-sq'
+        >
+          {plea.combinedSympathyCount}
+        </div>
+      )
+    }
+  }
   
   return (
     <div
-      className='plea-show-container'
+      className={`plea-show-container ${plea._id}`}
     >
       <div
         className='textAndSQContainer'
       >
-        {plea.pleaIdChain.map(plea => {
+        {plea.pleaIdChain.map(p => {
           return (
             <div 
               className='inner'
-              key={plea._id + masterPleaId}
+              key={p._id + masterPleaId}
             >
               <div
                 className='text'
               >
-                {plea.text}
+                {p.text}
               </div>
-              <AuthorAndSQ 
-                plea={plea}
+              <AuthorAndSQ
+                plea={p}
                 currentUserId={data ? data.currentUserId : null}
+                lastPleaInChain={p._id === plea.pleaIdChain[plea.pleaIdChain.length - 1]._id}
               />
             </div>
           )
         })}
+        {handleShowCombinedSQ()}
       </div>
       <Tags tags={plea.tagIds} />
       <ChainPleaButton openForm={openForm} />
@@ -47,7 +61,7 @@ const PleaShow = ({
         open={open}
         openForm={openForm}
         pleaProp={plea}
-        chained={true}
+        chaining={true}
         currentUserId={data ? data.currentUserId : null}
       />
     </div>

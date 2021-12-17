@@ -69,21 +69,29 @@ const client = new ApolloClient({
 							return incoming
 						}
 					},
-        //  fetchLikesRepostsAndComments: {
-        //     merge: (existing = [], incoming = []) => {
-        //       return incoming
-        //     }
-        //   },
-        fetchPleaFeed: {
-          keyArgs: false,
+          fetchPleaFeed: {
+            keyArgs: false,
             merge: (existing = [], incoming = []) => {
-              const elements = [...incoming].reduce((array, current) => {
+              let arr;
+              if (incoming[0].__typename === 'filterChanged') {
+                let cleaned = incoming.slice(1);
+                arr = [...cleaned];
+              } else {
+                arr = [...existing, ...incoming]
+              }
+              
+              const elements = arr.reduce((array, current) => {
                 return array.map(i => i.__ref).includes(current.__ref) ? array : [...array, current];
               }, []);
           
               return elements
-          }
-        },
+            }
+          },
+          //  fetchLikesRepostsAndComments: {
+          //     merge: (existing = [], incoming = []) => {
+          //       return incoming
+          //     }
+          //   },
         // fetchTagFeed: {
         //   keyArgs: ['query'],
         //     merge: (existing = [], incoming = []) => {

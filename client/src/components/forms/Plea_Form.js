@@ -12,7 +12,7 @@ const PleaForm = ({
   openForm,
   user,
   pleaProp,
-  chained,
+  chaining,
   currentUserId
 }) => {
   let [plea, setPlea] = useState('');
@@ -133,7 +133,7 @@ const PleaForm = ({
                   text: plea,
                   tagIds: tags.map(tag => tag._id),
                   pleaIdChain: pleaProp ? pleaProp.pleaIdChain.map(plea => plea._id) : [],
-                  chained: chained ? chained : false
+                  chaining: chaining ? chaining : false
                 }
               }
             })

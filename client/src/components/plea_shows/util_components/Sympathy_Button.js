@@ -45,8 +45,8 @@ const SympathyButton = ({
       plea._id, 
       sympathizedPleaIdStringArr.length === 1 ? false : true
     );
-
-  if (symped ? symped : (sympIndex >= 0)) {
+  
+  if (symped !== null ? symped : (sympIndex >= 0)) {
     return (
       <div
         className='sympathyBtnContainer'
@@ -71,7 +71,7 @@ const SympathyButton = ({
     return (
       <div
         className='sympathyBtnContainer'
-        >
+      >
         <button
           onClick={e => {
             e.preventDefault();

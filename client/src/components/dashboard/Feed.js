@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useQuery, useApolloClient } from '@apollo/client';
 import PleaShow from '../plea_shows/Plea_Show';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import FeedUtil from './util_functions/feed_util.js';
 import Queries from '../../graphql/queries';
-const { FETCH_PLEA_FEED, FETCH_TAG_FEED } = Queries;
+const { FETCH_PLEA_FEED } = Queries;
 const { fetchMoreWithClient, setCursor } = FeedUtil;
 
 const Feed = ({
@@ -16,7 +16,7 @@ const Feed = ({
   tag
 }) => {
   const client = useApolloClient();
-
+  
   // feed query can be dynamic, either for fetching everything or fetching
   // with a filter
 
@@ -42,7 +42,7 @@ const Feed = ({
         lastPleaSympathyCountRef.current,
         lastObjectIdRef.current,
         FETCH_PLEA_FEED,
-        true,
+        fetchMoreBoolRef.current,
         tag ? true : false
       );
     }
@@ -60,6 +60,7 @@ const Feed = ({
       filter,
       lastPleaSympathyCountRef,
       lastObjectIdRef,
+      tag
     ]
   )
 
@@ -82,7 +83,7 @@ const Feed = ({
               lastPleaSympathyCountRef.current,
               lastObjectIdRef.current,
               FETCH_PLEA_FEED,
-              true,
+              fetchMoreBoolRef.current,
               tag ? true : false
             )
           }

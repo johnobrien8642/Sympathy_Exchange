@@ -110,15 +110,15 @@ const RootQueryType = new GraphQLObjectType({
       },
       async resolve(_, { filter, cursor, altCursor, tagBool }) {
         //find() params
-        const firstMount = !filter['bySympCount'] && !filter['byTagIds'] && cursor === null;
+        const firstMount = !filter['bySympCount'] && !filter['byTagIds'] && !cursor;
         const noSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0;
-        const noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor !== null;
-        const sympathy = filter['bySympCount'] && !filter['byTagIds'] && cursor === null;
-        const sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor !== null;
-        const sympathyTagIdsCursor = filter['bySympCount'] && filter['byTagIds'] && cursor !== null;
-        const sympathyTagIds = filter['bySympCount'] && filter['byTagIds'] && cursor === null;
-        const tagIds = !filter['bySympCount'] && filter['byTagIds'] && cursor === null;
-        const tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor !== null;
+        const noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor;
+        const sympathy = filter['bySympCount'] && !filter['byTagIds'] && !cursor;
+        const sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor;
+        const sympathyTagIdsCursor = filter['bySympCount'] && filter['byTagIds'] && cursor;
+        const sympathyTagIds = filter['bySympCount'] && filter['byTagIds'] && !cursor;
+        const tagIds = !filter['bySympCount'] && filter['byTagIds'] && !cursor;
+        const tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor;
 
         // sort() params
         const bySympathyCount = filter['feedSort'] === 'bySympathyCount';

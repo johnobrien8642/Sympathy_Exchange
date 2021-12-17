@@ -5,12 +5,12 @@ import FollowButton from '../../social/Follow_Button';
 
 const AuthorAndSQ = ({
   plea,
-  chained,
-  currentUserId
+  currentUserId,
+  lastPleaInChain
 }) => {
-
+  
   function handleSympathyButtonShow() {
-    if (!chained) {
+    if (lastPleaInChain) {
       return <SympathyButton plea={plea} />
     }
   }
