@@ -5,6 +5,7 @@ import PleaCombo from './Plea_Combo.js';
 import PleaComboLLNode from './Plea_Combo_LL_Node.js';
 import Follow from './Follow.js';
 import Sympathy from './Sympathy.js';
+import Save from './Save.js';
 
 const models = {
   User,
@@ -12,6 +13,7 @@ const models = {
   PleaCombo,
   PleaComboLLNode,
   Sympathy,
+  Save,
   Tag,
   Follow,
 };

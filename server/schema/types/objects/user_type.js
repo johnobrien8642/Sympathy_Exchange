@@ -23,28 +23,27 @@ const UserType = new GraphQLObjectType({
     createdAt: { type: GraphQLInt },
     lastUpdated: { type: GraphQLInt },
     kind: { type: GraphQLString },
-    // savedPleas: {
-    //   type: GraphQLList(PleaType),
-    //   resolve(parentValue) {
-    //     return User.findById(parentValue._id)
-    //       .populate('savedPleasAndVariants')
-    //       .then(user => user.savedPleasAndVariants)
-    //   }
-    // },
     userFollows: {
       type: GraphQLList(UserType),
       resolve(parentValue) {
         return User.findById(parentValue._id)
-          .populate('userFollows')
-          .then(user => user.userFollows);
+        .populate('userFollows')
+        .then(user => user.userFollows);
       }
     },
     tagFollows: {
       type: GraphQLList(TagType),
       resolve(parentValue) {
         return User.findById(parentValue._id)
-          .populate('tagFollows')
-          .then(user => user.tagFollows);
+        .populate('tagFollows')
+        .then(user => user.tagFollows);
+      }
+    },
+    savedPleaIdsStringArr: {
+      type: GraphQLList(GraphQLString),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .distinct('savedPleaIdsStringArr');
       }
     },
     sympathizedPleaIdStringArr: {

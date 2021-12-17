@@ -32,7 +32,7 @@ const UserSchema = new Schema({
       ref: 'Plea'
     }
   ],
-  savedPleas: [
+  savedPleaIdsStringArr: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Plea'
