@@ -17,7 +17,7 @@ const PleaShow = ({
   
   return (
     <div
-      className='plea-show-container'
+      className={`plea-show-container ${plea._id}`}
     >
       <div
         className='textAndSQContainer'

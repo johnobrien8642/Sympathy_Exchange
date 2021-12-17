@@ -187,7 +187,8 @@ const mutation = new GraphQLObjectType({
                 $and: [
                   { _id: { $eq: _id } },
                   { createdAt: { $gt: twelveHoursAgo } },
-                  { negated: { $eq: false } }
+                  { negated: { $eq: false } },
+                  { unsympathy: { $eq: false } }
                 ]
               }
             );
@@ -198,15 +199,6 @@ const mutation = new GraphQLObjectType({
           if (plea.hotStreakTicker > 5) {
             const newFloat = (parseFloat(plea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
             plea.sympathyCount = newFloat.toFixed(3);
-            
-            // for (let i = 0; i < chainedByThesePleasFound; i++) {
-            //   let chainedPlea = chainedByThesePleasFound[i];
-            //   if (chainedPlea._id !== plea._id) {
-            //     const newFloat = (parseFloat(chainedPlea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD)
-            //     chainedPlea.sympathyCount = newFloat.toFixed(3);
-            //     await chainedPlea.save();
-            //   }
-            // }
 
             plea.hotStreakTicker = 0;
           }
@@ -214,18 +206,9 @@ const mutation = new GraphQLObjectType({
           plea.hotStreakTicker = 0;
           plea.sympathyCountTicker += 1;
           
-          if (plea.sympathyCountTicker === 1) {
+          if (plea.sympathyCountTicker > 5) {
             const newFloat = (parseFloat(plea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
             plea.sympathyCount = newFloat.toFixed(3);
-
-            // for (let i = 0; i < chainedByThesePleasFound.length; i++) {
-            //   let chainedPlea = chainedByThesePleasFound[i];
-            //   if (chainedPlea._id !== plea._id) {
-            //     const newFloat = (parseFloat(chainedPlea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
-            //     chainedPlea.sympathyCount = newFloat.toFixed(3);
-            //     await chainedPlea.save();
-            //   }
-            // }
 
             plea.sympathyCountTicker = 0;
           }
@@ -237,7 +220,7 @@ const mutation = new GraphQLObjectType({
         });
         
         currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 0, plea._id);
-        
+      
         await currentUser.save();
         await symp.save();
         return await plea.save();
@@ -254,12 +237,6 @@ const mutation = new GraphQLObjectType({
           await Plea
             .findById(pleaId);
 
-        const { chainedByThesePleas } = plea;
-
-        let chainedByThesePleasFound =
-          await Plea
-            .find({ _id: { $in: chainedByThesePleas }});
-
         let currentUser = 
           await User
             .findById(currentUserId);
@@ -268,6 +245,7 @@ const mutation = new GraphQLObjectType({
           await Sympathy
             .find({
               plea: plea._id,
+              unsympathy: false,
               negated: false
             })
         
@@ -277,11 +255,11 @@ const mutation = new GraphQLObjectType({
           unsympathy: true
         });
 
-        // for (let i = 0; i < sympsToNegate.length; i++) {  
-        //   let symp = sympsToNegate[i];
-        //   symp.negated = true;
-        //   await symp.save();
-        // }
+        for (let i = 0; i < sympsToNegate.length; i++) {  
+          let symp = sympsToNegate[i];
+          symp.negated = true;
+          await symp.save();
+        }
         
         currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 1);
         await currentUser.save();
@@ -298,15 +276,6 @@ const mutation = new GraphQLObjectType({
           } else {
             const newFloat = (float - REG_DECIMAL_TO_ADD);
             plea.sympathyCount = newFloat.toFixed(3);
-
-            // for (let i = 0; i < chainedByThesePleasFound.length; i++) {
-            //   let chainedPlea = chainedByThesePleasFound[i];
-            //   if (chainedPlea._id !== plea._id) {
-            //     const newFloat = (parseFloat(chainedPlea.sympathyCount.toString()) - REG_DECIMAL_TO_ADD)
-            //     chainedPlea.sympathyCount = newFloat.toFixed(3);
-            //     await chainedPlea.save();
-            //   }
-            // }
 
             return await plea.save();
           }
