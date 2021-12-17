@@ -14,6 +14,18 @@ const PleaShow = ({
   const masterPleaId = plea._id;
 
   let { data } = useQuery(CURRENT_USER_ID);
+
+  function handleShowCombinedSQ() {
+    if (plea.chained) {
+      return (
+        <div
+          className='combined-sq'
+        >
+          {plea.combinedSympathyCount}
+        </div>
+      )
+    }
+  }
   
   return (
     <div
@@ -41,6 +53,7 @@ const PleaShow = ({
             </div>
           )
         })}
+        {handleShowCombinedSQ()}
       </div>
       <Tags tags={plea.tagIds} />
       <ChainPleaButton openForm={openForm} />

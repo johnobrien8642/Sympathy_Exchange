@@ -63,7 +63,7 @@ const PleaType = new GraphQLObjectType({
       async resolve(parentValue) {
         return await Plea.findById(parentValue._id)
           .populate('pleaIdChain')
-          .then(plea => plea.pleaIdChain.reduce((prev, next) => { return prev += next.sympathyCount }, 0));
+          .then(plea => parseFloat(plea.pleaIdChain.reduce((prev, next) => { return prev += parseFloat(next.sympathyCount.toString()) }, 0)));
       }
     },
     // sympathyCount: { type: GraphQLInt },

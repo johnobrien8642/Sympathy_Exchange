@@ -67,9 +67,7 @@ const mutation = new GraphQLObjectType({
         
         if (chaining) {
           pleasThatWillBeChained = await Plea.find({ _id: { $in: pleaIdChain }});
-
-          newPlea.sympathyCount = pleasThatWillBeChained.reduce((prev, next) => { return prev += next.sympathyCount }, 0)
-
+        
           for (let i = 0; i < pleasThatWillBeChained.length; i++) {
             let foundPlea = await Plea.findById(pleasThatWillBeChained[i]);
             foundPlea.chainedByThesePleas.push(newPlea._id);
@@ -166,12 +164,6 @@ const mutation = new GraphQLObjectType({
         let plea =
           await Plea
             .findById(pleaId);
-
-        const { chainedByThesePleas } = plea;
-
-        let chainedByThesePleasFound =
-          await Plea
-            .find({ _id: { $in: chainedByThesePleas }});
         
         let currentUser =
           await User
