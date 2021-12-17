@@ -78,16 +78,28 @@ const Mutations = {
         _id
       }
     }
-  `
-  ,
+  `,
   UNSYMPATHIZE: gql`
     mutation Unsympathize($pleaId: ID, $currentUserId: ID) {
       unsympathize(pleaId: $pleaId, currentUserId: $currentUserId) {
         _id
       }
     }
-  `
-  ,
+  `,
+  SAVE: gql`
+    mutation Save($pleaId: ID, $currentUserId: ID) {
+      save(pleaId: $pleaId, currentUserId: $currentUserId) {
+        _id
+      }
+    }
+  `,
+  UNSAVE: gql`
+    mutation Unsave($pleaId: ID, $currentUserId: ID) {
+      unsave(pleaId: $pleaId, currentUserId: $currentUserId) {
+        _id
+      }
+    }
+  `,
   CREATE_PLEA_COMBO: gql`
     mutation CreatePleaCombo($createPleaComboInput: PleaComboInputType) {
       createPleaCombo(createPleaComboInput: $createPleaComboInput) {

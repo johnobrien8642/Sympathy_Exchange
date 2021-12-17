@@ -19,6 +19,7 @@ const Queries = {
           title
         }
         sympathizedPleaIdStringArr
+        savedPleaIdsStringArr
         kind
       }
     }

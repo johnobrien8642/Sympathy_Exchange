@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import Tags from './util_components/Tags';
 import AuthorAndSQ from './util_components/AuthorAndSQ';
 import ChainPleaButton from './util_components/Chain_Plea_Button';
+import SympathyOrSaveButton from './util_components/Sympathy_Or_Save_Button';
 import PleaForm from '../forms/Plea_Form';
 import Queries from '../../graphql/queries.js';
 const { CURRENT_USER_ID } = Queries;
@@ -56,6 +57,7 @@ const PleaShow = ({
         {handleShowCombinedSQ()}
       </div>
       <Tags tags={plea.tagIds} />
+      <SympathyOrSaveButton kind={'save'} plea={plea} />
       <ChainPleaButton openForm={openForm} />
       <PleaForm
         open={open}

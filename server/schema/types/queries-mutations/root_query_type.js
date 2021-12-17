@@ -110,15 +110,15 @@ const RootQueryType = new GraphQLObjectType({
       },
       async resolve(_, { filter, cursor, altCursor, tagBool }) {
         //find() params
-        const firstMount = !filter['bySympCount'] && !filter['byTagIds'] && !cursor;
-        const noSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0;
-        const noFiltersAndCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor;
-        const sympathy = filter['bySympCount'] && !filter['byTagIds'] && !cursor;
-        const sympathyCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor;
-        const sympathyTagIdsCursor = filter['bySympCount'] && filter['byTagIds'] && cursor;
-        const sympathyTagIds = filter['bySympCount'] && filter['byTagIds'] && !cursor;
-        const tagIds = !filter['bySympCount'] && filter['byTagIds'] && !cursor;
-        const tagIdsCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor;
+        const isFirstMount = !filter['bySympCount'] && !filter['byTagIds'] && !cursor;
+        const hasNoSympathyYet = !filter['bySympCount'] && !filter['byTagIds'] && cursor === 0;
+        const hasNoFiltersAndHasCursor = !filter['bySympCount'] && !filter['byTagIds'] && cursor;
+        const hasOnlySympathy = filter['bySympCount'] && !filter['byTagIds'] && !cursor;
+        const hasSympathyAndCursor = filter['bySympCount'] && !filter['byTagIds'] && cursor;
+        const hasSympathyAndTagsAndCursor = filter['bySympCount'] && filter['byTagIds'] && cursor;
+        const hasSympathyAndTags = filter['bySympCount'] && filter['byTagIds'] && !cursor;
+        const hasTagsOnly = !filter['bySympCount'] && filter['byTagIds'] && !cursor;
+        const hasTagsAndCursor = !filter['bySympCount'] && filter['byTagIds'] && cursor;
 
         // sort() params
         const bySympathyCount = filter['feedSort'] === 'bySympathyCount';
@@ -128,13 +128,13 @@ const RootQueryType = new GraphQLObjectType({
         let query;
         let sort;
         
-        if (firstMount) {
+        if (isFirstMount) {
           if (tagBool) {
             query = { tagIds: { $in: filter['tagIdArr'] } };
           } else {
             query = {};
           }
-        } else if (noSympathyYet) {
+        } else if (hasNoSympathyYet) {
           if (tagBool) {
             query = {
               tagIds: { $in: filter['tagIdArr'] },
@@ -143,7 +143,7 @@ const RootQueryType = new GraphQLObjectType({
           } else {
             query = { _id: { $lte: altCursor } }
           }
-        } else if (noFiltersAndCursor) {
+        } else if (hasNoFiltersAndHasCursor) {
           if (tagBool) {
             query = {
               tagIds: { $in: filter['tagIdArr'] },
@@ -152,7 +152,7 @@ const RootQueryType = new GraphQLObjectType({
           } else {
             query = { sympathyCount: { $lte: cursor } };
           }
-        } else if (sympathy) {
+        } else if (hasOnlySympathy) {
           if (tagBool) {
             query = { 
               $and: [
@@ -169,7 +169,7 @@ const RootQueryType = new GraphQLObjectType({
               ]
             };
           }
-        } else if (sympathyCursor) {
+        } else if (hasSympathyAndCursor) {
           if (tagBool) {
             query = { 
               $and: [
@@ -188,7 +188,7 @@ const RootQueryType = new GraphQLObjectType({
               ]
             };
           }
-        } else if (sympathyTagIdsCursor) {
+        } else if (hasSympathyAndTagsAndCursor) {
           query = { 
             $and: [
               { sympathyCount: { $gte: filter.rangeArr[0] } },
@@ -197,7 +197,7 @@ const RootQueryType = new GraphQLObjectType({
               { tagIds: { $eq: sortedTags } }
             ]
           };
-        } else if (sympathyTagIds) {
+        } else if (hasSympathyAndTags) {
           query = { 
             $and: [
               { sympathyCount: { $gte: filter.rangeArr[0] } },
@@ -205,13 +205,13 @@ const RootQueryType = new GraphQLObjectType({
               { tagIds: { $eq: sortedTags } }
             ]
           };
-        } else if (tagIds) {
+        } else if (hasTagsOnly) {
           query = { 
             $and: [
               { tagIds: { $eq: sortedTags } }
             ]
           };
-        } else if (tagIdsCursor) {
+        } else if (hasTagsAndCursor) {
           query = { 
             $and: [
               { sympathyCount: { $lte: cursor } },
