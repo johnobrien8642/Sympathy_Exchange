@@ -231,6 +231,14 @@ const RootQueryType = new GraphQLObjectType({
           .sort(sort);
       }
     },
+    recents: {
+      type: GraphQLList(PleaType),
+      async resolve(_) {
+        return await Plea.find({})
+          .limit(5)
+          .sort({ createdAt: -1 })
+      }
+    },
     fetchMaxParameterForFilter: {
       type: FilterParameterType,
       args: { tagId: { type: GraphQLID } },

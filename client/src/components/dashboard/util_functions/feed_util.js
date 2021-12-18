@@ -78,7 +78,7 @@ const fetchMoreWithClient = async (
 };
 
 const setCursor = (dataArr, cursorRef, altCursorRef) => {
-  if (dataArr.length > 0) {
+  if (dataArr?.length > 0) {
     let lastFromArr = dataArr[dataArr.length - 1];
   
     if (lastFromArr.sympathyCount === 0) {
@@ -94,7 +94,7 @@ const setCursor = (dataArr, cursorRef, altCursorRef) => {
 };
 
 const setFeed = (feedArrRef, dataArr) => {
-  return feedArrRef.current = dataArr.length > 0 ? [...feedArrRef.current, ...dataArr] : [];
+  return feedArrRef.current = dataArr?.length > 0 ? [...feedArrRef.current, ...dataArr] : [];
 };
 
 const FeedUtil = {

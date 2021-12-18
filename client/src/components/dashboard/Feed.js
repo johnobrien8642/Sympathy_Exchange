@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import { useQuery, useApolloClient } from '@apollo/client';
+import Loading from '../shared_util/Loading';
 import PleaShow from '../plea_shows/Plea_Show';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import TagFeedSortParams from '../plea_shows/util_components/Tag_Feed_Sort_Params';
 import FeedUtil from './util_functions/feed_util.js';
 import Queries from '../../graphql/queries';
 const { FETCH_PLEA_FEED } = Queries;
@@ -15,11 +17,15 @@ const Feed = ({
   fetchMoreBoolRef,
   tag
 }) => {
+  
   const client = useApolloClient();
   
-  // feed query can be dynamic, either for fetching everything or fetching
-  // with a filter
-
+  //Feed query can be dynamic, either for fetching everything or fetching
+  //with a filter
+  
+  //NOTE: The loading var is only used to render a loading spinner
+  //at the end of the plea feed. Optional chaining is used throughout 
+  //to check if data has arrived yet.
   let { loading, error, data } = useQuery(FETCH_PLEA_FEED, {
     variables: {
       filter: filter,
@@ -64,19 +70,32 @@ const Feed = ({
     ]
   )
 
-  if (loading) return 'Loading...';
+  function handleLoadingIcon() {
+    if (loading) {
+      return <Loading />;
+    }
+  }
+
   if (error) return `Feed Error: ${error.message}`;
   
+
+
   if (!fetchMoreBoolRef.current) {
-    setCursor(data.fetchPleaFeed, lastPleaSympathyCountRef, lastObjectIdRef);
+    setCursor(data?.fetchPleaFeed, lastPleaSympathyCountRef, lastObjectIdRef);
   }
 
   return (
       <div
         className='feed'
       >
+        <TagFeedSortParams
+          filter={filter}
+          setFilter={setFilter}
+          lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+          fetchMoreBoolRef={fetchMoreBoolRef}
+        />
         <InfiniteScroll
-          dataLength={data.fetchPleaFeed.length}
+          dataLength={data?.fetchPleaFeed ? data.fetchPleaFeed.length : 0}
           next={() => fetchMoreWithClient(
               client,
               filter,
@@ -96,7 +115,7 @@ const Feed = ({
             </div>
           }
         >
-          {data.fetchPleaFeed.map(plea => {
+          {data?.fetchPleaFeed.map(plea => {
             return (
               <React.Fragment
                 key={plea._id}
@@ -105,6 +124,7 @@ const Feed = ({
               </React.Fragment>
             )
           })}
+          {handleLoadingIcon()}
         </InfiniteScroll>
       </div>
   );

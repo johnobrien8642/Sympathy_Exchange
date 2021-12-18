@@ -1,0 +1,34 @@
+.main-feed-page-container {
+  display: flex;
+  position: relative;
+  margin: 120px auto;
+  width: 90%;
+  background-color: purple;
+  z-index: 1;
+
+  .col-1, .col-2, .col-3 {
+    height: fit-content;
+    background-color: red;
+  }
+  
+  .col-1 {
+    width: 20%;
+  }
+  
+  .col-2 {
+    width: 50%;
+  }
+
+  .col-3 {
+    width: 30%;
+  }
+  
+  @media(max-width: 980px) {
+    display: flex;
+    flex-direction: column;
+  
+    .col-3 {
+      display: none;
+    }
+  }
+}

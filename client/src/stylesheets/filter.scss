@@ -1,10 +1,4 @@
-.tag-feed-container {
-  .filter-container {
-    margin-top: 100px;
-  }
-}
-
-.mainPageContainer {
+.main-feed-page-container {
 
   .filter-container {
     position: relative;
@@ -33,6 +27,10 @@
           padding: 5px;
           background-color: var(--happy-gold);
 
+          &:hover {
+            cursor: pointer;
+          }
+
           .value {
             position: absolute;
             top: -30px;
@@ -40,6 +38,10 @@
             transform: translateX(-50%);
             font-size: 1.2rem;
             background-color: white;
+
+            &:hover {
+              cursor: default;
+            }
           }
         }
 

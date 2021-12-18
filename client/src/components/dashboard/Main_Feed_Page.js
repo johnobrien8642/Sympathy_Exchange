@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Feed from './Feed';
+import RecentFeed from './Recent_Feed';
 import HandleSetFilter from '../plea_shows/util_components/Handle_Set_Filter';
 
 const MainPage = () => {
@@ -18,10 +19,10 @@ const MainPage = () => {
 
   return(
     <div
-      className='mainPageContainer'
+      className='main-feed-page-container'
     >
       <div
-        className='col1'
+        className='col-1'
       >
         <HandleSetFilter
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
@@ -32,19 +33,20 @@ const MainPage = () => {
         />
       </div>
       <div
-        className='col2'
+        className='col-2'
       >
         <Feed
           filter={filter}
+          setFilter={setFilter}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
           lastObjectIdRef={lastObjectIdRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
         />
       </div>
       <div
-        className='col3'
+        className='col-3'
       >
-        These are the recents
+        <RecentFeed />
       </div>
     </div>
   )

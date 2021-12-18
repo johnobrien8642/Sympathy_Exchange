@@ -389,7 +389,7 @@ const mutation = new GraphQLObjectType({
           return userToFollow;
         } else if (tagToFollow) {
           follow.follows = tagToFollow._id;
-          currentUser.tagFollows.push(tag._id);
+          currentUser.tagFollows.push(tagToFollow._id);
 
           await follow.save();
           await currentUser.save();
@@ -427,7 +427,8 @@ const mutation = new GraphQLObjectType({
             currentUser.tagFollows.filter(obj => obj._id.toString() !== tagToUnfollow._id.toString());
 
           await currentUser.save();
-          Follow.deleteOne({ 
+
+          await Follow.deleteOne({ 
             user: mongoose.Types.ObjectId(currentUser._id), 
             follows: mongoose.Types.ObjectId(tagToUnfollow._id)
           });

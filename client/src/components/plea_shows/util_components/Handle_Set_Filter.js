@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import Loading from '../../shared_util/Loading';
 import SympathyCountFilterParams from './Sympathy_Count_Filter_Params';
 import TagFilterParams from './Tag_Filter_Params';
 import TagFeedSortParams from './Tag_Feed_Sort_Params';
@@ -22,48 +23,31 @@ const HandleSetFilter = ({
     }
   });
 
-  if (loading) return 'Loading...';
   if (error) return `Error in Handle_Set_Filter.js: ${error.message}`;
-  
-  const { fetchMaxParameterForFilter } = data;
-  const { ceiling } = fetchMaxParameterForFilter;
 
-  function handleTagFilterOrSort() {
-    if (tagFeed) {
-      return (
-        <TagFeedSortParams
+  if (loading) {
+    return <Loading />;
+  } else {
+    return (
+      <div
+        className='filter-container'
+      >
+        <SympathyCountFilterParams
+          filter={filter}
+          setFilter={setFilter}
+          initSliderVal={[0, data?.fetchMaxParameterForFilter.ceiling]}
+          lastPleaSympathyCountRef={lastPleaSympathyCountRef}
+          fetchMoreBoolRef={fetchMoreBoolRef}
+        />
+        <TagFilterParams
           filter={filter}
           setFilter={setFilter}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
         />
-      )
-    } else {
-      return (
-        <TagFilterParams 
-          filter={filter}
-          setFilter={setFilter}
-          lastPleaSympathyCountRef={lastPleaSympathyCountRef}
-          fetchMoreBoolRef={fetchMoreBoolRef}
-        />
-      )
-    };
-  };
-
-  return (
-    <div
-      className='filter-container'
-    >
-      <SympathyCountFilterParams
-        filter={filter}
-        setFilter={setFilter}
-        initSliderVal={[0, ceiling]}
-        lastPleaSympathyCountRef={lastPleaSympathyCountRef}
-        fetchMoreBoolRef={fetchMoreBoolRef}
-      />
-      {handleTagFilterOrSort()}
-    </div>
-  );
+      </div>
+    );
+  }
 };
 
 export default HandleSetFilter;

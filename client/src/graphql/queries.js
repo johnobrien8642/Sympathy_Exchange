@@ -69,6 +69,15 @@ const Queries = {
     ${NESTED_PLEA_FRAGMENT}
     ${PLEA_FRAGMENT}
   `,
+  RECENTS: gql`
+    query Recents {
+      recents {
+        ...NestedPleaFragment
+      }
+    }
+    ${NESTED_PLEA_FRAGMENT}
+    ${PLEA_FRAGMENT}
+  `,
   FETCH_MAX_PARAMETER_FOR_FILTER: gql`
     query FetchMaxParameterForFilter($tagId: ID) {
       fetchMaxParameterForFilter(tagId: $tagId) {

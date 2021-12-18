@@ -1,8 +1,7 @@
-.mainPageContainer {
+.main-feed-page-container {
   
   .plea-show-container {
-    margin: 20px 0;
-    width: 100%;
+    margin: 20px;
     background-color: blue;
     border: 1px solid transparent;
     box-sizing: border-box;
@@ -39,6 +38,10 @@
           margin: 10px 5px;
           width: 100%;
           text-align: justify;
+
+          &:hover {
+            cursor: default;
+          }
         }
   
         .SQContainer {
@@ -126,6 +129,10 @@
         margin: 10px 15px;
         padding: 5px;
         background-color: salmon;
+
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
 
