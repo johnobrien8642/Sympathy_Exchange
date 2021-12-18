@@ -58,12 +58,19 @@ const PleaType = new GraphQLObjectType({
           .then(plea => parseFloat(plea.sympathyCount.toString()));
       }
     },
+    // combinedSympathyCount: { 
+    //   type: GraphQLFloat,
+    //   async resolve(parentValue) {
+    //     return await Plea.findById(parentValue._id)
+    //       .populate('pleaIdChain')
+    //       .then(plea => parseFloat(plea.pleaIdChain.reduce((prev, next) => { return prev += parseFloat(next.sympathyCount.toString()) }, 0)));
+    //   }
+    // },
     combinedSympathyCount: { 
       type: GraphQLFloat,
       async resolve(parentValue) {
         return await Plea.findById(parentValue._id)
-          .populate('pleaIdChain')
-          .then(plea => parseFloat(plea.pleaIdChain.reduce((prev, next) => { return prev += parseFloat(next.sympathyCount.toString()) }, 0)));
+          .then(plea => parseFloat(plea.combinedSympathyCount.toString()));
       }
     },
     // sympathyCount: { type: GraphQLInt },

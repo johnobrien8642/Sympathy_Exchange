@@ -13,7 +13,6 @@ const PleaShow = ({
 }) => {
   let [open, openForm] = useState(false);
   const masterPleaId = plea._id;
-
   let { data } = useQuery(CURRENT_USER_ID);
 
   function handleShowCombinedSQ() {

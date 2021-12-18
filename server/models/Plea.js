@@ -42,10 +42,14 @@ const PleaSchema = new Schema({
     default: 0.0,
     index: true
   },
+  combinedSympathyCount: {
+    type: Schema.Types.Decimal128,
+    default: 0.0,
+    index: true
+  },
   sympathyCountTicker: {
     type: Number,
-    default: 0,
-    index: true
+    default: 0
   },
   hotStreakTicker: {
     type: Number,

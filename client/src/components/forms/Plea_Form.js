@@ -46,8 +46,9 @@ const PleaForm = ({
   useEffect(() => {
     var noFirstPerson = new RegExp(/(?<=\s|^)(?:I|I'd|I'd've|I'll|I'm|Imma|Im|Ill|Id|I've|Ive|Iv){1,}(?=\s)/, 'gmi');
     
-    if (noFirstPerson.test(plea)) {
-      setTimeout(() => {
+    setTimeout(() => {
+      if (noFirstPerson.test(plea)) {
+
         if (plea.length === 1) {
           setPlea('');
         } else {
@@ -57,8 +58,8 @@ const PleaForm = ({
           placeCaretAtEnd(contentEditableDivRef.current);
           setPerspectiveAlert(true);
         }
-      }, 200)
-    };
+      };
+    }, 500)
     
   }, [plea]);
 
@@ -112,7 +113,7 @@ const PleaForm = ({
   
   return (
     <div
-      className={open ? 'pleaFormContainer active' : 'pleaFormContainer none'}
+      className={open ? `pleaFormContainer active ${perspectiveAlert ? 'perspective-alert' : ''}` : 'pleaFormContainer none'}
     >
       <div
         className='pleaFormModal'
@@ -133,7 +134,8 @@ const PleaForm = ({
                   text: plea,
                   tagIds: tags.map(tag => tag._id),
                   pleaIdChain: pleaProp ? pleaProp.pleaIdChain.map(plea => plea._id) : [],
-                  chaining: chaining ? chaining : false
+                  chaining: chaining ? chaining : false,
+                  combinedCount: parseFloat(pleaProp.pleaIdChain.reduce((prev, next) => { return prev += parseFloat(next.sympathyCount.toString()) }, 0))
                 }
               }
             })

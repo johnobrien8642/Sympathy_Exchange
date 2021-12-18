@@ -28,10 +28,11 @@ const { deletePost,
         asyncDeleteAllPosts, 
         asyncDeleteAllActivityAndProfilePic,
         handleS3Cleanup, handles3AndObjectCleanup } = DeleteFunctionUtil;
-//Streaks and Decimals last set 11/5/2021
+//Streaks and Decimals last set 12/17/2021
 const REG_DECIMAL_TO_ADD = .01;
 const HOT_DECIMAL_TO_ADD = .1;
 const HOT_STREAK_THRESH = 12;
+const INCREMENT_THRESH = 5;
 
 const User = mongoose.model('User');
 const Tag = mongoose.model('Tag');
@@ -56,15 +57,33 @@ const mutation = new GraphQLObjectType({
       args: {
         pleaInputData: { type: PleaInputType }
       },
-      resolve(_, { pleaInputData }) {
-        const { author, text, tagIds, pleaIdChain, chained } = pleaInputData;
+      async resolve(_, { pleaInputData }) {
+        const { author, text, tagIds, pleaIdChain, chaining, combinedCount } = pleaInputData;
         
-        let plea = new Plea({
+        const plea = new Plea({
           author: author,
           text: text,
-          chained: chained ? chained : false,
-          pleaIdChain: pleaIdChain.length ? pleaIdChain : []
+          chained: chaining ? chaining : false,
+          pleaIdChain: pleaIdChain.length ? pleaIdChain : [],
+          combinedSympathyCount: combinedCount
         });
+        
+        //For chained pleas, whenever a symp happens to a plea further up the chain,
+        //if that sympathy count is being incremented or decremented, then that plea needs to also
+        //go to every chained plea that's chaining it and also needs to be incremented or decremented.
+        //That's why this field exists and why when chaining we find every relevant plea and add
+        //the new plea id to the plea's field.
+        if (chaining) {
+          let pleasBeingChained =
+            await Plea
+              .find({ _id: { $in: [...pleaIdChain] } });
+
+          for (let i = 0; i < pleasBeingChained.length; i++) {
+            let foundPlea = pleasBeingChained[i];
+            foundPlea.chainedByThesePleas.push(plea._id);
+            await foundPlea.save();
+          }
+        }
 
         plea.pleaIdChain.push(plea._id)
         
@@ -152,10 +171,13 @@ const mutation = new GraphQLObjectType({
         currentUserId: { type: GraphQLID }
       },
       async resolve(_, { pleaId, currentUserId }) {
-        
         let plea =
           await Plea
             .findById(pleaId);
+        
+        let chainedByThesePleas =
+          await Plea
+            .find({ _id: { $in: [...plea.chainedByThesePleas] } });
 
         let currentUser =
           await User
@@ -178,18 +200,40 @@ const mutation = new GraphQLObjectType({
         if (sympsForLastTwelveHours.length > HOT_STREAK_THRESH) {
           plea.hotStreakTicker += 1
           
-          if (plea.hotStreakTicker > 5) {
-            const newFloat = (parseFloat(plea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
-            plea.sympathyCount = newFloat.toFixed(3);
+          if (plea.hotStreakTicker > INCREMENT_THRESH) {
+            const newSympCountFloat = (parseFloat(plea.sympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
+            const newCombSympCountFloat = (parseFloat(plea.combinedSympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
+            plea.sympathyCount = newSympCountFloat.toFixed(3);
+            plea.combinedSympathyCount = newCombSympCountFloat.toFixed(3);
+
+            //Also increase all combinedSympathyCounts of pleas that have chained this plea
+            for (let i = 0; i < chainedByThesePleas.length; i++) {
+              let plea = chainedByThesePleas[i];
+              const newFloat = (parseFloat(plea.combinedSympathyCount.toString()) + HOT_DECIMAL_TO_ADD);
+              plea.combinedSympathyCount = newFloat.toFixed(3);
+              await plea.save();
+            }
+
             plea.hotStreakTicker = 0;
           }
         } else if (sympsForLastTwelveHours.length < HOT_STREAK_THRESH) {
           plea.hotStreakTicker = 0;
           plea.sympathyCountTicker += 1;
           
-          if (plea.sympathyCountTicker > 4) {
-            const newFloat = (parseFloat(plea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
-            plea.sympathyCount = newFloat.toFixed(3);
+          if (plea.sympathyCountTicker > INCREMENT_THRESH) {
+            const newSympCountFloat = (parseFloat(plea.sympathyCount.toString()) + REG_DECIMAL_TO_ADD);
+            const newCombSympCountFloat = (parseFloat(plea.combinedSympathyCount.toString()) + REG_DECIMAL_TO_ADD);
+            plea.sympathyCount = newSympCountFloat.toFixed(3);
+            plea.combinedSympathyCount = newCombSympCountFloat.toFixed(3);
+          
+            //Also increase all combinedSympathyCounts of pleas that have chained this plea
+            for (let i = 0; i < chainedByThesePleas.length; i++) {
+              let plea = chainedByThesePleas[i];
+              const newFloat = (parseFloat(plea.combinedSympathyCount.toString()) + REG_DECIMAL_TO_ADD);
+              plea.combinedSympathyCount = newFloat.toFixed(3);
+              await plea.save();
+            }
+
             plea.sympathyCountTicker = 0;
           }
         }
@@ -216,6 +260,10 @@ const mutation = new GraphQLObjectType({
         let plea = 
           await Plea
             .findById(pleaId);
+            
+        let chainedByThesePleas =
+          await Plea
+            .find({ _id: { $in: [...plea.chainedByThesePleas] } });
 
         let currentUser = 
           await User
@@ -232,7 +280,7 @@ const mutation = new GraphQLObjectType({
         await symp.save();
 
         let float = plea.sympathyCount.toString();
-
+        
         //if sympathyCountTicker is already at 0
         //then penalize sympathyCount
         if (plea.sympathyCountTicker === 0) {
@@ -241,7 +289,18 @@ const mutation = new GraphQLObjectType({
             return
           } else {
             const newFloat = (float - REG_DECIMAL_TO_ADD);
-            plea.sympathyCount = newFloat.toString();
+            const newCombSympCountFloat = plea.combinedSympathyCount - REG_DECIMAL_TO_ADD;
+            plea.sympathyCount = newFloat.toFixed(3);
+            plea.combinedSympathyCount = newCombSympCountFloat.toFixed(3);
+
+            //Also decrease all combinedSympathyCounts of pleas that have chained this plea
+            for (let i = 0; i < chainedByThesePleas.length; i++) {
+              let plea = chainedByThesePleas[i];
+              const newFloat = (parseFloat(plea.combinedSympathyCount.toString()) - REG_DECIMAL_TO_ADD);
+              plea.combinedSympathyCount = newFloat.toFixed(3);
+              await plea.save();
+            }
+
             return await plea.save();
           }
         } else {

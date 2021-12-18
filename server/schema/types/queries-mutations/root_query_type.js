@@ -221,7 +221,7 @@ const RootQueryType = new GraphQLObjectType({
         };
 
         if (bySympathyCount) {
-          sort = { sympathyCount: -1, createdAt: -1 } 
+          sort = { combinedSympathyCount: -1, sympathyCount: -1, createdAt: -1 }
         } else if (byCreatedAt) {
           sort = { createdAt: -1 }
         };
