@@ -15,7 +15,7 @@ const Search = ({
   openSearch,
 }) => {
   let [input, setInput] = useState('');
-  let [followedActive, setFollowedActive] = useState(mobile ? true : false)
+  let [followedActive, setFollowedActive] = useState(!!mobile)
   let [active, setActive] = useState(false);
   let searchIconImgRef = useRef(null);
 

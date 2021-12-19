@@ -4,10 +4,17 @@ import FollowButton from '../social/Follow_Button';
 import Queries from '../../graphql/queries.js';
 const { CURRENT_USER_ID } = Queries;
 
-const TagShow = ({
-  tag
+const TagOrUserShow = ({
+  tag,
+  user
 }) => {
   let { data } = useQuery(CURRENT_USER_ID);
+
+  function handleFollowButton() {
+    if (tag || (user._id !== data?.currentUserId)) {
+      return <FollowButton tag={tag} user={user} currentUserId={data?.currentUserId} />;
+    }
+  }
 
   return (
     <div
@@ -21,13 +28,10 @@ const TagShow = ({
         >
           {tag.title}
         </h1>
-        <FollowButton
-          tag={tag}
-          currentUserId={data ? data.currentUserId : null}
-        />
+        {handleFollowButton()}
       </div>
     </div>
   )
 }
 
-export default TagShow;
+export default TagOrUserShow;

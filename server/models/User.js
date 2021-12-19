@@ -26,13 +26,13 @@ const UserSchema = new Schema({
     type: Boolean,
     required: false
   },
-  sympathizedPleaIdStringArr: [
+  sympathizedPleaIds: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Plea'
     }
   ],
-  savedPleaIdsStringArr: [
+  savedPleaIds: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Plea'

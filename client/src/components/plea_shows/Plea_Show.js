@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import Tags from './util_components/Tags';
-import AuthorAndSQ from './util_components/AuthorAndSQ';
+import AuthorAndSQ from './util_components/Author_And_SQ';
 import ChainPleaButton from './util_components/Chain_Plea_Button';
 import SympathyOrSaveButton from './util_components/Sympathy_Or_Save_Button';
 import PleaForm from '../forms/Plea_Form';
@@ -47,7 +47,7 @@ const PleaShow = ({
               </div>
               <AuthorAndSQ
                 plea={p}
-                currentUserId={data ? data.currentUserId : null}
+                currentUserId={data?.currentUserId}
                 lastPleaInChain={p._id === plea.pleaIdChain[plea.pleaIdChain.length - 1]._id}
               />
             </div>

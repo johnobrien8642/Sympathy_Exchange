@@ -43,14 +43,31 @@ const UserType = new GraphQLObjectType({
       type: GraphQLList(GraphQLString),
       resolve(parentValue) {
         return User.findById(parentValue._id)
-          .distinct('savedPleaIdsStringArr');
+          .distinct('savedPleaIds');
       }
     },
-    sympathizedPleaIdStringArr: {
+    sympathizedPleaIdsStringArr: {
       type: GraphQLList(GraphQLString),
       resolve(parentValue) {
         return User.findById(parentValue._id)
-          .distinct('sympathizedPleaIdStringArr');
+          .distinct('sympathizedPleaIds');
+      }
+    },
+    savedPleaIds: {
+      type: GraphQLList(GraphQLString),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .populate('savedPleaIds')
+          .then(user => user.savedPleaIds);
+      }
+    },
+    sympathizedPleaIds: {
+      type: GraphQLList(GraphQLString),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .populate('sympathizedPleaIds')
+          .then(user => user.sympathizedPleaIds)
+
       }
     }
   })

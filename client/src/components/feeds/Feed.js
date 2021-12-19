@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useQuery, useApolloClient } from '@apollo/client';
 import Loading from '../shared_util/Loading';
 import PleaShow from '../plea_shows/Plea_Show';
@@ -10,14 +10,15 @@ const { FETCH_PLEA_FEED } = Queries;
 const { fetchMoreWithClient, setCursor } = FeedUtil;
 
 const Feed = ({
+  tag,
+  user,
   filter,
   setFilter,
   lastPleaSympathyCountRef,
   lastObjectIdRef,
   fetchMoreBoolRef,
-  tag
 }) => {
-  
+  let pleaFeedRef = useRef(null);
   const client = useApolloClient();
   
   //Feed query can be dynamic, either for fetching everything or fetching
@@ -28,9 +29,12 @@ const Feed = ({
   //to check if data has arrived yet.
   let { loading, error, data } = useQuery(FETCH_PLEA_FEED, {
     variables: {
-      filter: filter,
-      cursor: lastPleaSympathyCountRef.current,
-      tagBool: tag ? true : false
+      fetchFeedInputs: {
+        filter: filter,
+        cursor: lastPleaSympathyCountRef.current,
+        tagId: tag ? tag._id : null,
+        userId: user ? user._id : null
+      }
     }
   });
 
@@ -49,7 +53,8 @@ const Feed = ({
         lastObjectIdRef.current,
         FETCH_PLEA_FEED,
         fetchMoreBoolRef.current,
-        tag ? true : false
+        tag,
+        user
       );
     }
 
@@ -66,7 +71,8 @@ const Feed = ({
       filter,
       lastPleaSympathyCountRef,
       lastObjectIdRef,
-      tag
+      tag,
+      user
     ]
   )
 
@@ -77,8 +83,6 @@ const Feed = ({
   }
 
   if (error) return `Feed Error: ${error.message}`;
-  
-
 
   if (!fetchMoreBoolRef.current) {
     setCursor(data?.fetchPleaFeed, lastPleaSympathyCountRef, lastObjectIdRef);
@@ -89,6 +93,7 @@ const Feed = ({
         className='feed'
       >
         <TagFeedSortParams
+          user={user}
           filter={filter}
           setFilter={setFilter}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
@@ -103,7 +108,8 @@ const Feed = ({
               lastObjectIdRef.current,
               FETCH_PLEA_FEED,
               fetchMoreBoolRef.current,
-              tag ? true : false
+              tag,
+              user
             )
           }
           hasMore={true}

@@ -1,6 +1,6 @@
 import React from 'react';
 import Tags from './util_components/Tags';
-import AuthorAndSQ from './util_components/AuthorAndSQ';
+import AuthorAndSQ from './util_components/Author_And_SQ';
 
 const NonChained = ({
   plea

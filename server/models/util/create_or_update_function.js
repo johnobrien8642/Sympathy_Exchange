@@ -31,7 +31,7 @@ const createOrUpdatePost = ({
   objsToClean,
   postId
 }) => {
-  // var update = postId ? true : false
+  // var update = !!postId;
   
   // var uploads = returnInstancesOnly(descriptionImages)
   // var imageLinks = returnNewImageLinksOnly(descriptionImages)

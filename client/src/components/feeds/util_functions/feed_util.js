@@ -10,15 +10,19 @@ const fetchMoreWithClient = async (
   altCursor,
   query, 
   filterChanged,
-  tagBool
+  tag,
+  user
 ) => {
   return await client.query({
     query: query,
     variables: {
-      filter: filter,
-      cursor: cursor,
-      altCursor: altCursor,
-      tagBool: tagBool
+      fetchFeedInputs: {
+        filter: filter,
+        cursor: cursor,
+        altCursor: altCursor,
+        tagId: tag ? tag._id : null,
+        userId: user ? user._id : null
+      }
     },
     fetchPolicy: 'no-cache'
   }).then(res => {
@@ -29,10 +33,13 @@ const fetchMoreWithClient = async (
       client.writeQuery({
         query: query,
         variables: {
-          filter: filter,
-          cursor: cursor,
-          altCursor: altCursor,
-          tagBool: tagBool
+          fetchFeedInputs: {
+            filter: filter,
+            cursor: cursor,
+            altCursor: altCursor,
+            tagId: tag ? tag._id : null,
+            userId: user ? user._id : null
+          }
         },
         data: {
           fetchPleaFeed: [{ __typename: 'filterChanged'}, ...res.data.fetchPleaFeed]
@@ -44,10 +51,13 @@ const fetchMoreWithClient = async (
       var readFeed = client.readQuery({
         query: query,
         variables: {
-          filter: filter,
-          cursor: cursor,
-          altCursor: altCursor,
-          tagBool: tagBool
+          fetchFeedInputs: {
+            filter: filter,
+            cursor: cursor,
+            altCursor: altCursor,
+            tagId: tag ? tag._id : null,
+            userId: user ? user._id : null
+          }
         }
       })
 
@@ -63,10 +73,13 @@ const fetchMoreWithClient = async (
         client.writeQuery({
           query: query,
           variables: {
-            filter: filter,
-            cursor: cursor,
-            altCursor: altCursor,
-            tagBool: tagBool
+            fetchFeedInputs: {
+              filter: filter,
+              cursor: cursor,
+              altCursor: altCursor,
+              tagId: tag ? tag._id : null,
+              userId: user ? user._id : null
+            }
           },
           data: {
             fetchPleaFeed: newArr

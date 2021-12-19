@@ -335,7 +335,7 @@ const handleData = (data, feedArr, cursorId, endOfPosts) => {
     feedArr.current = fetchUserFollowers
   }
   
-  endOfPosts.current = feedArr.current.length === 0 ? true : false
+  endOfPosts.current = feedArr.current.length === 0;
   if (feedArr.current.length > 0) {
     cursorId.current = feedArr.current[feedArr.current.length - 1]._id
   }

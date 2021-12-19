@@ -18,7 +18,7 @@ const Queries = {
           _id
           title
         }
-        sympathizedPleaIdStringArr
+        sympathizedPleaIdsStringArr
         savedPleaIdsStringArr
         kind
       }
@@ -61,8 +61,8 @@ const Queries = {
   //   }
   // `,
   FETCH_PLEA_FEED: gql`
-    query FetchPleaFeed($filter: FilterInputType, $cursor: Int, $altCursor: String, $tagBool: Boolean) {
-      fetchPleaFeed(filter: $filter, cursor: $cursor, altCursor: $altCursor, tagBool: $tagBool) {
+    query FetchPleaFeed($fetchFeedInputs: FetchFeedInputType) {
+      fetchPleaFeed(fetchFeedInputs: $fetchFeedInputs) {
         ...NestedPleaFragment
       }
     }

@@ -73,7 +73,7 @@ const client = new ApolloClient({
             keyArgs: false,
             merge: (existing = [], incoming = []) => {
               let arr;
-              if (incoming[0].__typename === 'filterChanged') {
+              if (incoming[0]?.__typename === 'filterChanged') {
                 let cleaned = incoming.slice(1);
                 arr = [...cleaned];
               } else {

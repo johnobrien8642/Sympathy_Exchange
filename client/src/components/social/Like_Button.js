@@ -13,7 +13,7 @@ const LikeButton = ({
   post, liked, 
   refetchDoesUserLikePost
 }) => {
-  var initial = liked ? true : false
+  var initial = !!liked;
 
   let [status, setStatus] = useState(initial)
 

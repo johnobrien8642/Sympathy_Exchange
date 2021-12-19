@@ -1,11 +1,40 @@
 import React from 'react';
 
 const TagFeedSortParams = ({
+  currentUserDashboard,
   filter,
   setFilter,
   fetchMoreBoolRef,
   lastPleaSympathyCountRef
 }) => {
+
+  function handleUserQueryParams() {
+    if (currentUserDashboard) {
+      return (
+        <button
+          className='sort-button'
+          onClick={e => {
+            e.preventDefault();
+            const { floor, ceiling, tagIdArr, bySympCount, byTagIds } = filter;
+
+            setFilter({
+              floor: floor,
+              ceiling: ceiling,
+              tagIdArr: tagIdArr,
+              bySympCount: bySympCount,
+              byTagIds: byTagIds,
+              feedSort: 'bySympathyCount'
+            })
+
+            lastPleaSympathyCountRef.current = null;
+            fetchMoreBoolRef.current = true;
+          }}
+        >
+          Sympathy Count
+        </button>
+      )
+    }
+  }
 
   return (
     <div

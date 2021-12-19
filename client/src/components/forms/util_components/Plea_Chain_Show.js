@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthorAndSQ from '../../plea_shows/util_components/AuthorAndSQ';
+import AuthorAndSQ from '../../plea_shows/util_components/Author_And_SQ';
 
 const PleaChainShow = ({
   plea,
@@ -16,10 +16,7 @@ const PleaChainShow = ({
         >
           {plea.text}
         </div>
-        <AuthorAndSQ 
-          plea={plea}
-          chained={true}
-        />
+        <AuthorAndSQ plea={plea} chained={true} />
       </div>
     </div>
   )

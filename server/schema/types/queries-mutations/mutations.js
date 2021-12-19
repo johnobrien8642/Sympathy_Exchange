@@ -243,7 +243,7 @@ const mutation = new GraphQLObjectType({
           user: currentUserId
         });
         
-        currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 0, plea._id);
+        currentUser.sympathizedPleaIds.splice(sortedIndex(currentUser.sympathizedPleaIds, plea._id), 0, plea._id);
         
         await currentUser.save();
         await symp.save();
@@ -275,7 +275,7 @@ const mutation = new GraphQLObjectType({
           unsympathy: true
         });
         
-        currentUser.sympathizedPleaIdStringArr.splice(sortedIndex(currentUser.sympathizedPleaIdStringArr, plea._id), 1);
+        currentUser.sympathizedPleaIds.splice(sortedIndex(currentUser.sympathizedPleaIds, plea._id), 1);
         await currentUser.save();
         await symp.save();
 
@@ -333,7 +333,7 @@ const mutation = new GraphQLObjectType({
           user: currentUserId
         });
         
-        currentUser.savedPleaIdsStringArr.splice(sortedIndex(currentUser.savedPleaIdsStringArr, plea._id), 0, plea._id);
+        currentUser.savedPleaIds.splice(sortedIndex(currentUser.savedPleaIds, plea._id), 0, plea._id);
         
         await currentUser.save();
         return await save.save();
@@ -355,7 +355,7 @@ const mutation = new GraphQLObjectType({
           await User
             .findById(currentUserId);
         
-        currentUser.savedPleaIdsStringArr.splice(sortedIndex(currentUser.savedPleaIdsStringArr, pleaId), 1);
+        currentUser.savedPleaIds.splice(sortedIndex(currentUser.savedPleaIds, pleaId), 1);
 
         return await currentUser.save();
       }

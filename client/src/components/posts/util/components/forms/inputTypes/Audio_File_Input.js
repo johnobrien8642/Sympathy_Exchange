@@ -104,7 +104,7 @@ const AudioFileInput = ({
         <button
           className='removeBtn'
           type='button'
-          disabled={update ? true : false}
+          disabled={!!update}
           onClick={() =>  {
             removeAudioObj(
               post,

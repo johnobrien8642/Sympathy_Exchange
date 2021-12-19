@@ -14,12 +14,8 @@ const SympathyOrSaveButton = ({
   let [buttonState, setButtonState] = useState(null);
   let doActionQuery = useRef(kind === 'sympathy' ? SYMPATHIZE : SAVE);
   let undoActionQuery = useRef(kind === 'sympathy' ? UNSYMPATHIZE : UNSAVE);
-  let saveId = useRef('');
 
   let [relevantActionDo] = useMutation(doActionQuery.current, {
-    update(client, { data }) {
-      if (kind === 'save') saveId.current = data.save._id;
-    },
     onCompleted() {
       setButtonState(true);
     }
@@ -44,13 +40,13 @@ const SympathyOrSaveButton = ({
   if (error) return `Error in SympOrSave Btn: ${error.message}`;
   
   const { user } = data2;
-  const { _id, sympathizedPleaIdStringArr, savedPleaIdsStringArr } = user;
-  const arrToSearch = kind === 'sympathy' ? sympathizedPleaIdStringArr : savedPleaIdsStringArr;
+  const { _id, sympathizedPleaIdsStringArr, savedPleaIdsStringArr } = user;
+  const arrToSearch = kind === 'sympathy' ? sympathizedPleaIdsStringArr : savedPleaIdsStringArr;
   const userHasOrDoes =
     indexOf(
       arrToSearch,
       plea._id,
-      arrToSearch.length === 1 ? false : true
+      arrToSearch.length === 1
     );
   
   if (buttonState !== null ? buttonState : (userHasOrDoes >= 0)) {
