@@ -20,6 +20,8 @@ const Queries = {
         }
         sympathizedPleaIdsStringArr
         savedPleaIdsStringArr
+        userFollowIdsStringArr
+        tagFollowIdsStringArr
         kind
       }
     }

@@ -21,10 +21,9 @@ const TagFeed = ({match}) => {
     tagIdArr: [tagId],
     bySympCount: false,
     byTagIds: false,
+    bySympathizedPleaIds: [],
     feedSort: 'bySympathyCount'
   });
-  console.log(params)
-  console.log(location.pathname.includes('tag-feed'))
   let { loading, error, data } = useQuery(FETCH_TAG, {
     variables: {
       tagId: tagId

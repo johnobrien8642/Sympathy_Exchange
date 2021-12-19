@@ -15,6 +15,10 @@ const FilterInputType = new GraphQLInputObjectType({
     tagIdArr: { type: GraphQLList(GraphQLID) },
     bySympCount: { type: GraphQLBoolean },
     byTagIds: { type: GraphQLBoolean },
+    bySympathizedPleaIds: { type: GraphQLList(GraphQLString) },
+    bySavedPleaIds: { type: GraphQLList(GraphQLString) },
+    byUserFollows: { type: GraphQLList(GraphQLString) },
+    byTagFollows: { type: GraphQLList(GraphQLString) },
     feedSort: { type: GraphQLString }
   })
 });

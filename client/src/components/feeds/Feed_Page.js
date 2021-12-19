@@ -17,6 +17,10 @@ const FeedPage = () => {
     tagIdArr: [],
     bySympCount: false,
     byTagIds: false,
+    bySympathizedPleaIds: [],
+    bySavedPleaIds: [],
+    byUserFollows: [],
+    byTagFollows: [],
     feedSort: 'bySympathyCount'
   });
   let lastPleaSympathyCountRef = useRef(null);

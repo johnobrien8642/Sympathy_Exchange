@@ -32,7 +32,7 @@ const BrowserNav = ({
             className='logo'
           >
             <Link
-              to='/dashboard'
+              to='/main-feed'
             >
               <img
                 alt='sympathy man icon'
@@ -59,7 +59,7 @@ const BrowserNav = ({
             className='homeLink'
           >
             <Link
-              to='/dashboard'
+              to='/main-feed'
               onClick={() => {
                 searchRef.current.blur();
             
@@ -83,7 +83,7 @@ const BrowserNav = ({
             }}
           >
             <Link
-              to={`/${user.username}`}
+              to={`/dashboard/${user._id}`}
             >
               <span>{user.username}</span>
             </Link>

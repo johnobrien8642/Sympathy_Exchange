@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { useQuery, useApolloClient } from '@apollo/client';
+import { useLocation } from 'react-router-dom';
 import Loading from '../shared_util/Loading';
 import PleaShow from '../plea_shows/Plea_Show';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import TagFeedSortParams from '../plea_shows/util_components/Tag_Feed_Sort_Params';
 import FeedUtil from './util_functions/feed_util.js';
 import Queries from '../../graphql/queries';
-const { FETCH_PLEA_FEED } = Queries;
+const { FETCH_PLEA_FEED, CURRENT_USER_ID } = Queries;
 const { fetchMoreWithClient, setCursor } = FeedUtil;
 
 const Feed = ({
@@ -18,9 +19,10 @@ const Feed = ({
   lastObjectIdRef,
   fetchMoreBoolRef,
 }) => {
-  let pleaFeedRef = useRef(null);
   const client = useApolloClient();
-  
+  const { pathname } = useLocation();
+  let pathRef = useRef(pathname);
+
   //Feed query can be dynamic, either for fetching everything or fetching
   //with a filter
   
@@ -38,7 +40,15 @@ const Feed = ({
     }
   });
 
+  let { data: userData } = useQuery(CURRENT_USER_ID);
+
+
   useEffect(() => {
+    if (pathRef.curent !== pathname) {
+      fetchMoreBoolRef.current = true;
+      lastPleaSympathyCountRef.current = null;
+      pathRef.current = pathname;
+    }
 
     //There seems to be an unresolved issue with Apollo's fetchMore,
     //which breaks when a user navigates away from the page and then back.
@@ -94,6 +104,7 @@ const Feed = ({
       >
         <TagFeedSortParams
           user={user}
+          currentUser={userData?.currentUserId === user?._id}
           filter={filter}
           setFilter={setFilter}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}

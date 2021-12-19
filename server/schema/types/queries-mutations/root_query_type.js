@@ -108,30 +108,115 @@ const RootQueryType = new GraphQLObjectType({
         const { filter, cursor, altCursor, tagId, userId } = fetchFeedInputs;
         let query;
         let sort;
-
+        
         if (tagId) {
           filter.byTagIds = true;
           filter.tagIdArr.push(tagId)
         }
 
-        //find() params
+        // //find() params
+        const isFirstMount = !filter.bySympCount && !filter.byTagIds && !cursor;
+        const hasNoSympathyYet = !filter.bySympCount && !filter.byTagIds && cursor === 0;
+
+        const hasUserOnly = userId && !filter.bySympCount && !filter.byTagIds && !cursor;
         const hasTagsOnly = !filter.bySympCount && filter.byTagIds && !cursor;
-        const hasSympathyAndTagsAndCursor = filter.bySympCount && filter.byTagIds && cursor;
+        const hasSympathyOnly = filter.bySympCount && !filter.byTagIds && !cursor;
+
+        const hasUserAndCursor = userId && !filter.bySympCount && !filter.byTagIds && cursor;        
+        const hasUserAndSympathyAndTagsAndCursor = userId && filter.bySympCount && filter.byTagIds && cursor;
+        const hasUserAndTagsAndCursor = userId && !filter.bySympCount && filter.byTagIds && cursor;
+        const hasUserAndSympathyAndCursor = userId && !filter.bySympCount && filter.byTagIds && cursor;
+        const hasUserAndSympathyAndTags = userId && filter.bySympCount && filter.byTagIds && !cursor;
+        const hasUserAndSympathy = userId && filter.bySympCount && !filter.byTagIds && !cursor;
+        const hasUserAndTags = userId && !filter.bySympCount && filter.byTagIds && !cursor;
+
+        const hasNoFiltersAndHasCursor = !filter.bySympCount && !filter.byTagIds && cursor;
+        
         const hasSympathyAndTags = filter.bySympCount && filter.byTagIds && !cursor;
+
+        const hasSympathyAndTagsAndCursor = filter.bySympCount && filter.byTagIds && cursor;
         const hasTagsAndCursor = !filter.bySympCount && filter.byTagIds && cursor;
         const hasSympathyAndCursor = filter.bySympCount && !filter.byTagIds && cursor;
-        const hasNoFiltersAndHasCursor = !filter.bySympCount && !filter.byTagIds && cursor;
-        const hasOnlySympathy = filter.bySympCount && !filter.byTagIds && !cursor;
-        const hasNoSympathyYet = !filter.bySympCount && !filter.byTagIds && cursor === 0;
-        const isFirstMount = !filter.bySympCount && !filter.byTagIds && !cursor;
 
-        // sort() params
+        // // sort() params
         const bySympathyCount = filter.feedSort === 'bySympathyCount';
         const byCreatedAt = filter.feedSort === 'byCreatedAt';
 
         if (hasTagsOnly) {
           query = { 
             $and: [
+              { tagIds: { $in: filter.tagIdArr } }
+            ]
+          };
+        } else if (hasUserOnly) {
+          query = { author: { $eq: userId } };
+        } else if (hasUserAndCursor) {
+          query = {
+            $and: [
+              { combinedSympathyCount: { $lte: cursor } },
+              { sympathyCount: { $lte: cursor } },
+              { author: { $eq: userId } }
+            ]
+          };
+        } else if (hasUserAndSympathyAndTagsAndCursor) {
+          query = {
+            $and: [
+              { author: { $eq: userId } },
+              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
+              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
+              { combinedSympathyCount: { $lte: cursor } },
+              { sympathyCount: { $lte: cursor } },
+              { tagIds: { $in: filter.tagIdArr } }
+            ]
+          };
+        } else if (hasUserAndTagsAndCursor) {
+          query = {
+            $and: [
+              { author: { $eq: userId } },
+              { combinedSympathyCount: { $lte: cursor } },
+              { sympathyCount: { $lte: cursor } },
+              { tagIds: { $in: filter.tagIdArr } }
+            ]
+          };
+        } else if (hasUserAndSympathyAndCursor) {
+          query = {
+            $and: [
+              { author: { $eq: userId } },
+              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
+              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
+              { combinedSympathyCount: { $lte: cursor } },
+              { sympathyCount: { $lte: cursor } }
+            ]
+          };
+        } else if (hasUserAndSympathyAndTags) {
+          query = {
+            $and: [
+              { author: { $eq: userId } },
+              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
+              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } },
+              { tagIds: { $in: filter.tagIdArr } }
+            ]
+          };
+        } else if (hasUserAndSympathy) {
+          query = {
+            $and: [
+              { author: { $eq: userId } },
+              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
+              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
+              { sympathyCount: { $gte: filter.rangeArr[0] } },
+              { sympathyCount: { $lte: filter.rangeArr[1] } }
+            ]
+          };
+        } else if (hasUserAndTags) {
+          query = {
+            $and: [
+              { author: { $eq: userId } },
               { tagIds: { $in: filter.tagIdArr } }
             ]
           };
@@ -142,8 +227,9 @@ const RootQueryType = new GraphQLObjectType({
               { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
               { sympathyCount: { $gte: filter.rangeArr[0] } },
               { sympathyCount: { $lte: filter.rangeArr[1] } },
+              { combinedSympathyCount: { $lte: cursor } },
               { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter.tagIdArr } }
+              { tagIds: { $in: filter.tagIdArr } },
             ]
           };
         } else if (hasSympathyAndTags) {
@@ -160,6 +246,7 @@ const RootQueryType = new GraphQLObjectType({
           query = { 
             $and: [
               { combinedSympathyCount: { $lte: cursor } },
+              { combinedSympathyCount: { $lte: cursor } },
               { sympathyCount: { $lte: cursor } },
               { tagIds: { $in: filter.tagIdArr } }
             ]
@@ -171,12 +258,13 @@ const RootQueryType = new GraphQLObjectType({
               { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
               { sympathyCount: { $gte: filter.rangeArr[0] } },
               { sympathyCount: { $lte: filter.rangeArr[1] } },
+              { combinedSympathyCount: { $lte: cursor } },
               { sympathyCount: { $lte: cursor } },
             ]
           };
         } else if (hasNoFiltersAndHasCursor) {
           query = { sympathyCount: { $lte: cursor } };
-        } else if (hasOnlySympathy) {
+        } else if (hasSympathyOnly) {
           query = { 
             $and: [
               { combinedSympathyCount: { $gte: filter.rangeArr[0] } },

@@ -53,6 +53,20 @@ const UserType = new GraphQLObjectType({
           .distinct('sympathizedPleaIds');
       }
     },
+    userFollowIdsStringArr: {
+      type: GraphQLList(GraphQLString),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .distinct('userFollows');
+      }
+    },
+    tagFollowIdsStringArr: {
+      type: GraphQLList(GraphQLString),
+      resolve(parentValue) {
+        return User.findById(parentValue._id)
+          .distinct('tagFollows');
+      }
+    },
     savedPleaIds: {
       type: GraphQLList(GraphQLString),
       resolve(parentValue) {

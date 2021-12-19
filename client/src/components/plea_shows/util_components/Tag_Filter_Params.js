@@ -31,42 +31,29 @@ const TagFilterParams = ({
               className={(tag?._id === t._id || filter.tagIdArr.includes(t._id)) ? 'tag selected' : 'tag'}
               key={t._id}
               onClick={() => {
-                const { floor, ceiling, tagIdArr, rangeArr, bySympCount, feedSort } = filter;
                 let newArr;
                 
                 if (tag?._id === t._id) {
                   return
                 } else {
-                  if (tagIdArr.includes(t._id)) {
+                  if (filter.tagIdArr.includes(t._id)) {
+                    let newObj = {...filter};
                     newArr =
-                      tagIdArr.length === 1 ?
+                      newObj.tagIdArr.length === 1 ?
                       [] :
-                      tagIdArr.filter(id => id !== t._id);
+                      newObj.tagIdArr.filter(id => id !== t._id);
+                    newObj.tagIdArr = newArr;
+                    newObj.byTagIds = !!newArr.length;
+                    setFilter(newObj);
                       
-                      setFilter({
-                        floor: floor,
-                        ceiling: ceiling,
-                        rangeArr: rangeArr,
-                        tagIdArr: newArr,
-                        bySympCount: bySympCount,
-                        byTagIds: newArr.length === 0 ? false : true,
-                        feedSort: feedSort
-                      });
-                      
-                      lastPleaSympathyCountRef.current = null;
-                      fetchMoreBoolRef.current = true;
+                    lastPleaSympathyCountRef.current = null;
+                    fetchMoreBoolRef.current = true;
                   } else {
-                    newArr = tagIdArr.concat(t._id);
-                    
-                    setFilter({
-                      floor: floor,
-                      ceiling: ceiling,
-                      rangeArr: rangeArr,
-                      tagIdArr: newArr,
-                      bySympCount: bySympCount,
-                      byTagIds: true,
-                      feedSort: feedSort
-                    });
+                    newArr = [...filter.tagIdArr, t._id];
+                    let newObj = {...filter};
+                    newObj.tagIdArr = newArr;
+                    newObj.byTagIds = true;
+                    setFilter(newObj);
     
                     lastPleaSympathyCountRef.current = null;
                     fetchMoreBoolRef.current = true;
