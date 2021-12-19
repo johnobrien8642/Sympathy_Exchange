@@ -29,7 +29,7 @@ const AuthorAndSQ = ({
       <div
         className='innerSQContainer'
       >
-        <span
+        <button
           className='author'
           onClick={e => {
             e.preventDefault();
@@ -42,12 +42,11 @@ const AuthorAndSQ = ({
           }}
         >
           {plea.author.username}
-          <FollowButton
-            user={plea.author}
-            currentUserId={currentUserId}
-          />
-        </span>
-
+        </button>
+        <FollowButton
+          user={plea.author}
+          currentUserId={currentUserId}
+        />
         <div
           className='scoreAndSympathyButtonContainer'
         >

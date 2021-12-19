@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import Loading from '../../shared_util/Loading';
 import SympathyCountFilterParams from './Sympathy_Count_Filter_Params';
 import TagFilterParams from './Tag_Filter_Params';
-import TagFeedSortParams from './Tag_Feed_Sort_Params';
 import Queries from '../../../graphql/queries.js';
 const { FETCH_MAX_PARAMETER_FOR_FILTER } = Queries;
 

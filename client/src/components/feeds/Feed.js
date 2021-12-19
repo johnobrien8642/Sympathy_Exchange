@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import Loading from '../shared_util/Loading';
 import PleaShow from '../plea_shows/Plea_Show';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import TagFeedSortParams from '../plea_shows/util_components/Tag_Feed_Sort_Params';
+import TagOrUserSortOrQueryParams from '../plea_shows/util_components/Tag_Or_User_Sort_Or_Query_Params';
 import FeedUtil from './util_functions/feed_util.js';
 import Queries from '../../graphql/queries';
 const { FETCH_PLEA_FEED, CURRENT_USER_ID } = Queries;
@@ -102,7 +102,7 @@ const Feed = ({
       <div
         className='feed'
       >
-        <TagFeedSortParams
+        <TagOrUserSortOrQueryParams
           user={user}
           currentUser={userData?.currentUserId === user?._id}
           filter={filter}

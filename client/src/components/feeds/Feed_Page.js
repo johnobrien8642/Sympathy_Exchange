@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useParams, useLocation } from 'react-router-dom';
 import TagOrUserShow from './Tag_Or_User_Show';
@@ -17,10 +17,14 @@ const FeedPage = () => {
     tagIdArr: [],
     bySympCount: false,
     byTagIds: false,
-    bySympathizedPleaIds: [],
-    bySavedPleaIds: [],
-    byUserFollows: [],
-    byTagFollows: [],
+    bySympathizedPleaIds: false,
+    bySavedPleaIds: false,
+    byUserFollows: false,
+    byTagFollows: false,
+    bySympathizedPleaIdsArr: [],
+    bySavedPleaIdsArr: [],
+    byUserFollowsArr: [],
+    byTagFollowsArr: [],
     feedSort: 'bySympathyCount'
   });
   let lastPleaSympathyCountRef = useRef(null);
@@ -28,11 +32,24 @@ const FeedPage = () => {
   let fetchMoreBoolRef = useRef(false);
   const { tagId, userId } = useParams();
   const { pathname } = useLocation();
+  let pathRef = useRef(pathname);
   const feedType = {
     isTag: pathname.includes('tag-feed'),
     isUser: pathname.includes('user-feed'),
-    isMain: pathname.includes('main-feed')
+    isMain: pathname.includes('main-feed'),
+    isDash: pathname.includes('dashboard')
   }
+  const { isTag, isUser, isMain, isDash } = feedType;
+
+  useEffect(() => {
+    if (pathRef.current !== pathname) {
+      feedType.isTag = pathname.includes('tag-feed');
+      feedType.isUser = pathname.includes('user-feed');
+      feedType.isMain = pathname.includes('main-feed');
+      feedType.isDash = pathname.includes('dashboard');
+      pathRef.current = pathname;
+    }
+  }, [feedType])
   
   let { loading: tagLoading, error: tagError, data: tagData } = useQuery(FETCH_TAG, {
     variables: {
@@ -47,11 +64,22 @@ const FeedPage = () => {
   });
   
   function handleTagOrUserShow(tagData, userData) {
-    const { isTag, isUser } = feedType;
     if (isTag || isUser) {
       return <TagOrUserShow tag={tagData?.tag} user={userData?.user} />;
     }
-  }
+  };
+
+  function handleClassName() {
+    if (isTag) {
+      return 'tag-feed-page-container';
+    } else if (isUser) {
+      return 'user-feed-page-container';
+    } else if (isMain) {
+      return 'main-feed-page-container';
+    } else if (isDash) {
+      return 'dashboard-feed-page-container';
+    }
+  };
 
   if (tagError || userError) return `${tagError ? 'Tag Error' : 'User Error'} in Feed_Page: ${tagError?.message || userError.message}`;
 
@@ -60,7 +88,7 @@ const FeedPage = () => {
   } else {
     return(
       <div
-        className='main-feed-page-container'
+        className={handleClassName()}
       >
         <div
           className='col-1'

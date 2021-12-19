@@ -1,4 +1,7 @@
-.main-feed-page-container {
+.main-feed-page-container,
+.user-feed-page-container,
+.dashboard-feed-page-container,
+.tag-feed-page-container {
 
   .filter-container {
     position: relative;
@@ -103,5 +106,35 @@
         background-color: var(--burnt-gold);
       }
     }
+  }
+}
+
+.tag-feed-sort-container {
+
+  .query-button,
+  .sort-button {
+    color: white;
+    padding: 10px;
+    margin: 15px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .query-button {
+    background-color: blue;
+  }
+
+  .sort-button {
+    background-color: purple;
+  }
+
+  .query-button.selected {
+    background-color: red;
+  }
+
+  .sort-button.selected {
+    background-color: orange;
   }
 }

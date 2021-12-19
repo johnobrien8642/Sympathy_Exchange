@@ -106,182 +106,73 @@ const RootQueryType = new GraphQLObjectType({
       args: { fetchFeedInputs: { type: FetchFeedInputType } },
       async resolve(_, { fetchFeedInputs }) {
         const { filter, cursor, altCursor, tagId, userId } = fetchFeedInputs;
-        let query;
+        let { floor, ceiling, rangeArr, 
+                tagIdArr, bySympCount, byTagIds, 
+                bySympathizedPleaIds, bySavedPleaIds, 
+                byUserFollows, byTagFollows, 
+                bySympathizedPleaIdsArr, bySavedPleaIdsArr, 
+                byUserFollowsArr, byTagFollowsArr, feedSort } = filter;
+        let query = { $and: [] };
         let sort;
-        
-        if (tagId) {
-          filter.byTagIds = true;
-          filter.tagIdArr.push(tagId)
+        let byUserId = !!userId;
+      
+        if ([bySympathizedPleaIds, bySavedPleaIds, byUserFollows, byTagFollows].some(filterKey => !!filterKey))  {
+          byUserId = false;
         }
 
-        // //find() params
-        const isFirstMount = !filter.bySympCount && !filter.byTagIds && !cursor;
-        const hasNoSympathyYet = !filter.bySympCount && !filter.byTagIds && cursor === 0;
+        if (tagId) {
+          byTagIds = true;
+          tagIdArr.push(tagId);
+        };
 
-        const hasUserOnly = userId && !filter.bySympCount && !filter.byTagIds && !cursor;
-        const hasTagsOnly = !filter.bySympCount && filter.byTagIds && !cursor;
-        const hasSympathyOnly = filter.bySympCount && !filter.byTagIds && !cursor;
+        if (byUserId) {
+          query.$and.push({ author: { $eq: userId } });
+        };
 
-        const hasUserAndCursor = userId && !filter.bySympCount && !filter.byTagIds && cursor;        
-        const hasUserAndSympathyAndTagsAndCursor = userId && filter.bySympCount && filter.byTagIds && cursor;
-        const hasUserAndTagsAndCursor = userId && !filter.bySympCount && filter.byTagIds && cursor;
-        const hasUserAndSympathyAndCursor = userId && !filter.bySympCount && filter.byTagIds && cursor;
-        const hasUserAndSympathyAndTags = userId && filter.bySympCount && filter.byTagIds && !cursor;
-        const hasUserAndSympathy = userId && filter.bySympCount && !filter.byTagIds && !cursor;
-        const hasUserAndTags = userId && !filter.bySympCount && filter.byTagIds && !cursor;
+        if (byTagIds) {
+          query.$and.push({ tagIds: { $in: tagIdArr } });
+        };
 
-        const hasNoFiltersAndHasCursor = !filter.bySympCount && !filter.byTagIds && cursor;
+        if (bySympCount) {
+          query.$and.push(
+            { combinedSympathyCount: { $gte: rangeArr[0] } },
+            { combinedSympathyCount: { $lte: rangeArr[1] } },
+            { sympathyCount: { $gte: rangeArr[0] } },
+            { sympathyCount: { $lte: rangeArr[1] } }
+          );
+        };
+
+        if (cursor) {
+          query.$and.push(
+            { combinedSympathyCount: { $lte: cursor } },
+            { sympathyCount: { $lte: cursor } }
+          );
+        };
+      
+        if (byTagIds) {
+          query.$and.push({ tagIds: { $in: tagIdArr } });
+        };
+
+        if (bySympathizedPleaIds) {
+          query.$and.push({ _id: { $in: bySympathizedPleaIdsArr } });
+        };
+
+        if (bySavedPleaIds) {
+          query.$and.push({ _id: { $in: bySavedPleaIdsArr } });
+        };
         
-        const hasSympathyAndTags = filter.bySympCount && filter.byTagIds && !cursor;
+        if (byUserFollows) {
+          query.$and.push({ author: { $in: byUserFollowsArr } });
+        };
 
-        const hasSympathyAndTagsAndCursor = filter.bySympCount && filter.byTagIds && cursor;
-        const hasTagsAndCursor = !filter.bySympCount && filter.byTagIds && cursor;
-        const hasSympathyAndCursor = filter.bySympCount && !filter.byTagIds && cursor;
+        if (byTagFollows) {
+          query.$and.push({ tagIds: { $in: byTagFollowsArr } });
+        };
 
         // // sort() params
-        const bySympathyCount = filter.feedSort === 'bySympathyCount';
-        const byCreatedAt = filter.feedSort === 'byCreatedAt';
+        const bySympathyCount = feedSort === 'bySympathyCount';
+        const byCreatedAt = feedSort === 'byCreatedAt';
 
-        if (hasTagsOnly) {
-          query = { 
-            $and: [
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasUserOnly) {
-          query = { author: { $eq: userId } };
-        } else if (hasUserAndCursor) {
-          query = {
-            $and: [
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } },
-              { author: { $eq: userId } }
-            ]
-          };
-        } else if (hasUserAndSympathyAndTagsAndCursor) {
-          query = {
-            $and: [
-              { author: { $eq: userId } },
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasUserAndTagsAndCursor) {
-          query = {
-            $and: [
-              { author: { $eq: userId } },
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasUserAndSympathyAndCursor) {
-          query = {
-            $and: [
-              { author: { $eq: userId } },
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } }
-            ]
-          };
-        } else if (hasUserAndSympathyAndTags) {
-          query = {
-            $and: [
-              { author: { $eq: userId } },
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasUserAndSympathy) {
-          query = {
-            $and: [
-              { author: { $eq: userId } },
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } }
-            ]
-          };
-        } else if (hasUserAndTags) {
-          query = {
-            $and: [
-              { author: { $eq: userId } },
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasSympathyAndTagsAndCursor) {
-          query = {
-            $and: [
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter.tagIdArr } },
-            ]
-          };
-        } else if (hasSympathyAndTags) {
-          query = { 
-            $and: [
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasTagsAndCursor) {
-          query = { 
-            $and: [
-              { combinedSympathyCount: { $lte: cursor } },
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } },
-              { tagIds: { $in: filter.tagIdArr } }
-            ]
-          };
-        } else if (hasSympathyAndCursor) {
-          query = { 
-            $and: [
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-              { combinedSympathyCount: { $lte: cursor } },
-              { sympathyCount: { $lte: cursor } },
-            ]
-          };
-        } else if (hasNoFiltersAndHasCursor) {
-          query = { sympathyCount: { $lte: cursor } };
-        } else if (hasSympathyOnly) {
-          query = { 
-            $and: [
-              { combinedSympathyCount: { $gte: filter.rangeArr[0] } },
-              { combinedSympathyCount: { $lte: filter.rangeArr[1] } },
-              { sympathyCount: { $gte: filter.rangeArr[0] } },
-              { sympathyCount: { $lte: filter.rangeArr[1] } },
-            ]
-          };
-        } else if (hasNoSympathyYet) {
-          query = { _id: { $lte: altCursor } }
-        } else if (isFirstMount) {
-          if (tagId) {
-            query = { tagIds: { $in: filter.tagIdArr } };
-          } else {
-            query = {};
-          }
-        }
 
         if (bySympathyCount) {
           sort = { combinedSympathyCount: -1, sympathyCount: -1, createdAt: -1 }
@@ -289,6 +180,12 @@ const RootQueryType = new GraphQLObjectType({
           sort = { createdAt: -1 }
         };
         
+        //If we never pushed any query objects into $and,
+        //then reset query to an object to find all
+        if (!query.$and.length) {
+          query = {}
+        }
+
         return await Plea.find(query)
           .limit(10)
           .sort(sort);
