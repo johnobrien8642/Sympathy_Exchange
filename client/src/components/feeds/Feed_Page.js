@@ -45,7 +45,7 @@ const FeedPage = () => {
   function handleTagOrUserShow(tagData, userData) {
     const { isTag, isUser } = feedType;
     if (isTag || isUser) {
-      return <TagOrUserShow tag={tagData?.tag} user={userData.user} />;
+      return <TagOrUserShow tag={tagData?.tag} user={userData?.user} />;
     }
   }
 

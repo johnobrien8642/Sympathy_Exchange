@@ -6,8 +6,8 @@ const { ALL_POSTS, ALL_POSTS_ACTIVITY } = AllPostQueryFragment;
 
 const Queries = {
   FETCH_USER: gql`
-    query FetchUser($currentUserId: String) {
-      user(currentUserId: $currentUserId) {
+    query FetchUser($userId: String) {
+      user(userId: $userId) {
         _id
         username
         userFollows {

@@ -1,8 +1,11 @@
 import React from 'react';
+import { useQuery } from '@apollo/client';
 import { useHistory } from 'react-router-dom';
 import Score from './Score';
 import SympathyOrSaveButton from './Sympathy_Or_Save_Button';
 import FollowButton from '../../social/Follow_Button';
+import Queries from '../../../graphql/queries.js';
+const { CURRENT_USER_ID } = Queries;
 
 const AuthorAndSQ = ({
   plea,
@@ -10,6 +13,8 @@ const AuthorAndSQ = ({
   lastPleaInChain
 }) => {
   const history = useHistory();
+
+  let { data } = useQuery(CURRENT_USER_ID);
   
   function handleSympathyButtonShow() {
     if (lastPleaInChain) {
@@ -29,7 +34,11 @@ const AuthorAndSQ = ({
           onClick={e => {
             e.preventDefault();
 
-            history.push(`/user-feed/${plea.author._id}`)
+            if (data.currentUserId === plea.author._id) {
+              history.push(`/dashboard/${plea.author._id}`);
+            } else {
+              history.push(`/user-feed/${plea.author._id}`);
+            }
           }}
         >
           {plea.author.username}

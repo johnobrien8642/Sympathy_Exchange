@@ -12,7 +12,7 @@ const CreatePleaButton = ({
 
   let { data } = useQuery(FETCH_USER, {
     variables: {
-      currentUserId: user._id
+      userId: user._id
     }
   })
   

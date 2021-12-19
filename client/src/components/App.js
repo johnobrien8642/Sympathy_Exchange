@@ -68,7 +68,7 @@ const App = () => {
           <AuthRoute exact path='/likes' component={UserPostLikesFeed} /> */}
           {/* uncomment below for email auth welcome page */}
           {/* <AuthRoute exact path='/welcome' component={WelcomePage} /> */}
-          <AuthRoute path={['/dashboard', '/tag-feed/:tagId', '/user-feed/:userId']} component={FeedPage} />
+          <AuthRoute path={['/dashboard', '/tag-feed/:tagId', '/user-feed/:userId', '/dashboard']} component={FeedPage} />
           <AuthRoute exact path={'/settings/account'} component={UserSettings} />
           <AuthRoute exact path='/register' component={Register} routeType={'auth'} />
           <AuthRoute exact path='/login' component={Login} routeType={'auth'} />

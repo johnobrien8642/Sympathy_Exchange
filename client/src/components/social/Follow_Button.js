@@ -38,7 +38,7 @@ const FollowButton = ({
 
   let { loading, error, data: currentUser } = useQuery(FETCH_USER, {
     variables: {
-      currentUserId: currentUserId
+      userId: currentUserId
     }
   })
 

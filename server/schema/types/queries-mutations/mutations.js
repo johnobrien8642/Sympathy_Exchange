@@ -156,7 +156,7 @@ const mutation = new GraphQLObjectType({
               
               if (secretRecoveryPhrase === userDecoded) {
                 const token = jwt.sign({ _id: user._id }, keys.secretOrKey)
-                return { token, loggedIn: true, ...user._doc, ...user.username}
+                return { token, loggedIn: true, ...user._doc, ...user.username }
               }
             } else {
               throw new Error('That Secret Recovery Phrase is invalid.')

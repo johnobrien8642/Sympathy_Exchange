@@ -32,7 +32,7 @@ const SympathyOrSaveButton = ({
 
   let { loading, error, data: data2 } = useQuery(FETCH_USER, {
     variables: {
-      currentUserId: currentUserId
+      userId: currentUserId
     }
   });
 

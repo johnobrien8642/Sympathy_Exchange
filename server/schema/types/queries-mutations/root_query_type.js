@@ -1198,9 +1198,9 @@ const RootQueryType = new GraphQLObjectType({
     // },
     user: {
       type: UserType,
-      args: { currentUserId: { type: GraphQLString } },
-      resolve(parentValue, { currentUserId }) {
-        return User.findById( currentUserId );
+      args: { userId: { type: GraphQLString } },
+      resolve(parentValue, { userId }) {
+        return User.findById( userId );
       }
     },
     users: {

@@ -24,7 +24,7 @@ const AccountRecovery = () => {
       client.writeQuery({
         query: FETCH_USER,
         variables: {
-          query: data.recoverAccount.username
+          userId: data.recoverAccount._id
         },
         data: {
           username: data.recoverAccount.username

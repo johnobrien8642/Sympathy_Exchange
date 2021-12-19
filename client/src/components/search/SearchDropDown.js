@@ -16,7 +16,7 @@ const SearchDropDown = ({
 
   let { loading, error, data } = useQuery(FETCH_USER, {
     variables: {
-      currentUserId: currentUserId
+      userId: currentUserId
     }
   })
 

@@ -17,7 +17,7 @@ const Nav = ({
         error: error2, 
         data: fetchedUser, refetch: refetchUser } = useQuery(FETCH_USER, {
           variables: {
-            currentUserId: currentUserId
+            userId: currentUserId
           },
         // fetchPolicy: 'cache-and-network'
       })

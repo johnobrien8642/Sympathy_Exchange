@@ -26,7 +26,7 @@ const TagOrUserShow = ({
         <h1
           className='title'
         >
-          {tag.title}
+          {tag ? tag.title : user.username}
         </h1>
         {handleFollowButton()}
       </div>

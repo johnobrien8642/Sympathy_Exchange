@@ -233,7 +233,7 @@ const followUpdate = (
   const readFeed = client.readQuery({
     query: gqlQuery,
     variables: {
-      currentUserId: query
+      userId: query
     }
   });
   
@@ -247,7 +247,7 @@ const followUpdate = (
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        currentUserId: query
+        userId: query
       },
       data: {
         user: {
@@ -259,7 +259,7 @@ const followUpdate = (
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        currentUserId: query
+        userId: query
       },
       data: {
         user: {
@@ -280,7 +280,7 @@ const unfollowUpdate = (
   const readFeed = client.readQuery({
     query: gqlQuery,
     variables: {
-      currentUserId: query
+      userId: query
     }
   })
   
@@ -294,7 +294,7 @@ const unfollowUpdate = (
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        currentUserId: query
+        userId: query
       },
       data: {
         user: {
@@ -306,7 +306,7 @@ const unfollowUpdate = (
     client.writeQuery({
       query: gqlQuery,
       variables: {
-        currentUserId: query
+        userId: query
       },
       data: {
         user: {
