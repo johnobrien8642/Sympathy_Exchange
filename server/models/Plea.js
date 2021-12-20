@@ -8,11 +8,14 @@ const PleaSchema = new Schema({
     type: String,
     required: true
   },
-  author: {
+  authorId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     index: true,
     required: true
+  },
+  authorUsername: {
+    type: String
   },
   tagIds: [
     {
@@ -61,7 +64,7 @@ const PleaSchema = new Schema({
   },
   kind: {
     type: String,
-    default: 'Post'
+    default: 'Plea'
   }
 }, options)
   

@@ -1,8 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useQuery, useApolloClient } from '@apollo/client';
 import { useLocation } from 'react-router-dom';
 import Loading from '../shared_util/Loading';
 import PleaShow from '../plea_shows/Plea_Show';
+import SearchInput from './Search_Input';
+import FollowedList from '../plea_shows/util_components/Followed_List';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import TagOrUserSortOrQueryParams from '../plea_shows/util_components/Tag_Or_User_Sort_Or_Query_Params';
 import FeedUtil from './util_functions/feed_util.js';
@@ -19,10 +21,12 @@ const Feed = ({
   lastObjectIdRef,
   fetchMoreBoolRef,
 }) => {
+  let [searchInput, setSearchInput] = useState('');
   const client = useApolloClient();
   const { pathname } = useLocation();
   let pathRef = useRef(pathname);
-
+  let kindRef = useRef('');
+  let inputRef = useRef(null);
   //Feed query can be dynamic, either for fetching everything or fetching
   //with a filter
   
@@ -35,7 +39,8 @@ const Feed = ({
         filter: filter,
         cursor: lastPleaSympathyCountRef.current,
         tagId: tag ? tag._id : null,
-        userId: user ? user._id : null
+        userId: user ? user._id : null,
+        searchInput: searchInput
       }
     }
   });
@@ -64,7 +69,8 @@ const Feed = ({
         FETCH_PLEA_FEED,
         fetchMoreBoolRef.current,
         tag,
-        user
+        user,
+        searchInput
       );
     }
 
@@ -82,7 +88,8 @@ const Feed = ({
       lastPleaSympathyCountRef,
       lastObjectIdRef,
       tag,
-      user
+      user,
+      searchInput
     ]
   )
 
@@ -97,7 +104,7 @@ const Feed = ({
   if (!fetchMoreBoolRef.current) {
     setCursor(data?.fetchPleaFeed, lastPleaSympathyCountRef, lastObjectIdRef);
   }
-
+  
   return (
       <div
         className='feed'
@@ -105,10 +112,22 @@ const Feed = ({
         <TagOrUserSortOrQueryParams
           user={user}
           currentUser={userData?.currentUserId === user?._id}
+          setSearchInput={setSearchInput}
           filter={filter}
           setFilter={setFilter}
           lastPleaSympathyCountRef={lastPleaSympathyCountRef}
           fetchMoreBoolRef={fetchMoreBoolRef}
+          kindRef={kindRef}
+          inputRef={inputRef}
+        />
+        <SearchInput
+          setSearchInput={setSearchInput}
+          inputRef={inputRef}
+        />
+        <FollowedList
+          user={user}
+          active={!!kindRef.current}
+          kind={kindRef.current}
         />
         <InfiniteScroll
           dataLength={data?.fetchPleaFeed ? data.fetchPleaFeed.length : 0}

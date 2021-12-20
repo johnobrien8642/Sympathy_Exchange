@@ -1,26 +1,30 @@
 import React, { useRef } from 'react';
-import FollowedList from './Followed_List';
 
 const TagOrUserSortOrQueryParams = ({
   user,
   currentUser,
   filter,
   setFilter,
+  setSearchInput,
   fetchMoreBoolRef,
-  lastPleaSympathyCountRef
+  lastPleaSympathyCountRef,
+  kindRef,
+  inputRef
 }) => {
   //query useRef hooks
   let bySympathizedRef = useRef(false);
   let bySavedRef = useRef(false);
   let byUserFollowsRef = useRef(false);
   let byTagFollowsRef = useRef(false);
-  let kindRef = useRef('');
 
   //sort useRef hooks
   let bySympCountRef = useRef(false);
   let byCreatedAtRef = useRef(false);
 
   function resetOtherParams(param, newObj) {
+    setSearchInput('');
+    inputRef.current.value = '';
+
     if (param === 'bySympathizedPleaIds') {
       //reset other query useRef hooks
       bySavedRef.current = false;
@@ -103,7 +107,6 @@ const TagOrUserSortOrQueryParams = ({
                 newObj.bySympathizedPleaIdsArr = [];
                 setFilter(newObj);
               } else {
-                
                 let newObj = {...filter};
                 newObj.bySympathizedPleaIds = true;
                 newObj.bySympathizedPleaIdsArr = user.sympathizedPleaIdsStringArr;
@@ -130,7 +133,6 @@ const TagOrUserSortOrQueryParams = ({
                 newObj.bySavedPleaIdsArr = [];
                 setFilter(newObj);
               } else {
-                
                 let newObj = {...filter};
                 newObj.bySavedPleaIds = true;
                 newObj.bySavedPleaIdsArr = user.savedPleaIdsStringArr;
@@ -243,11 +245,6 @@ const TagOrUserSortOrQueryParams = ({
       >
         Created Date
       </button>
-      <FollowedList 
-        user={user}
-        active={!!kindRef.current}
-        kind={kindRef.current}
-      />
     </div>
   )
 };

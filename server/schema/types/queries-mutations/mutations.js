@@ -58,10 +58,11 @@ const mutation = new GraphQLObjectType({
         pleaInputData: { type: PleaInputType }
       },
       async resolve(_, { pleaInputData }) {
-        const { author, text, tagIds, pleaIdChain, chaining, combinedCount } = pleaInputData;
+        const { authorId, authorUsername, text, tagIds, pleaIdChain, chaining, combinedCount } = pleaInputData;
         
         const plea = new Plea({
-          author: author,
+          authorId: authorId,
+          authorUsername: authorUsername,
           text: text,
           chained: chaining ? chaining : false,
           pleaIdChain: pleaIdChain.length ? pleaIdChain : [],

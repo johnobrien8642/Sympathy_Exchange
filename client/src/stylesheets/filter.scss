@@ -109,7 +109,15 @@
   }
 }
 
+.dashboard-feed-page-container,
+.user-feed-page-container,
 .tag-feed-sort-container {
+
+  .plea-search-input {
+    background-color: white;
+    padding: 10px;
+    width: 100%;
+  }
 
   .query-button,
   .sort-button {

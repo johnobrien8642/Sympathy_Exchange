@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import FollowButton from '../../social/Follow_Button';
 
 const UserResult = ({
+  currentUserId,
   user,
   active,
   setActive
@@ -23,19 +24,20 @@ const UserResult = ({
         className='userResult'
       >
         <Link
-          to={`/view/blog/${user.blogName}`}
+          to={`/user-feed/${user._id}`}
           onClick={() => {
             if (active) {
               setActive(active = false)
             }
           }}
         >
-          <h3>{user.blogName}</h3>
+          <h3>{user.username}</h3>
           {handleDescription()}
         </Link>
       </div>
       <FollowButton
         user={user}
+        currentUserId={currentUserId}
       />
     </React.Fragment>
   )

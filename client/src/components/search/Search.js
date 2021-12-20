@@ -12,11 +12,11 @@ const Search = ({
   searchRef,
   setActivityOpen,
   setDetailsOpen,
-  openSearch,
+  openSearch
 }) => {
-  let [input, setInput] = useState('');
   let [followedActive, setFollowedActive] = useState(!!mobile)
   let [active, setActive] = useState(false);
+  let [searchInput, setSearchInput] = useState('');
   let searchIconImgRef = useRef(null);
 
   let { data } = useQuery(CURRENT_USER_ID);
@@ -68,7 +68,7 @@ const Search = ({
         <input
           className='searchBarInput'
           type='text'
-          value={input}
+          value={searchInput}
           placeholder={'How are you suffering?'}
           onClick={() => {
             searchIconImgRef.current.style.opacity = '1'
@@ -78,10 +78,10 @@ const Search = ({
           }}
           onChange={e => {
               if (e.target.value === "") {
-                setInput(e.target.value);
+                setSearchInput(e.target.value);
                 setFollowedActive(true);
               } else {
-                setInput(e.target.value);
+                setSearchInput(e.target.value);
                 setFollowedActive(false);
                 setActive(true);
               };
@@ -90,7 +90,7 @@ const Search = ({
 
         <SearchDropDown
           user={user}
-          input={input}
+          searchInput={searchInput}
           followedActive={followedActive}
           active={active}
           setActive={setActive}
@@ -113,7 +113,7 @@ const Search = ({
         <input
           className='searchBarInput'
           type='text'
-          value={input}
+          value={searchInput}
           placeholder={'How are you suffering?'}
           onClick={() => {
             searchIconImgRef.current.style.opacity = '1'
@@ -121,7 +121,7 @@ const Search = ({
           onBlur={() => {
             searchIconImgRef.current.style.opacity = '.3'
           }}
-          onChange={e => setInput(e.target.value)}
+          onChange={e => setSearchInput(e.target.value)}
         />
       </div>
     )

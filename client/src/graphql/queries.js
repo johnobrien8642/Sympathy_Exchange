@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 import AllPostQueryFragment from './all_posts_query_fragment.js';
 import Fragments from './fragments.js';
-const { NESTED_PLEA_FRAGMENT, PLEA_FRAGMENT, TITLE_ONLY_TAG_FRAGMENT } = Fragments;
+const { NESTED_PLEA_FRAGMENT, PLEA_FRAGMENT, TITLE_ONLY_TAG_FRAGMENT, USER_FRAGMENT } = Fragments;
 const { ALL_POSTS, ALL_POSTS_ACTIVITY } = AllPostQueryFragment;
 
 const Queries = {
@@ -51,6 +51,26 @@ const Queries = {
         title
       }
     }
+  `,
+  FETCH_SEARCH_RESULTS: gql`
+    query FetchSearchResults($searchInput: String) {
+      fetchSearchResults(searchInput: $searchInput) {
+        __typename
+        ... on PleaType {
+          ...NestedPleaFragment
+        }
+        ... on TagType {
+          ...TitleOnlyTagFragment
+        }
+        ... on UserType {
+          ...UserFragment
+        }
+      }
+    }
+    ${NESTED_PLEA_FRAGMENT}
+    ${PLEA_FRAGMENT}
+    ${TITLE_ONLY_TAG_FRAGMENT}
+    ${USER_FRAGMENT}
   `,
   // FETCH_ALL_TAGS: gql`
   //   query FetchAllTags {

@@ -5,7 +5,7 @@ const Fragments = {
     fragment PleaFragment on PleaType {
       _id
       text
-      author {
+      authorId {
         _id
         username
       }
@@ -18,7 +18,7 @@ const Fragments = {
       pleaIdChain {
         _id
         text
-        author {
+        authorId {
           _id
           username
         }
@@ -34,7 +34,7 @@ const Fragments = {
     fragment NestedPleaFragment on PleaType {
       _id
       text
-      author {
+      authorId {
         _id
         username
       }
@@ -67,6 +67,15 @@ const Fragments = {
     fragment TitleOnlyTagFragment on TagType {
       _id
       title
+      kind
+      __typename
+    }
+  `,
+  USER_FRAGMENT: gql`
+    fragment UserFragment on UserType {
+      _id
+      username
+      kind
       __typename
     }
   `

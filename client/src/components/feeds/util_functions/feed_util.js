@@ -11,7 +11,8 @@ const fetchMoreWithClient = async (
   query, 
   filterChanged,
   tag,
-  user
+  user,
+  searchInput
 ) => {
   return await client.query({
     query: query,
@@ -21,7 +22,8 @@ const fetchMoreWithClient = async (
         cursor: cursor,
         altCursor: altCursor,
         tagId: tag ? tag._id : null,
-        userId: user ? user._id : null
+        userId: user ? user._id : null,
+        searchInput: searchInput
       }
     },
     fetchPolicy: 'no-cache'
@@ -38,7 +40,8 @@ const fetchMoreWithClient = async (
             cursor: cursor,
             altCursor: altCursor,
             tagId: tag ? tag._id : null,
-            userId: user ? user._id : null
+            userId: user ? user._id : null,
+            searchInput: searchInput
           }
         },
         data: {
@@ -56,7 +59,8 @@ const fetchMoreWithClient = async (
             cursor: cursor,
             altCursor: altCursor,
             tagId: tag ? tag._id : null,
-            userId: user ? user._id : null
+            userId: user ? user._id : null,
+            searchInput: searchInput
           }
         }
       })
@@ -78,7 +82,8 @@ const fetchMoreWithClient = async (
               cursor: cursor,
               altCursor: altCursor,
               tagId: tag ? tag._id : null,
-              userId: user ? user._id : null
+              userId: user ? user._id : null,
+              searchInput: searchInput
             }
           },
           data: {

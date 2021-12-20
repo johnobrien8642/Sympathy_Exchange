@@ -7,7 +7,7 @@ const { FETCH_USER } = Queries;
 
 const SearchDropDown = ({
   user,
-  input,
+  searchInput,
   followedActive,
   active,
   setActive,
@@ -30,13 +30,9 @@ const SearchDropDown = ({
        <div
          className='searchDropDown'
        >
-         <FollowedTags
-           user={data.user}
-           followedActive={followedActive}
-         />
          <Results
            user={data.user}
-           input={input} 
+           searchInput={searchInput}
            active={active}
            setActive={setActive}
          />

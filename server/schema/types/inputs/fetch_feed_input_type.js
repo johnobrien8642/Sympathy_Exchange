@@ -9,7 +9,8 @@ const FetchFeedInputType = new GraphQLInputObjectType({
     cursor: { type: GraphQLInt },
     altCursor: { type: GraphQLString },
     tagId: { type: GraphQLID },
-    userId: { type: GraphQLID }
+    userId: { type: GraphQLID },
+    searchInput: { type: GraphQLString }
   })
 })
 

@@ -18,12 +18,13 @@ const PleaType = new GraphQLObjectType({
   fields: () => ({
     _id: { type: GraphQLID },
     text: { type: GraphQLString },
-    author: {
+    authorUsername: { type: GraphQLString },
+    authorId: {
       type: UserType,
       resolve(parentValue) {
         return Plea.findById(parentValue._id)
-          .populate('author')
-          .then(plea => plea.author)
+          .populate('authorId')
+          .then(plea => plea.authorId)
       }
     },
     tagIds: {

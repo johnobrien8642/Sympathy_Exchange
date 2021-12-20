@@ -13,7 +13,6 @@ const AuthorAndSQ = ({
   lastPleaInChain
 }) => {
   const history = useHistory();
-
   let { data } = useQuery(CURRENT_USER_ID);
   
   function handleSympathyButtonShow() {
@@ -34,17 +33,17 @@ const AuthorAndSQ = ({
           onClick={e => {
             e.preventDefault();
 
-            if (data.currentUserId === plea.author._id) {
-              history.push(`/dashboard/${plea.author._id}`);
+            if (data.currentUserId === plea.authorId._id) {
+              history.push(`/dashboard/${plea.authorId._id}`);
             } else {
-              history.push(`/user-feed/${plea.author._id}`);
+              history.push(`/user-feed/${plea.authorId._id}`);
             }
           }}
         >
-          {plea.author.username}
+          {plea.authorId.username}
         </button>
         <FollowButton
-          user={plea.author}
+          user={plea.authorId}
           currentUserId={currentUserId}
         />
         <div

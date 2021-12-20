@@ -75,7 +75,7 @@ const App = () => {
           <AuthRoute exact path='/reveal_secret_recovery_phrase' component={SecretRecoveryPhraseShow} />
           <AuthRoute exact path={'/:username'} component={UserDashboard} />
           <Route exact path='/account_recovery' component={AccountRecovery} />
-          <Redirect from='/' to='/dashboard' />
+          <Redirect from='/' to='/main-feed' />
         </Switch>
       </React.Fragment>
     );

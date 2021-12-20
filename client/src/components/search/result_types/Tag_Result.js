@@ -4,24 +4,18 @@ import { Link } from 'react-router-dom';
 import FollowButton from '../../social/Follow_Button';
 
 const TagResult = ({ 
-  currentUser, 
+  currentUserId, 
   tag, 
   active, 
   setActive 
 }) => {
-  let doesUserFollowTagRef = useRef(false)
-
-  if (currentUser) {
-    doesUserFollowTagRef.current =
-    currentUser.tagFollows.some(obj => obj._id === tag._id)
-  }
 
   var cleanedTag = tag.title.slice(1)
   
   return (
     <React.Fragment>
     <Link
-        to={`/view/tag/${cleanedTag}`}
+        to={`/tag-feed/${tag._id}`}
         onClick={() => {
           if (active) {
             setActive(active = false)
@@ -32,7 +26,7 @@ const TagResult = ({
       </Link>
       <FollowButton
         tag={tag} 
-        followed={doesUserFollowTagRef.current}
+        currentUserId={currentUserId}
       />
     </React.Fragment>
   )
