@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Loading from '../../shared_util/Loading';
 import { useQuery } from '@apollo/client';
 import Queries from '../../../graphql/queries.js';

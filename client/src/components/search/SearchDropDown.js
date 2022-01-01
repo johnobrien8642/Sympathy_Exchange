@@ -1,6 +1,5 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import FollowedTags from './Followed_Tags_Result';
 import Results from './Results';
 import Queries from '../../graphql/queries.js'
 const { FETCH_USER } = Queries;

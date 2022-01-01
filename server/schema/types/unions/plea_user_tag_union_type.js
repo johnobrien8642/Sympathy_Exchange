@@ -4,8 +4,8 @@ import TagType from '../objects/tag_type.js';
 import PleaType from '../objects/plea_type.js';
 const { GraphQLUnionType } = graphql;
 
-const PleaAndUserAndTagType = new GraphQLUnionType({
-  name: 'PleaAndUserAndTagType',
+const PleaUserTagUnionType = new GraphQLUnionType({
+  name: 'PleaUserTagUnionType',
   types: () => ( [ PleaType, UserType, TagType ] ),
   resolveType(value) {
     if (value.kind === 'Plea') {
@@ -20,4 +20,4 @@ const PleaAndUserAndTagType = new GraphQLUnionType({
   }
 });
 
-export default PleaAndUserAndTagType;
+export default PleaUserTagUnionType;

@@ -21,6 +21,7 @@ const PleaForm = ({
   let [showTagAlert, setShowTagAlert] = useState(false);
   let [pleaLengthAlert, setPleaLengthAlert] = useState(false);
   let [perspectiveAlert, setPerspectiveAlert] = useState(false);
+  let [checksCleared, setChecksCleared] = useState(false);
   let [tag, setTag] = useState('');
   let [tags, setTags] = useState(pleaProp ? pleaProp.tagIds : []);
   let contentEditableDivRef = useRef(null);
@@ -45,23 +46,21 @@ const PleaForm = ({
 
   useEffect(() => {
     var noFirstPerson = new RegExp(/(?<=\s|^)(?:I|I'd|I'd've|I'll|I'm|Imma|Im|Ill|Id|I've|Ive|Iv){1,}(?=\s)/, 'gmi');
-    
-    setTimeout(() => {
-      if (noFirstPerson.test(plea)) {
-
-        if (plea.length === 1) {
-          setPlea('');
-        } else {
-          var cleanedStr = plea.replace(noFirstPerson, '').trimEnd();
-          setPlea(cleanedStr);
-          contentEditableDivRef.current.textContent = cleanedStr;
-          placeCaretAtEnd(contentEditableDivRef.current);
-          setPerspectiveAlert(true);
-        }
-      };
-    }, 500)
-    
-  }, [plea]);
+    setChecksCleared(false);
+    if (noFirstPerson.test(plea)) {
+      if (plea.length === 1) {
+        setPlea('');
+      } else {
+        var cleanedStr = plea.replace(noFirstPerson, '').trimEnd();
+        setPlea(cleanedStr);
+        contentEditableDivRef.current.textContent = cleanedStr;
+        placeCaretAtEnd(contentEditableDivRef.current);
+        setPerspectiveAlert(true);
+        setChecksCleared(true);
+      }
+    };
+    setChecksCleared(true);
+  }, [plea, setChecksCleared]);
 
   let [createOrChainPlea] = useMutation(CREATE_OR_CHAIN_PLEA, {
     onCompleted() {
@@ -170,14 +169,16 @@ const PleaForm = ({
               contentEditable='true'
               ref={contentEditableDivRef}
               onInput={e => {
-                
-                if (e.target.textContent.length < 1000) {
-                  setPlea(e.target.textContent);
-                  setPleaLengthAlert(false);
-                } else {
-                  setPlea(e.target.textContent);
-                  setPleaLengthAlert(true);
-                }
+
+                setTimeout(() => {
+                  if (e.target.textContent.length < 1000) {
+                    setPlea(e.target.textContent);
+                    setPleaLengthAlert(false);
+                  } else {
+                    setPlea(e.target.textContent);
+                    setPleaLengthAlert(true);
+                  }
+                }, 500)
               }}
             />
             <div>
@@ -225,7 +226,7 @@ const PleaForm = ({
                 className='submit'
                 type='submit'
                 onClick={e => {
-                  if (tags.length === 0) {
+                  if (tags.length === 0 || checksCleared) {
                     e.preventDefault();
                     setShowTagAlert(true);
                   } else if (!plea || plea.length > 1000) {
@@ -240,7 +241,7 @@ const PleaForm = ({
           </div>
             
           <ConfirmClose
-            confirm={openForm}
+            openForm={openForm}
             cancelBool={showConfirmClose}
             cancel={setShowConfirmClose}
             resetForm={reset}

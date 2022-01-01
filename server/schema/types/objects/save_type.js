@@ -28,6 +28,14 @@ const SaveType = new GraphQLObjectType({
           .then(sympathy => sympathy.plea);
       }
     },
+    pleaAuthorId: {
+      type: UserType,
+      resolve(parentValue) {
+        return Save.findById(parentValue._id)
+          .populate('pleaAuthorId')
+          .then(save => save.pleaAuthorId);
+      }
+    },
     createdAt: { type: GraphQLString },
     kind: { type: GraphQLString }
   })

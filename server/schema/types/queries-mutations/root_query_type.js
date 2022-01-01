@@ -8,9 +8,10 @@ import UserType from '../objects/user_type.js';
 import FollowType from '../objects/follow_type.js';
 import FilterParameterType from '../objects/filter_parameter_type.js';
 import TagType from '../objects/tag_type.js';
-import UserAndTagType from '../unions/user_and_tag_type.js';
+import UserTagUnionType from '../unions/user_tag_union_type.js';
 import UserAndTagInputType from '../inputs/user_and_tag_input_type.js';
-import PleaAndUserAndTagType from '../unions/plea_and_user_and_tag_type.js';
+import PleaUserTagUnionType from '../unions/plea_user_tag_union_type.js';
+import PleaSaveLikeFollowUnionType from '../unions/plea_save_like_follow_union_type.js';
 import FilterInputType from '../inputs/filter_input_type.js';
 import FetchFeedInputType from '../inputs/fetch_feed_input_type.js';
 import SearchInputType from '../inputs/search_input_type.js';
@@ -24,6 +25,7 @@ const Plea = mongoose.model('Plea');
 const Tag = mongoose.model('Tag');
 const Sympathy = mongoose.model('Sympathy');
 const Follow = mongoose.model('Follow');
+const Save = mongoose.model('Save');
 const { GraphQLObjectType, GraphQLList,
         GraphQLString, GraphQLID, GraphQLInt, GraphQLBoolean } = graphql;
 // const { handleFilterTagRegex, 
@@ -35,7 +37,7 @@ const RootQueryType = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: () => ({
     usersAndTags: {
-      type: GraphQLList(UserAndTagType),
+      type: GraphQLList(UserTagUnionType),
       args: { filter: { type: UserAndTagInputType } },
       async resolve(_, { filter }, ctx) {
         if (filter) {
@@ -108,11 +110,11 @@ const RootQueryType = new GraphQLObjectType({
           })
       }
     },
-    fetchPleaFeed: {
-      type: GraphQLList(PleaType),
+    fetchFeed: {
+      type: GraphQLList(PleaSaveLikeFollowUnionType),
       args: { fetchFeedInputs: { type: FetchFeedInputType } },
       async resolve(_, { fetchFeedInputs }) {
-        const { filter, cursor, altCursor, tagId, userId, searchInput } = fetchFeedInputs;
+        const { filter, cursor, altCursor, tagId, userId, searchInput, activity } = fetchFeedInputs;
         let { floor, ceiling, rangeArr, 
                 tagIdArr, bySympCount, byTagIds, 
                 bySympathizedPleaIds, bySavedPleaIds, 
@@ -121,10 +123,10 @@ const RootQueryType = new GraphQLObjectType({
                 byUserFollowsArr, byTagFollowsArr, feedSort } = filter;
         let query = { $and: [] };
         let sort;
-        let byUserId = !!userId;
+        let byCurrentUserPleas = !!userId;
         
         if ([bySympathizedPleaIds, bySavedPleaIds, byUserFollows, byTagFollows].some(filterKey => !!filterKey)) {
-          byUserId = false;
+          byCurrentUserPleas = false;
         };
 
         if (tagId) {
@@ -132,7 +134,7 @@ const RootQueryType = new GraphQLObjectType({
           tagIdArr.push(tagId);
         };
 
-        if (byUserId) {
+        if (byCurrentUserPleas) {
           query.$and.push({ authorId: { $eq: userId } });
         };
 
@@ -191,7 +193,6 @@ const RootQueryType = new GraphQLObjectType({
         const bySympathyCount = feedSort === 'bySympathyCount';
         const byCreatedAt = feedSort === 'byCreatedAt';
 
-
         if (bySympathyCount) {
           sort = { combinedSympathyCount: -1, sympathyCount: -1, createdAt: -1 }
         } else if (byCreatedAt) {
@@ -204,9 +205,28 @@ const RootQueryType = new GraphQLObjectType({
           query = {}
         };
         
-        return await Plea.find(query)
-          .limit(10)
-          .sort(sort);
+        if (activity) {
+          query = { $and: [ { pleaAuthorId: userId } ] };
+          
+          if (altCursor) {
+            query.$and.push({ _id: { $lt: altCursor } })
+          };
+          
+          let saves = await Save.find(query).limit(20);
+          let symps = await Sympathy.find(query).limit(20);
+          let follows = await Follow.find({ follows: userId }).limit(20);
+          
+          const arr = [...saves, ...symps, ...follows].sort((a, b) => b.createdAt - a.createdAt);
+          if (arr.length > 30) {
+            return arr.slice(0, 30);
+          } else {
+            return arr;
+          };
+        } else {
+          return await Plea.find(query)
+            .limit(10)
+            .sort(sort);
+        };
       }
     },
     recents: {
@@ -261,7 +281,7 @@ const RootQueryType = new GraphQLObjectType({
       }
     },
     fetchSearchResults: {
-      type: GraphQLList(PleaAndUserAndTagType),
+      type: GraphQLList(PleaUserTagUnionType),
       args: { searchInput: { type: GraphQLString } },
       async resolve(_, { searchInput }) {
         const users = await User.find({ username: { $regex: searchInput, $options: 'im' } }).limit(8);

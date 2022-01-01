@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import UserType from './user_type.js';
-import UserAndTagType from '../unions/user_and_tag_type.js';
+import UserTagUnionType from '../unions/user_tag_union_type.js';
 const Follow = mongoose.model('Follow');
 import graphql, { GraphQLInt } from 'graphql';
 const { GraphQLObjectType,
@@ -20,7 +20,7 @@ const FollowType = new GraphQLObjectType({
       }
     },
     follows: {
-      type: UserAndTagType,
+      type: UserTagUnionType,
       resolve(parentValue) {
         return Follow.findById(parentValue._id)
         .populate('follows')

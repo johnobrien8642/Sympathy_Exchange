@@ -3,8 +3,8 @@ import UserType from '../objects/user_type.js';
 import TagType from '../objects/tag_type.js';
 const { GraphQLUnionType } = graphql;
 
-const UserAndTagType = new GraphQLUnionType({
-  name: 'UserAndTagType',
+const UserTagUnionType = new GraphQLUnionType({
+  name: 'UserTagUnionType',
   types: () => ( [ UserType, TagType ] ),
   resolveType(value) {
     if (value.kind === 'User') {
@@ -16,4 +16,4 @@ const UserAndTagType = new GraphQLUnionType({
   }
 })
 
-export default UserAndTagType;
+export default UserTagUnionType;

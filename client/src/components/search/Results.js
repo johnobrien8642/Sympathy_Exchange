@@ -5,7 +5,7 @@ import UserResult from './result_types/User_Result';
 import TagResult from './result_types/Tag_Result';
 import PleaResult from './result_types/Plea_Result';
 import Queries from '../../graphql/queries';
-const { FETCH_SEARCH_RESULTS, CURRENT_USER_ID } = Queries;
+const { FETCH_SEARCH_RESULTS } = Queries;
 
 const Results = ({
   user,
@@ -13,6 +13,8 @@ const Results = ({
   active, 
   setActive
 }) => {
+  
+  let [fetchSearch, { loading, error, data }] = useLazyQuery(FETCH_SEARCH_RESULTS);
   
   useEffect(() => {
     if (searchInput) {
@@ -22,9 +24,8 @@ const Results = ({
         }
       });
     };
-  }, [searchInput, ])
+  }, [searchInput, fetchSearch])
   
-  let [fetchSearch, { loading, error, data }] = useLazyQuery(FETCH_SEARCH_RESULTS);
 
   if (error) return `Error in Results: ${error.message}`;
   

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import Loading from '../../shared_util/Loading';
 import SympathyCountFilterParams from './Sympathy_Count_Filter_Params';

@@ -10,7 +10,8 @@ const FetchFeedInputType = new GraphQLInputObjectType({
     altCursor: { type: GraphQLString },
     tagId: { type: GraphQLID },
     userId: { type: GraphQLID },
-    searchInput: { type: GraphQLString }
+    searchInput: { type: GraphQLString },
+    activity: { type: GraphQLBoolean }
   })
 })
 

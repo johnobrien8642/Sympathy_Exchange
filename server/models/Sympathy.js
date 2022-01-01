@@ -6,6 +6,10 @@ const SympathySchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Plea'
   },
+  pleaAuthorId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User'

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import FollowButton from '../../social/Follow_Button';
@@ -9,8 +9,6 @@ const TagResult = ({
   active, 
   setActive 
 }) => {
-
-  var cleanedTag = tag.title.slice(1)
   
   return (
     <React.Fragment>

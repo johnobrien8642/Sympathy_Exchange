@@ -33,13 +33,21 @@ const FeedPage = () => {
   const { tagId, userId } = useParams();
   const { pathname } = useLocation();
   let pathRef = useRef(pathname);
+
+  //Was getting a react warning here about wrapping this
+  // object initialization in a useMemo hook. Given that this
+  // is an optimization I'm saving this for later versions of
+  // the app when I actually have time to figure out how to
+  // do it | Signed: John O'Brien 12/31/21
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const feedType = {
     isTag: pathname.includes('tag-feed'),
     isUser: pathname.includes('user-feed'),
     isMain: pathname.includes('main-feed'),
-    isDash: pathname.includes('dashboard')
+    isDash: pathname.includes('dashboard'),
+    isActivity: pathname.includes('activity')
   }
-  const { isTag, isUser, isMain, isDash } = feedType;
+  const { isTag, isUser, isMain, isDash, isActivity } = feedType;
 
   useEffect(() => {
     if (pathRef.current !== pathname) {
@@ -47,9 +55,11 @@ const FeedPage = () => {
       feedType.isUser = pathname.includes('user-feed');
       feedType.isMain = pathname.includes('main-feed');
       feedType.isDash = pathname.includes('dashboard');
+      feedType.isActivity = pathname.includes('activity');
       pathRef.current = pathname;
     }
-  }, [feedType])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedType, pathname]);
   
   let { loading: tagLoading, error: tagError, data: tagData } = useQuery(FETCH_TAG, {
     variables: {
@@ -78,6 +88,8 @@ const FeedPage = () => {
       return 'main-feed-page-container';
     } else if (isDash) {
       return 'dashboard-feed-page-container';
+    } else if (isActivity) {
+      return 'activity-feed-page-container';
     }
   };
 
@@ -109,6 +121,7 @@ const FeedPage = () => {
           <Feed
             tag={tagData?.tag}
             user={userData?.user}
+            feedType={feedType}
             filter={filter}
             setFilter={setFilter}
             lastPleaSympathyCountRef={lastPleaSympathyCountRef}

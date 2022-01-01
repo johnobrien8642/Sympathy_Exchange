@@ -19,7 +19,7 @@ import PleaComboType from '../objects/plea_combo_type.js';
 import PleaComboInputType from '../inputs/plea_combo_ll_node_input_type.js';
 import SympathyType from '../objects/sympathy_type.js';
 import FollowType from '../objects/follow_type.js';
-import UserAndTagType from '../unions/user_and_tag_type.js';
+import UserTagUnionType from '../unions/user_tag_union_type.js';
 import createOrUpdatePost from '../../../models/util/create_or_update_function.js';
 import DeleteFunctionUtil from '../../../models/util/delete_function_util.js';
 import { GraphQLJSONObject } from 'graphql-type-json';
@@ -184,7 +184,7 @@ const mutation = new GraphQLObjectType({
           await User
             .findById(currentUserId);
         
-        const { _id } = plea;
+        const { _id, authorId } = plea;
         const twelveHoursAgo = new Date(new Date() - 43200000);
         
         const sympsForLastTwelveHours =
@@ -241,6 +241,7 @@ const mutation = new GraphQLObjectType({
             
         const symp = new Sympathy({
           plea: _id,
+          pleaAuthorId: authorId,
           user: currentUserId
         });
         
@@ -327,10 +328,11 @@ const mutation = new GraphQLObjectType({
           await User
             .findById(currentUserId);
         
-        const { _id } = plea;
+        const { _id, authorId } = plea;
             
         const save = new Save({
           plea: _id,
+          pleaAuthorId: authorId,
           user: currentUserId
         });
         
@@ -362,7 +364,7 @@ const mutation = new GraphQLObjectType({
       }
     },
     follow: {
-      type: UserAndTagType,
+      type: UserTagUnionType,
       args: {
         currentUserArg: { type: GraphQLString },
         item: { type: GraphQLString },
@@ -400,7 +402,7 @@ const mutation = new GraphQLObjectType({
       }
     },
     unfollow: {
-      type: UserAndTagType,
+      type: UserTagUnionType,
       args: {
         currentUserArg: { type: GraphQLString },
         item: { type: GraphQLID }

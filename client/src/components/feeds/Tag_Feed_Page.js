@@ -1,18 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Feed from './Feed';
 import TagOrUserShow from './Tag_Or_User_Show';
 import HandleSetFilter from '../plea_shows/util_components/Handle_Set_Filter';
 import Queries from '../../graphql/queries';
 const { FETCH_TAG } = Queries;
  
-const TagFeed = ({match}) => {
+const TagFeed = () => {
   let lastPleaSympathyCountRef = useRef(null);
   let lastObjectIdRef = useRef(null);
   let fetchMoreBoolRef = useRef(false);
-  const params = useParams();
-  const location = useLocation();
   const { tagId } = useParams();
   let [filter, setFilter] = useState({
     floor: null,

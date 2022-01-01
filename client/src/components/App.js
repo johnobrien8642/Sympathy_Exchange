@@ -9,7 +9,7 @@ import SecretRecoveryPhraseShow from './auth/Secret_Recovery_Phrase_Show';
 import AccountRecovery from './auth/Account_Recovery';
 import UserSettings from './user/User_Settings';
 import UserDashboard from './user/User_Dashboard';
-import TagFeedPage from './feeds/Tag_Feed_Page';
+// import TagFeedPage from './feeds/Tag_Feed_Page';
 import FeedPage from './feeds/Feed_Page';
 import Loading from './shared_util/Loading';
 import AuthRoute from '../util/route_util';
@@ -68,7 +68,7 @@ const App = () => {
           <AuthRoute exact path='/likes' component={UserPostLikesFeed} /> */}
           {/* uncomment below for email auth welcome page */}
           {/* <AuthRoute exact path='/welcome' component={WelcomePage} /> */}
-          <AuthRoute path={['/main-feed', '/dashboard/:userId', '/tag-feed/:tagId', '/user-feed/:userId']} component={FeedPage} />
+          <AuthRoute path={['/main-feed', '/dashboard/:userId', '/tag-feed/:tagId', '/user-feed/:userId', '/activity/:userId']} component={FeedPage} />
           <AuthRoute exact path={'/settings/account'} component={UserSettings} />
           <AuthRoute exact path='/register' component={Register} routeType={'auth'} />
           <AuthRoute exact path='/login' component={Login} routeType={'auth'} />

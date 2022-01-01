@@ -82,14 +82,45 @@ const Queries = {
   //     }
   //   }
   // `,
-  FETCH_PLEA_FEED: gql`
-    query FetchPleaFeed($fetchFeedInputs: FetchFeedInputType) {
-      fetchPleaFeed(fetchFeedInputs: $fetchFeedInputs) {
-        ...NestedPleaFragment
+  FETCH_FEED: gql`
+    query FetchFeed($fetchFeedInputs: FetchFeedInputType) {
+      fetchFeed(fetchFeedInputs: $fetchFeedInputs) {
+        __typename
+        ... on PleaType {
+          ...NestedPleaFragment
+        }
+        ... on SaveType {
+          _id
+          kind
+          user {
+            ...UserFragment
+          }
+          plea {
+            ...NestedPleaFragment
+          }
+        }
+        ... on SympathyType {
+          _id
+          kind
+          user {
+            ...UserFragment
+          }
+          plea {
+            ...NestedPleaFragment
+          }
+        }
+        ... on FollowType {
+          _id
+          kind
+          user {
+            ...UserFragment
+          }
+        }
       }
     }
     ${NESTED_PLEA_FRAGMENT}
     ${PLEA_FRAGMENT}
+    ${USER_FRAGMENT}
   `,
   RECENTS: gql`
     query Recents {

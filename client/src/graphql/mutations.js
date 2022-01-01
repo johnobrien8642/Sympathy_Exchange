@@ -8,7 +8,7 @@ const Mutations = {
       createOrChainPlea(pleaInputData: $pleaInputData) {
         _id
         text
-        author {
+        authorId {
           _id
           username
         }

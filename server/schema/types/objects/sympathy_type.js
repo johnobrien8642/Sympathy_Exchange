@@ -28,12 +28,12 @@ const SympathyType = new GraphQLObjectType({
           .then(sympathy => sympathy.plea);
       }
     },
-    postAuthor: {
+    pleaAuthorId: {
       type: UserType,
       resolve(parentValue) {
         return Sympathy.findById(parentValue._id)
-          .populate('postAuthor')
-          .then(like => like.postAuthor)
+          .populate('pleaAuthorId')
+          .then(symp => symp.pleaAuthorId)
       }
     },
     unsympathy: { type: GraphQLBoolean },
